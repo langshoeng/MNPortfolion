@@ -1,79 +1,281 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>MANA Portfolio</title>
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            max-width:1200px;
-            margin:auto;
-            padding:30px;
-            background:#f5f5f5;
-        }
 
-        h1{
-            text-align:center;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .category{
-            margin-top:40px;
-        }
+<title>MANA Portfolio</title>
 
-        .gallery{
-            display:flex;
-            gap:20px;
-            flex-wrap:wrap;
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .card{
-            background:white;
-            padding:10px;
-            border-radius:10px;
-            width:300px;
-            box-shadow:0 2px 8px rgba(0,0,0,.1);
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-        .card img{
-            width:100%;
-            border-radius:6px;
-        }
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-        .card h3{
-            margin-top:10px;
-        }
-    </style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+
 </head>
+
 <body>
 
-<h1>MANA Portfolio</h1>
 
-<div class="category">
-    <h2>Motion Graphics</h2>
 
-    <div class="gallery">
+<!-- ================= NAVBAR ================= -->
 
-        <div class="card">
-            <img src="https://via.placeholder.com/300x180">
-            <h3>Toyota Event Opener</h3>
-            <p>After Effects animation.</p>
-        </div>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
 
-    </div>
+<div class="container">
+
+<a class="navbar-brand fw-bold" href="#">
+
+MANA
+
+</a>
+
+<button class="navbar-toggler"
+
+data-bs-toggle="collapse"
+
+data-bs-target="#menu">
+
+<span class="navbar-toggler-icon"></span>
+
+</button>
+
+<div class="collapse navbar-collapse"
+
+id="menu">
+
+<ul class="navbar-nav ms-auto">
+
+<li class="nav-item">
+
+<a class="nav-link" href="#hero">Home</a>
+
+</li>
+
+<li class="nav-item">
+
+<a class="nav-link" href="#projects">Projects</a>
+
+</li>
+
+<li class="nav-item">
+
+<a class="nav-link" href="#about">About</a>
+
+</li>
+
+<li class="nav-item">
+
+<a class="nav-link" href="#contact">Contact</a>
+
+</li>
+
+</ul>
+
 </div>
 
-<div class="category">
-    <h2>Graphic Design</h2>
-
-    <div class="gallery">
-
-        <div class="card">
-            <img src="images/New Weekend Class Schedule_ English.jpg">
-            <h3>Event Poster</h3>
-            <p>Promotional design.</p>
-        </div>
-
-    </div>
 </div>
+
+</nav>
+
+
+
+<!-- ================= HERO ================= -->
+
+<section id="hero">
+
+<div class="overlay"></div>
+
+<div class="hero-content">
+
+<h1>MANA YOEURM</h1>
+
+<p>
+
+Motion Graphics
+
+<span>|</span>
+
+Graphic Designer
+
+<span>|</span>
+
+Video Editor
+
+</p>
+
+<a href="#projects"
+
+class="btn btn-light btn-lg mt-4">
+
+View Portfolio
+
+</a>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= PROJECTS ================= -->
+
+<section id="projects" class="container py-5">
+
+<h2 class="section-title">
+
+Featured Projects
+
+</h2>
+
+<div class="row g-4 mt-3">
+
+
+
+<div class="col-md-4">
+
+<div class="project-card">
+
+<img src="https://picsum.photos/600/400?1">
+
+<div class="project-info">
+
+<h4>Toyota Launch</h4>
+
+<p>Motion Graphics</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="col-md-4">
+
+<div class="project-card">
+
+<img src="https://picsum.photos/600/400?2">
+
+<div class="project-info">
+
+<h4>DIS Event</h4>
+
+<p>Video Editing</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="col-md-4">
+
+<div class="project-card">
+
+<img src="https://picsum.photos/600/400?3">
+
+<div class="project-info">
+
+<h4>Poster Design</h4>
+
+<p>Graphic Design</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ABOUT -->
+
+<section id="about">
+
+<div class="container">
+
+<h2 class="section-title">
+
+About Me
+
+</h2>
+
+<p class="about-text">
+
+Creative designer passionate about motion graphics,
+
+branding,
+
+video production and visual storytelling.
+
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- CONTACT -->
+
+<section id="contact">
+
+<div class="container">
+
+<h2 class="section-title">
+
+Contact
+
+</h2>
+
+<p>
+
+Email :
+
+your@email.com
+
+</p>
+
+<p>
+
+LinkedIn :
+
+Coming Soon
+
+</p>
+
+</div>
+
+</section>
+
+
+
+<footer>
+
+© 2026 MANA Portfolio
+
+</footer>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="js/script.js"></script>
 
 </body>
+
 </html>
