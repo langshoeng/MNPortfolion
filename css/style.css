@@ -181,3 +181,31 @@ text-align:center;
 background:#000;
 
 }
+
+#skills{
+
+padding:100px 0;
+
+background:#151515;
+
+}
+
+#skills h3{
+
+padding:40px;
+
+background:#222;
+
+border-radius:15px;
+
+transition:.3s;
+
+}
+
+#skills h3:hover{
+
+transform:translateY(-10px);
+
+background:#333;
+
+}
