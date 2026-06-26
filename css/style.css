@@ -21,27 +21,24 @@ scroll-behavior:smooth;
 }
 
 .navbar{
+    background: transparent;
+    backdrop-filter: blur(10px);
+    transition: all .3s ease;
+}
 
-background:rgba(0,0,0,.6);
-
-backdrop-filter:blur(10px);
-
+.navbar.scrolled{
+    background: rgba(17,17,17,.95);
+    box-shadow: 0 5px 20px rgba(0,0,0,.3);
 }
 
 #hero{
-
-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-position:relative;
-
-background:url("https://picsum.photos/1920/1080?blur=1") center center/cover;
-
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    background: url("../images/hero.jpg") center center/cover no-repeat;
 }
 
 .overlay{
@@ -72,6 +69,21 @@ font-size:70px;
 
 font-weight:800;
 
+}
+
+.welcome{
+    letter-spacing: 6px;
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+#typing{
+    font-size: 28px;
+    font-weight: 300;
+    margin-top: 15px;
+    color: #ddd;
+    min-height: 40px;
 }
 
 .hero-content p{
