@@ -277,16 +277,15 @@ footer{
    SCROLL REVEAL
 =========================================== */
 
-.project-card,
-#about,
-#skills,
-#contact{
+.fade-up{
     opacity:0;
     transform:translateY(60px);
-    transition:all .8s ease;
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
 }
 
-.show{
+.fade-up.show{
     opacity:1;
     transform:translateY(0);
 }
