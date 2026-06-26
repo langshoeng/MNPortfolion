@@ -1,67 +1,123 @@
+// ===============================
+// Typing Effect
+// ===============================
+
 const words = [
-
-"Motion Graphics",
-
-"Graphic Designer",
-
-"Video Editor",
-
-"Photographer"
-
+    "Motion Graphics",
+    "Graphic Designer",
+    "Video Editor",
+    "Photographer"
 ];
 
-let wordIndex=0;
+let wordIndex = 0;
+let charIndex = 0;
+let deleting = false;
 
-let charIndex=0;
+const typing = document.getElementById("typing");
 
-let deleting=false;
+function type() {
 
-const typing=document.getElementById("typing");
+    const currentWord = words[wordIndex];
 
-function type(){
+    if (!deleting) {
 
-let current=words[wordIndex];
+        typing.textContent = currentWord.substring(0, charIndex);
+        charIndex++;
 
-if(!deleting){
+        if (charIndex > currentWord.length) {
+            deleting = true;
+            setTimeout(type, 1500); // Pause before deleting
+            return;
+        }
 
-typing.textContent=current.substring(0,charIndex++);
+    } else {
 
-if(charIndex>current.length){
+        typing.textContent = currentWord.substring(0, charIndex);
+        charIndex--;
 
-deleting=true;
+        if (charIndex < 0) {
+            deleting = false;
+            charIndex = 0;
+            wordIndex = (wordIndex + 1) % words.length;
+        }
 
-setTimeout(type,1200);
+    }
 
-return;
-
-}
-
-}else{
-
-typing.textContent=current.substring(0,charIndex--);
-
-if(charIndex<0){
-
-deleting=false;
-
-wordIndex=(wordIndex+1)%words.length;
-
-}
-
-}
-
-setTimeout(type,deleting?40:80);
-
+    setTimeout(type, deleting ? 45 : 85);
 }
 
 type();
 
 
-// Navbar scroll effect
-window.addEventListener("scroll",()=>{
+// ===============================
+// Navbar Scroll Effect
+// ===============================
 
-const nav=document.querySelector(".navbar");
+const navbar = document.querySelector(".navbar");
 
-nav.classList.toggle("scrolled",window.scrollY>50);
+window.addEventListener("scroll", () => {
 
+    if (window.scrollY > 50) {
+        navbar.classList.add("scrolled");
+    } else {
+        navbar.classList.remove("scrolled");
+    }
+
+});
+
+
+// ===============================
+// Active Navigation Link
+// ===============================
+
+const sections = document.querySelectorAll("section");
+const navLinks = document.querySelectorAll(".nav-link");
+
+window.addEventListener("scroll", () => {
+
+    let current = "";
+
+    sections.forEach(section => {
+
+        const sectionTop = section.offsetTop - 100;
+
+        if (window.scrollY >= sectionTop) {
+            current = section.getAttribute("id");
+        }
+
+    });
+
+    navLinks.forEach(link => {
+
+        link.classList.remove("active");
+
+        if (link.getAttribute("href") === "#" + current) {
+            link.classList.add("active");
+        }
+
+    });
+
+});
+
+
+// ===============================
+// Fade-in Animation on Scroll
+// ===============================
+
+const observer = new IntersectionObserver((entries) => {
+
+    entries.forEach(entry => {
+
+        if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+        }
+
+    });
+
+}, {
+    threshold: 0.15
+});
+
+document.querySelectorAll(".project-card, #about, #skills, #contact").forEach(el => {
+    observer.observe(el);
 });
