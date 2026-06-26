@@ -118,6 +118,6 @@ const observer = new IntersectionObserver((entries) => {
     threshold: 0.15
 });
 
-document.querySelectorAll(".project-card, #about, #skills, #contact").forEach(el => {
+document.querySelectorAll(".fade-up, .project-card").forEach(el => {
     observer.observe(el);
 });
