@@ -274,46 +274,62 @@ body{
 
 }
 
+/* ===========================================
+   PROJECT FILTER
+=========================================== */
+
 .project-filters{
 
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
     gap:15px;
-
-    margin:40px 0;
+    margin:45px 0;
 
 }
 
 .filter-btn{
 
-    background:transparent;
+    padding:12px 26px;
 
-    color:white;
+    border-radius:999px;
 
-    border:1px solid rgba(255,255,255,.2);
+    border:1px solid rgba(255,255,255,.12);
 
-    padding:10px 22px;
+    background:#1a1a1a;
 
-    border-radius:50px;
+    color:#ddd;
+
+    font-weight:500;
 
     transition:.3s;
+
+    cursor:pointer;
 
 }
 
 .filter-btn:hover{
 
-    background:white;
+    background:#2b2b2b;
 
-    color:#111;
+    color:#fff;
+
+    transform:translateY(-3px);
 
 }
 
 .filter-btn.active{
 
-    background:white;
+    background:#fff;
 
     color:#111;
+
+    border-color:#fff;
+
+    box-shadow:
+        0 8px 25px rgba(255,255,255,.18);
+
+    transform:translateY(-3px);
 
 }
 
