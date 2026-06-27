@@ -1,1 +1,35 @@
-
+[
+    {
+        "id": "toyota-launch",
+        "title": "Toyota Launch",
+        "category": "Motion Graphics",
+        "thumbnail": "https://picsum.photos/600/400?1",
+        "video": {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=YOUR_VIDEO_ID"
+        },
+        "featured": true
+    },
+    {
+        "id": "dis-event",
+        "title": "DIS Event",
+        "category": "Video Editing",
+        "thumbnail": "https://picsum.photos/600/400?2",
+        "video": {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=YOUR_VIDEO_ID"
+        },
+        "featured": true
+    },
+    {
+        "id": "poster-design",
+        "title": "Poster Design",
+        "category": "Graphic Design",
+        "thumbnail": "https://picsum.photos/600/400?3",
+        "video": {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=YOUR_VIDEO_ID"
+        },
+        "featured": true
+    }
+]
