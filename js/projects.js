@@ -8,7 +8,7 @@ async function loadProjects() {
 
     try {
 
-        const response = await fetch("data/projects.json");
+        const response = await fetch("data/projects.json?nocache=" + new Date().getTime());
 
         if (!response.ok) {
             throw new Error("Unable to load projects.json");
