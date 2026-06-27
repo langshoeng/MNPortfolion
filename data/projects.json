@@ -1,70 +1,146 @@
 [
     {
         "id":"toyota-launch",
+
         "title":"Toyota Launch",
+
+        "client":"Toyota Cambodia",
+
+        "year":"2025",
+
+        "description":"Launch commercial with cinematic motion graphics and editing.",
 
         "categories":[
             "Motion Graphics",
             "Video Editing"
         ],
 
-        "thumbnail":"https://picsum.photos/600/400?1",
+        "software":[
+            "After Effects",
+            "Premiere Pro",
+            "Photoshop"
+        ],
+
+        "thumbnail":"images/projects/toyota/cover.jpg",
+
+        "gallery":[
+            "images/projects/toyota/01.jpg",
+            "images/projects/toyota/02.jpg",
+            "images/projects/toyota/03.jpg"
+        ],
 
         "video":{
             "type":"youtube",
             "url":"https://www.youtube.com/watch?v=ZoCpWVsQ9VY"
         },
 
-        "software":[
-            "After Effects",
-            "Premiere Pro"
-        ],
-
         "featured":true
     },
 
     {
         "id":"dis-event",
-        "title":"DIS Event",
+
+        "title":"DIS Event Opening",
+
+        "client":"Digital Innovation School",
+
+        "year":"2024",
+
+        "description":"Opening ceremony video with motion graphics and live editing.",
 
         "categories":[
             "Video Editing"
         ],
 
-        "thumbnail":"https://picsum.photos/600/400?2",
+        "software":[
+            "Premiere Pro"
+        ],
+
+        "thumbnail":"images/projects/dis/cover.jpg",
+
+        "gallery":[
+            "images/projects/dis/01.jpg",
+            "images/projects/dis/02.jpg"
+        ],
 
         "video":{
             "type":"youtube",
             "url":"https://www.youtube.com/watch?v=q12gQyh6jXQ"
         },
 
-        "software":[
-            "Premiere Pro"
-        ],
-
         "featured":true
     },
 
     {
-        "id":"poster-design",
-        "title":"Poster Design",
+        "id":"brand-guideline",
+
+        "title":"Brand Identity",
+
+        "client":"ABC Coffee",
+
+        "year":"2023",
+
+        "description":"Complete branding package including logo, business card and social media kit.",
 
         "categories":[
             "Graphic Design"
         ],
 
-        "thumbnail":"https://picsum.photos/600/400?3",
-
-        "video":{
-            "type":"youtube",
-            "url":"https://www.youtube.com/watch?v=y7Ra_o_H4NU"
-        },
-
         "software":[
-            "Photoshop",
-            "Illustrator"
+            "Illustrator",
+            "Photoshop"
         ],
 
+        "thumbnail":"images/projects/brand/cover.jpg",
+
+        "gallery":[
+            "images/projects/brand/01.jpg",
+            "images/projects/brand/02.jpg",
+            "images/projects/brand/03.jpg",
+            "images/projects/brand/04.jpg"
+        ],
+
+        "video":{
+            "type":"none"
+        },
+
         "featured":true
+    },
+
+    {
+        "id":"wedding-photos",
+
+        "title":"Wedding Photography",
+
+        "client":"Private Client",
+
+        "year":"2024",
+
+        "description":"Outdoor wedding photography with natural lighting.",
+
+        "categories":[
+            "Photography"
+        ],
+
+        "software":[
+            "Lightroom",
+            "Photoshop"
+        ],
+
+        "thumbnail":"images/projects/wedding/cover.jpg",
+
+        "gallery":[
+            "images/projects/wedding/01.jpg",
+            "images/projects/wedding/02.jpg",
+            "images/projects/wedding/03.jpg",
+            "images/projects/wedding/04.jpg",
+            "images/projects/wedding/05.jpg"
+        ],
+
+        "video":{
+            "type":"none"
+        },
+
+        "featured":false
     }
 ]
