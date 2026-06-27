@@ -504,3 +504,140 @@ footer{
     }
 
 }
+
+/* =====================================================
+   GALLERY
+===================================================== */
+
+#galleryModal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.92);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+    opacity:0;
+
+    transition:.35s;
+
+}
+
+#galleryModal.show{
+
+    display:flex;
+
+    opacity:1;
+
+}
+
+#galleryImage{
+
+    max-width:88vw;
+
+    max-height:82vh;
+
+    border-radius:12px;
+
+    box-shadow:0 25px 70px rgba(0,0,0,.5);
+
+}
+
+.gallery-overlay{
+
+    position:absolute;
+
+    inset:0;
+
+}
+
+#galleryClose{
+
+    position:absolute;
+
+    top:30px;
+
+    right:35px;
+
+    width:48px;
+
+    height:48px;
+
+    border:none;
+
+    border-radius:50%;
+
+    font-size:34px;
+
+    color:#fff;
+
+    background:rgba(255,255,255,.12);
+
+    cursor:pointer;
+
+}
+
+#galleryPrev,
+#galleryNext{
+
+    position:absolute;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:60px;
+
+    height:60px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.12);
+
+    color:#fff;
+
+    font-size:34px;
+
+    cursor:pointer;
+
+}
+
+#galleryPrev{
+
+    left:40px;
+
+}
+
+#galleryNext{
+
+    right:40px;
+
+}
+
+#galleryCounter{
+
+    position:absolute;
+
+    bottom:28px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:600;
+
+}
