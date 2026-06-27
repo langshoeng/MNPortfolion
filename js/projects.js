@@ -1,55 +1,73 @@
+let allProjects = [];
+
 async function loadProjects() {
 
     const response = await fetch("data/projects.json");
 
-    const projects = await response.json();
+    allProjects = await response.json();
+
+    renderProjects("All");
+}
+
+function renderProjects(filter) {
 
     const grid = document.getElementById("projectsGrid");
 
     grid.innerHTML = "";
 
-    projects
-        .filter(project => project.featured)
-        .forEach(project => {
+    let projects = allProjects;
 
-            const software = project.software.join(" • ");
+    if(filter !== "All"){
 
-            const card = document.createElement("div");
+        projects = allProjects.filter(project =>
+            project.categories.includes(filter)
+        );
 
-            card.className = "col-lg-4 col-md-6";
+    }
 
-            card.innerHTML = `
+    projects.forEach(project=>{
 
-                <div class="project-card">
+        const software = project.software.join(" • ");
 
-                    <img src="${project.thumbnail}" alt="${project.title}">
+        const category = project.categories.join(" / ");
 
-                    <div class="project-info">
+        grid.innerHTML += `
 
-                        <span class="project-category">
-                            ${project.category}
-                        </span>
+        <div class="col-lg-4 col-md-6">
 
-                        <h4>${project.title}</h4>
+            <div class="project-card">
 
-                        <p>${software}</p>
+                <img src="${project.thumbnail}">
 
-                        <button
-                            class="btn btn-outline-light btn-sm mt-3 view-project"
-                            data-video="${project.video.url}"
-                        >
-                            View Project
-                        </button>
+                <div class="project-info">
 
-                    </div>
+                    <span class="project-category">
+
+                        ${category}
+
+                    </span>
+
+                    <h4>${project.title}</h4>
+
+                    <p>${software}</p>
+
+                    <button
+                        class="btn btn-outline-light btn-sm mt-3 view-project"
+                        data-video="${project.video.url}">
+
+                        Watch Project
+
+                    </button>
 
                 </div>
 
-            `;
+            </div>
 
-            grid.appendChild(card);
+        </div>
 
-        });
+        `;
+
+    });
 
 }
 
@@ -57,11 +75,27 @@ loadProjects();
 
 document.addEventListener("click",(e)=>{
 
-    if(!e.target.classList.contains("view-project")) return;
+    if(e.target.classList.contains("filter-btn")){
 
-    window.open(
-        e.target.dataset.video,
-        "_blank"
-    );
+        document
+            .querySelectorAll(".filter-btn")
+            .forEach(btn=>btn.classList.remove("active"));
+
+        e.target.classList.add("active");
+
+        renderProjects(
+            e.target.dataset.filter
+        );
+
+    }
+
+    if(e.target.classList.contains("view-project")){
+
+        window.open(
+            e.target.dataset.video,
+            "_blank"
+        );
+
+    }
 
 });
