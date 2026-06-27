@@ -84,6 +84,8 @@ function renderProjects(filter = "All") {
         }
 
         // ---------------------------------
+        // Card
+        // ---------------------------------
 
         grid.innerHTML += `
 
@@ -91,8 +93,9 @@ function renderProjects(filter = "All") {
 
             <div
                 class="project-card"
-                data-video="${project.video?.url || ""}"
                 data-type="${project.video?.type || "none"}"
+                data-video="${project.video?.url || ""}"
+                data-gallery="${project.gallery?.[0] || ""}"
             >
 
                 <div class="project-thumb">
@@ -139,10 +142,14 @@ loadProjects();
 
 
 // =======================================
-// Filter Buttons
+// Click Events
 // =======================================
 
 document.addEventListener("click", (e) => {
+
+    // ----------------------------
+    // Filter Buttons
+    // ----------------------------
 
     const filterBtn = e.target.closest(".filter-btn");
 
@@ -159,11 +166,13 @@ document.addEventListener("click", (e) => {
         );
 
         return;
+
     }
 
-    // ---------------------------------
-    // Click Project Card
-    // ---------------------------------
+
+    // ----------------------------
+    // Project Card
+    // ----------------------------
 
     const card = e.target.closest(".project-card");
 
@@ -171,15 +180,34 @@ document.addEventListener("click", (e) => {
 
     const type = card.dataset.type;
 
-    const url = card.dataset.video;
+    const video = card.dataset.video;
+
+    const gallery = card.dataset.gallery;
+
+
+    // Open YouTube
 
     if (
         type !== "none" &&
-        url
+        video
     ) {
 
         window.open(
-            url,
+            video,
+            "_blank"
+        );
+
+        return;
+
+    }
+
+
+    // Open first gallery image
+
+    if (gallery) {
+
+        window.open(
+            gallery,
             "_blank"
         );
 
