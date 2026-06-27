@@ -6,7 +6,7 @@
         "thumbnail": "https://picsum.photos/600/400?1",
         "video": {
             "type": "youtube",
-            "url": "https://www.youtube.com/watch?v=YOUR_VIDEO_ID"
+            "url": "https://www.youtube.com/watch?v=ZoCpWVsQ9VY"
         },
         "featured": true
     },
@@ -17,7 +17,7 @@
         "thumbnail": "https://picsum.photos/600/400?2",
         "video": {
             "type": "youtube",
-            "url": "https://www.youtube.com/watch?v=YOUR_VIDEO_ID"
+            "url": "https://www.youtube.com/watch?v=q12gQyh6jXQ"
         },
         "featured": true
     },
@@ -28,7 +28,7 @@
         "thumbnail": "https://picsum.photos/600/400?3",
         "video": {
             "type": "youtube",
-            "url": "https://www.youtube.com/watch?v=YOUR_VIDEO_ID"
+            "url": "https://www.youtube.com/watch?v=y7Ra_o_H4NU"
         },
         "featured": true
     }
