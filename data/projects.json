@@ -1,146 +1,166 @@
 [
     {
-        "id":"toyota-launch",
+        "id": "toyota-launch",
 
-        "title":"Toyota Launch",
+        "title": "Toyota Launch Campaign",
 
-        "client":"Toyota Cambodia",
+        "featured": true,
 
-        "year":"2025",
-
-        "description":"Launch commercial with cinematic motion graphics and editing.",
-
-        "categories":[
+        "categories": [
             "Motion Graphics",
             "Video Editing"
         ],
 
-        "software":[
+        "client": "Toyota Cambodia",
+
+        "year": "2025",
+
+        "duration": "00:45",
+
+        "role": [
+            "Motion Graphics",
+            "Video Editing"
+        ],
+
+        "software": [
             "After Effects",
             "Premiere Pro",
             "Photoshop"
         ],
 
-        "thumbnail":"images/projects/toyota/cover.jpg",
+        "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, and commercial editing.",
 
-        "gallery":[
+        "thumbnail": "images/projects/toyota/cover.jpg",
+
+        "video": {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=ZoCpWVsQ9VY"
+        },
+
+        "gallery": [
             "images/projects/toyota/01.jpg",
             "images/projects/toyota/02.jpg",
             "images/projects/toyota/03.jpg"
-        ],
-
-        "video":{
-            "type":"youtube",
-            "url":"https://www.youtube.com/watch?v=ZoCpWVsQ9VY"
-        },
-
-        "featured":true
+        ]
     },
 
     {
-        "id":"dis-event",
+        "id": "dis-event",
 
-        "title":"DIS Event Opening",
+        "title": "DIS Opening Ceremony",
 
-        "client":"Digital Innovation School",
+        "featured": true,
 
-        "year":"2024",
-
-        "description":"Opening ceremony video with motion graphics and live editing.",
-
-        "categories":[
+        "categories": [
             "Video Editing"
         ],
 
-        "software":[
+        "client": "Digital Innovation School",
+
+        "year": "2024",
+
+        "duration": "03:15",
+
+        "role": [
+            "Video Editing"
+        ],
+
+        "software": [
             "Premiere Pro"
         ],
 
-        "thumbnail":"images/projects/dis/cover.jpg",
+        "description": "Highlight video showcasing the opening ceremony with dynamic editing and event coverage.",
 
-        "gallery":[
-            "images/projects/dis/01.jpg",
-            "images/projects/dis/02.jpg"
-        ],
+        "thumbnail": "images/projects/dis/cover.jpg",
 
-        "video":{
-            "type":"youtube",
-            "url":"https://www.youtube.com/watch?v=q12gQyh6jXQ"
+        "video": {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=q12gQyh6jXQ"
         },
 
-        "featured":true
+        "gallery": []
     },
 
     {
-        "id":"brand-guideline",
+        "id": "coffee-brand",
 
-        "title":"Brand Identity",
+        "title": "Coffee Brand Identity",
 
-        "client":"ABC Coffee",
+        "featured": true,
 
-        "year":"2023",
-
-        "description":"Complete branding package including logo, business card and social media kit.",
-
-        "categories":[
+        "categories": [
             "Graphic Design"
         ],
 
-        "software":[
+        "client": "ABC Coffee",
+
+        "year": "2023",
+
+        "role": [
+            "Graphic Design"
+        ],
+
+        "software": [
             "Illustrator",
             "Photoshop"
         ],
 
-        "thumbnail":"images/projects/brand/cover.jpg",
+        "description": "Complete branding package including logo, packaging, business cards, and social media assets.",
 
-        "gallery":[
-            "images/projects/brand/01.jpg",
-            "images/projects/brand/02.jpg",
-            "images/projects/brand/03.jpg",
-            "images/projects/brand/04.jpg"
-        ],
+        "thumbnail": "images/projects/coffee-brand/cover.jpg",
 
-        "video":{
-            "type":"none"
+        "video": {
+            "type": "none"
         },
 
-        "featured":true
+        "gallery": [
+            "images/projects/coffee-brand/01.jpg",
+            "images/projects/coffee-brand/02.jpg",
+            "images/projects/coffee-brand/03.jpg",
+            "images/projects/coffee-brand/04.jpg"
+        ]
     },
 
     {
-        "id":"wedding-photos",
+        "id": "wedding-photography",
 
-        "title":"Wedding Photography",
+        "title": "Wedding Photography",
 
-        "client":"Private Client",
+        "featured": false,
 
-        "year":"2024",
-
-        "description":"Outdoor wedding photography with natural lighting.",
-
-        "categories":[
+        "categories": [
             "Photography"
         ],
 
-        "software":[
+        "client": "Private Client",
+
+        "year": "2024",
+
+        "role": [
+            "Photography",
+            "Photo Retouching"
+        ],
+
+        "software": [
             "Lightroom",
             "Photoshop"
         ],
 
-        "thumbnail":"images/projects/wedding/cover.jpg",
+        "description": "Outdoor wedding photography with natural lighting and cinematic color grading.",
 
-        "gallery":[
+        "thumbnail": "images/projects/wedding/cover.jpg",
+
+        "video": {
+            "type": "none"
+        },
+
+        "gallery": [
             "images/projects/wedding/01.jpg",
             "images/projects/wedding/02.jpg",
             "images/projects/wedding/03.jpg",
             "images/projects/wedding/04.jpg",
-            "images/projects/wedding/05.jpg"
-        ],
-
-        "video":{
-            "type":"none"
-        },
-
-        "featured":false
+            "images/projects/wedding/05.jpg",
+            "images/projects/wedding/06.jpg"
+        ]
     }
 ]
