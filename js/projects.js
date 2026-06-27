@@ -8,7 +8,9 @@ async function loadProjects() {
 
     try {
 
-        const response = await fetch("data/projects.json?nocache=" + new Date().getTime());
+        const response = await fetch(
+            "data/projects.json?nocache=" + Date.now()
+        );
 
         if (!response.ok) {
             throw new Error("Unable to load projects.json");
@@ -49,13 +51,17 @@ function renderProjects(filter = "All") {
 
     projects.forEach(project => {
 
-        const software = project.software.join(" • ");
+        const software = project.software
+            ? project.software.join(" • ")
+            : "";
 
-        const category = project.categories.join(" / ");
+        const category = project.categories
+            ? project.categories.join(" / ")
+            : "";
 
-        // ---------------------------------
-        // Thumbnail Badge
-        // ---------------------------------
+        // -------------------------------
+        // Media Badge
+        // -------------------------------
 
         let mediaBadge = "";
 
@@ -66,13 +72,14 @@ function renderProjects(filter = "All") {
 
             mediaBadge = `
                 <span class="project-badge video">
-                    ▶ ${project.video.duration || ""}
+                    ▶ ${project.duration || ""}
                 </span>
             `;
 
-        } else if (
+        }
+        else if (
             project.gallery &&
-            project.gallery.length > 0
+            project.gallery.length
         ) {
 
             mediaBadge = `
@@ -83,9 +90,9 @@ function renderProjects(filter = "All") {
 
         }
 
-        // ---------------------------------
+        // -------------------------------
         // Card
-        // ---------------------------------
+        // -------------------------------
 
         grid.innerHTML += `
 
@@ -93,9 +100,7 @@ function renderProjects(filter = "All") {
 
             <div
                 class="project-card"
-                data-type="${project.video?.type || "none"}"
-                data-video="${project.video?.url || ""}"
-                data-gallery="${project.gallery?.[0] || ""}"
+                data-project="${project.id}"
             >
 
                 <div class="project-thumb">
@@ -112,9 +117,7 @@ function renderProjects(filter = "All") {
                 <div class="project-info">
 
                     <span class="project-category">
-
                         ${category}
-
                     </span>
 
                     <h4>${project.title}</h4>
@@ -142,14 +145,14 @@ loadProjects();
 
 
 // =======================================
-// Click Events
+// Global Click Events
 // =======================================
 
 document.addEventListener("click", (e) => {
 
-    // ----------------------------
+    // ===================================
     // Filter Buttons
-    // ----------------------------
+    // ===================================
 
     const filterBtn = e.target.closest(".filter-btn");
 
@@ -170,30 +173,34 @@ document.addEventListener("click", (e) => {
     }
 
 
-    // ----------------------------
+    // ===================================
     // Project Card
-    // ----------------------------
+    // ===================================
 
     const card = e.target.closest(".project-card");
 
     if (!card) return;
 
-    const type = card.dataset.type;
+    const projectId = card.dataset.project;
 
-    const video = card.dataset.video;
+    const project = allProjects.find(
+        p => p.id === projectId
+    );
 
-    const gallery = card.dataset.gallery;
+    if (!project) return;
 
 
-    // Open YouTube
+    // ===================================
+    // Video Project
+    // ===================================
 
     if (
-        type !== "none" &&
-        video
+        project.video &&
+        project.video.type !== "none"
     ) {
 
         window.open(
-            video,
+            project.video.url,
             "_blank"
         );
 
@@ -202,14 +209,18 @@ document.addEventListener("click", (e) => {
     }
 
 
-    // Open first gallery image
+    // ===================================
+    // Image Gallery Project
+    // ===================================
 
-    if (gallery) {
+    if (
+        project.gallery &&
+        project.gallery.length
+    ) {
 
-        window.open(
-            gallery,
-            "_blank"
-        );
+        openGallery(project.gallery);
+
+        return;
 
     }
 
