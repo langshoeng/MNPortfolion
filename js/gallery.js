@@ -1,3 +1,5 @@
+console.log("gallery.js loaded");
+
 let galleryImages = [];
 
 let galleryIndex = 0;
