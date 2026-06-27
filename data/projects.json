@@ -2,7 +2,11 @@
     {
         "id":"toyota-launch",
         "title":"Toyota Launch",
-        "category":"Motion Graphics",
+
+        "categories":[
+            "Motion Graphics",
+            "Video Editing"
+        ],
 
         "thumbnail":"https://picsum.photos/600/400?1",
 
@@ -22,7 +26,10 @@
     {
         "id":"dis-event",
         "title":"DIS Event",
-        "category":"Video Editing",
+
+        "categories":[
+            "Video Editing"
+        ],
 
         "thumbnail":"https://picsum.photos/600/400?2",
 
@@ -41,7 +48,10 @@
     {
         "id":"poster-design",
         "title":"Poster Design",
-        "category":"Graphic Design",
+
+        "categories":[
+            "Graphic Design"
+        ],
 
         "thumbnail":"https://picsum.photos/600/400?3",
 
@@ -57,5 +67,4 @@
 
         "featured":true
     }
-
 ]
