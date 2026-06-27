@@ -1,15 +1,37 @@
+// =======================================
+// Project Loader
+// =======================================
+
 let allProjects = [];
 
 async function loadProjects() {
 
-    const response = await fetch("data/projects.json");
+    try {
 
-    allProjects = await response.json();
+        const response = await fetch("data/projects.json");
 
-    renderProjects("All");
+        if (!response.ok) {
+            throw new Error("Unable to load projects.json");
+        }
+
+        allProjects = await response.json();
+
+        renderProjects("All");
+
+    } catch (err) {
+
+        console.error(err);
+
+    }
+
 }
 
-function renderProjects(filter) {
+
+// =======================================
+// Render Projects
+// =======================================
+
+function renderProjects(filter = "All") {
 
     const grid = document.getElementById("projectsGrid");
 
@@ -17,7 +39,7 @@ function renderProjects(filter) {
 
     let projects = allProjects;
 
-    if(filter !== "All"){
+    if (filter !== "All") {
 
         projects = allProjects.filter(project =>
             project.categories.includes(filter)
@@ -25,19 +47,64 @@ function renderProjects(filter) {
 
     }
 
-    projects.forEach(project=>{
+    projects.forEach(project => {
 
         const software = project.software.join(" • ");
 
         const category = project.categories.join(" / ");
 
+        // ---------------------------------
+        // Thumbnail Badge
+        // ---------------------------------
+
+        let mediaBadge = "";
+
+        if (
+            project.video &&
+            project.video.type !== "none"
+        ) {
+
+            mediaBadge = `
+                <span class="project-badge video">
+                    ▶ ${project.video.duration || ""}
+                </span>
+            `;
+
+        } else if (
+            project.gallery &&
+            project.gallery.length > 0
+        ) {
+
+            mediaBadge = `
+                <span class="project-badge image">
+                    🖼 ${project.gallery.length} Images
+                </span>
+            `;
+
+        }
+
+        // ---------------------------------
+
         grid.innerHTML += `
 
         <div class="col-lg-4 col-md-6">
 
-            <div class="project-card">
+            <div
+                class="project-card"
+                data-video="${project.video?.url || ""}"
+                data-type="${project.video?.type || "none"}"
+            >
 
-                <img src="${project.thumbnail}">
+                <div class="project-thumb">
+
+                    <img
+                        src="${project.thumbnail}"
+                        alt="${project.title}"
+                    >
+
+                    ${mediaBadge}
+
+                </div>
 
                 <div class="project-info">
 
@@ -51,14 +118,6 @@ function renderProjects(filter) {
 
                     <p>${software}</p>
 
-                    <button
-                        class="btn btn-outline-light btn-sm mt-3 view-project"
-                        data-video="${project.video.url}">
-
-                        Watch Project
-
-                    </button>
-
                 </div>
 
             </div>
@@ -71,28 +130,56 @@ function renderProjects(filter) {
 
 }
 
+
+// =======================================
+// Initial Load
+// =======================================
+
 loadProjects();
 
-document.addEventListener("click",(e)=>{
 
-    if(e.target.classList.contains("filter-btn")){
+// =======================================
+// Filter Buttons
+// =======================================
+
+document.addEventListener("click", (e) => {
+
+    const filterBtn = e.target.closest(".filter-btn");
+
+    if (filterBtn) {
 
         document
             .querySelectorAll(".filter-btn")
-            .forEach(btn=>btn.classList.remove("active"));
+            .forEach(btn => btn.classList.remove("active"));
 
-        e.target.classList.add("active");
+        filterBtn.classList.add("active");
 
         renderProjects(
-            e.target.dataset.filter
+            filterBtn.dataset.filter
         );
 
+        return;
     }
 
-    if(e.target.classList.contains("view-project")){
+    // ---------------------------------
+    // Click Project Card
+    // ---------------------------------
+
+    const card = e.target.closest(".project-card");
+
+    if (!card) return;
+
+    const type = card.dataset.type;
+
+    const url = card.dataset.video;
+
+    if (
+        type !== "none" &&
+        url
+    ) {
 
         window.open(
-            e.target.dataset.video,
+            url,
             "_blank"
         );
 
