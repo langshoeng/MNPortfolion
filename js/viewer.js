@@ -1,69 +1,50 @@
 // ===========================================
-// PROJECT VIEWER
+// PROJECT VIEWER (FIXED V2)
 // ===========================================
 
 const viewer = document.getElementById("projectViewer");
 
 const viewerMedia = document.getElementById("viewerMedia");
-
 const viewerTitle = document.getElementById("viewerTitle");
-
 const viewerMeta = document.getElementById("viewerMeta");
-
 const viewerDescription = document.getElementById("viewerDescription");
-
 const viewerSoftware = document.getElementById("viewerSoftware");
 
-
 // ===========================================
-// Current Project
+// STATE
 // ===========================================
 
 let currentProject = null;
-
 let currentGallery = [];
-
 let currentImage = 0;
 
 // ===========================================
-// Convert YouTube URL
+// YOUTUBE EMBED
 // ===========================================
 
-function getYoutubeEmbed(url){
-
+function getYoutubeEmbed(url) {
     let id = "";
 
-    try{
-
+    try {
         const u = new URL(url);
 
-        if(u.hostname.includes("youtu.be")){
-
+        if (u.hostname.includes("youtu.be")) {
             id = u.pathname.substring(1);
-
-        }else{
-
+        } else {
             id = u.searchParams.get("v");
-
         }
-
-    }catch(e){
-
+    } catch (e) {
         return "";
-
     }
 
     return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
-
 }
 
-
 // ===========================================
-// Open Project
+// OPEN PROJECT
 // ===========================================
 
-function openProject(project){
-
+function openProject(project) {
     currentProject = project;
 
     viewer.classList.add("show");
@@ -71,336 +52,194 @@ function openProject(project){
     currentGallery = [];
     currentImage = 0;
 
-
-
     // ------------------------------------
-    // Title
+    // TEXT
     // ------------------------------------
 
-    viewerTitle.textContent = project.title;
-
-
-
-    // ------------------------------------
-    // Meta
-    // ------------------------------------
+    viewerTitle.textContent = project.title || "";
 
     viewerMeta.innerHTML = `
-
         <div><strong>Client</strong><br>${project.client || "-"}</div>
-
         <div style="margin-top:12px;">
-
             <strong>Year</strong><br>
-
             ${project.year || "-"}
-
         </div>
-
     `;
 
-
-
-    // ------------------------------------
-    // Description
-    // ------------------------------------
-
-    viewerDescription.textContent =
-
-        project.description || "";
-
-
-
-    // ------------------------------------
-    // Software
-    // ------------------------------------
+    viewerDescription.textContent = project.description || "";
 
     viewerSoftware.innerHTML = "";
 
-
-
-    if(project.software){
-
-        project.software.forEach(app=>{
-
+    if (project.software && Array.isArray(project.software)) {
+        project.software.forEach(app => {
             viewerSoftware.innerHTML +=
-
                 `<span class="viewerBadge">${app}</span>`;
-
         });
-
     }
 
-
-
-    // =====================================
-    // MEDIA
-    // =====================================
+    // ------------------------------------
+    // MEDIA RESET
+    // ------------------------------------
 
     viewerMedia.innerHTML = "";
 
+    // ====================================
+    // VIDEO (YOUTUBE)
+    // ====================================
 
-
-    // -------------------------------------
-    // YouTube
-    // -------------------------------------
-
-    if(
-
-        project.video &&
-
-        project.video.type === "youtube"
-
-    ){
-
+    if (project.video?.type === "youtube") {
         viewerMedia.innerHTML = `
-
-        <iframe
-
-            src="${getYoutubeEmbed(project.video.url)}"
-
-            allow="autoplay; fullscreen; encrypted-media"
-
-            allowfullscreen
-
-        ></iframe>
-
+            <iframe
+                src="${getYoutubeEmbed(project.video.url)}"
+                allow="autoplay; fullscreen; encrypted-media"
+                allowfullscreen
+            ></iframe>
         `;
-
+        return;
     }
 
+    // ====================================
+    // VIDEO (MP4)
+    // ====================================
 
-
-    // -------------------------------------
-    // Local MP4
-    // -------------------------------------
-
-    else if(
-
-        project.video &&
-
-        project.video.type === "mp4"
-
-    ){
-
+    if (project.video?.type === "mp4") {
         viewerMedia.innerHTML = `
-
-        <video
-
-            controls
-
-            autoplay
-
-        >
-
-            <source
-
-                src="${project.video.url}"
-
-                type="video/mp4"
-
-            >
-
-        </video>
-
+            <video controls autoplay>
+                <source src="${project.video.url}" type="video/mp4">
+            </video>
         `;
-
+        return;
     }
 
+    // ====================================
+    // GALLERY
+    // ====================================
 
-
-    // -------------------------------------
-    // Gallery
-    // -------------------------------------
-
-    else if (
-        project.gallery &&
-        project.gallery.length
-    ) {
-    
+    if (project.gallery && project.gallery.length > 0) {
         currentGallery = project.gallery;
         currentImage = 0;
-    
+
         viewerMedia.innerHTML = `
-    
-            <img
-                id="viewerGalleryImage"
-                src="${currentGallery[0]}"
-            >
-    
+            <div class="viewerImageWrap">
+                <img id="viewerGalleryImage" src="${currentGallery[0]}">
+            </div>
+
             <div id="viewerCounter"></div>
-    
+
             <div id="viewerThumbs"></div>
-    
         `;
-    
-        buildViewerGallery();
-    
+
+        requestAnimationFrame(buildViewerGallery);
     }
-
 }
 
-
 // ===========================================
-// Build Gallery
+// BUILD GALLERY
 // ===========================================
 
-function buildViewerGallery(){
-
+function buildViewerGallery() {
     updateViewerGallery();
-
-    const prev = document.getElementById("viewerPrevMedia");
-    const next = document.getElementById("viewerNextMedia");
-
-    if(prev) prev.onclick = previousViewerImage;
-    if(next) next.onclick = nextViewerImage;
-
 }
 
+// ===========================================
+// UPDATE GALLERY
+// ===========================================
 
-function updateViewerGallery(){
-
+function updateViewerGallery() {
     const img = document.getElementById("viewerGalleryImage");
-
     const counter = document.getElementById("viewerCounter");
-
     const thumbs = document.getElementById("viewerThumbs");
+
+    // SAFETY CHECKS (IMPORTANT FIX)
+    if (!img || !counter || !thumbs) return;
 
     img.src = currentGallery[currentImage];
 
-    counter.textContent =
-        `${currentImage + 1} / ${currentGallery.length}`;
+    counter.textContent = `${currentImage + 1} / ${currentGallery.length}`;
 
+    // clear thumbs
     thumbs.innerHTML = "";
 
-    currentGallery.forEach((image,index)=>{
-
+    currentGallery.forEach((image, index) => {
         const thumb = document.createElement("img");
 
         thumb.src = image;
-
         thumb.className =
             index === currentImage
                 ? "viewerThumb active"
                 : "viewerThumb";
 
-        thumb.dataset.index = index;
-
-        thumb.onclick = ()=>{
-
+        thumb.onclick = () => {
             currentImage = index;
-
             updateViewerGallery();
-
         };
 
         thumbs.appendChild(thumb);
-
     });
-
 }
 
+// ===========================================
+// NAVIGATION
+// ===========================================
 
-function nextViewerImage(){
+function nextViewerImage() {
+    if (!currentGallery.length) return;
 
     currentImage++;
-
-    if(currentImage>=currentGallery.length){
-
-        currentImage=0;
-
+    if (currentImage >= currentGallery.length) {
+        currentImage = 0;
     }
 
     updateViewerGallery();
-
 }
 
-
-function previousViewerImage(){
+function previousViewerImage() {
+    if (!currentGallery.length) return;
 
     currentImage--;
-
-    if(currentImage<0){
-
-        currentImage=currentGallery.length-1;
-
+    if (currentImage < 0) {
+        currentImage = currentGallery.length - 1;
     }
 
     updateViewerGallery();
-
 }
 
-
 // ===========================================
-// Close
+// CLOSE
 // ===========================================
 
-function closeProject(){
-
+function closeProject() {
     viewer.classList.remove("show");
-
-
-
-    // Stop YouTube
 
     viewerMedia.innerHTML = "";
 
-
-
     currentProject = null;
-
+    currentGallery = [];
+    currentImage = 0;
 }
 
-
 // ===========================================
-// Close Events
-// ===========================================
-
-document
-.getElementById("viewerClose")
-.onclick = closeProject;
-
-
-document
-.querySelector(".viewer-overlay")
-.onclick = closeProject;
-
-
-// ===========================================
-// ESC
+// EVENTS
 // ===========================================
 
-document.addEventListener("keydown",(e)=>{
+document.getElementById("viewerClose").onclick = closeProject;
+document.querySelector(".viewer-overlay").onclick = closeProject;
 
-    if(!viewer.classList.contains("show")) return;
+document.addEventListener("keydown", (e) => {
+    if (!viewer.classList.contains("show")) return;
 
-    if(e.key==="Escape"){
-
+    if (e.key === "Escape") {
         closeProject();
-
     }
 
-    if(currentGallery.length){
-
-        if(e.key==="ArrowRight"){
-
-            nextViewerImage();
-
-        }
-
-        if(e.key==="ArrowLeft"){
-
-            previousViewerImage();
-
-        }
-
+    if (currentGallery.length) {
+        if (e.key === "ArrowRight") nextViewerImage();
+        if (e.key === "ArrowLeft") previousViewerImage();
     }
-
 });
 
-
 // ===========================================
-// Global
+// GLOBAL
 // ===========================================
 
 window.openProject = openProject;
