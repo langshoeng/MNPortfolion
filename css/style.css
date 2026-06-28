@@ -949,3 +949,131 @@ footer{
     font-size:14px;
 
 }
+
+/* ===============================
+   Viewer Media Wrapper
+=============================== */
+
+#viewerMediaWrapper{
+    position:relative;
+    background:#000;
+}
+
+/* ===============================
+   Media Arrows
+=============================== */
+
+.viewerArrow{
+
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+
+    width:52px;
+    height:52px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:rgba(0,0,0,.55);
+
+    color:#fff;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+    z-index:20;
+
+    transition:.25s;
+
+}
+
+.viewerArrow:hover{
+
+    background:rgba(255,255,255,.18);
+
+}
+
+#viewerPrevMedia{
+
+    left:18px;
+
+}
+
+#viewerNextMedia{
+
+    right:18px;
+
+}
+
+/* ===============================
+   Thumbnail Strip
+=============================== */
+
+#viewerThumbs{
+
+    display:flex;
+
+    gap:10px;
+
+    padding:18px 25px;
+
+    overflow-x:auto;
+
+    background:#111;
+
+}
+
+#viewerThumbs img{
+
+    width:95px;
+
+    height:60px;
+
+    object-fit:cover;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    opacity:.45;
+
+    transition:.25s;
+
+    border:2px solid transparent;
+
+    flex:none;
+
+}
+
+#viewerThumbs img:hover{
+
+    opacity:1;
+
+}
+
+#viewerThumbs img.active{
+
+    opacity:1;
+
+    border-color:#fff;
+
+}
+
+/* ===============================
+   Counter
+=============================== */
+
+#viewerCounter{
+
+    text-align:center;
+
+    color:#999;
+
+    margin-bottom:10px;
+
+    font-size:14px;
+
+}
