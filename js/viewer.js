@@ -241,16 +241,33 @@ function openProject(project){
 
 }
 
+
+// ===========================================
+// Build Gallery
+// ===========================================
+
+function buildViewerGallery(){
+
+    updateViewerGallery();
+
+    document
+        .getElementById("viewerPrev")
+        .onclick = previousViewerImage;
+
+    document
+        .getElementById("viewerNext")
+        .onclick = nextViewerImage;
+
+}
+
+
 function updateViewerGallery(){
 
-    const img =
-        document.getElementById("viewerGalleryImage");
+    const img = document.getElementById("viewerGalleryImage");
 
-    const counter =
-        document.getElementById("viewerCounter");
+    const counter = document.getElementById("viewerCounter");
 
-    const thumbs =
-        document.getElementById("viewerThumbs");
+    const thumbs = document.getElementById("viewerThumbs");
 
     img.src = currentGallery[currentImage];
 
@@ -261,19 +278,26 @@ function updateViewerGallery(){
 
     currentGallery.forEach((image,index)=>{
 
-        thumbs.innerHTML += `
+        const thumb = document.createElement("img");
 
-            <img
-                src="${image}"
-                class="viewerThumb ${
-                    index===currentImage
-                    ? "active"
-                    : ""
-                }"
-                data-index="${index}"
-            >
+        thumb.src = image;
 
-        `;
+        thumb.className =
+            index === currentImage
+                ? "viewerThumb active"
+                : "viewerThumb";
+
+        thumb.dataset.index = index;
+
+        thumb.onclick = ()=>{
+
+            currentImage = index;
+
+            updateViewerGallery();
+
+        };
+
+        thumbs.appendChild(thumb);
 
     });
 
@@ -374,19 +398,6 @@ document.addEventListener("keydown",(e)=>{
         }
 
     }
-
-});
-
-
-document.addEventListener("click",(e)=>{
-
-    if(!e.target.classList.contains("viewerThumb"))
-        return;
-
-    currentImage =
-        Number(e.target.dataset.index);
-
-    updateViewerGallery();
 
 });
 
