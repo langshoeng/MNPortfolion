@@ -212,32 +212,24 @@ function openProject(project){
     // -------------------------------------
     // Gallery
     // -------------------------------------
-
-    else if (
-        project.gallery &&
-        project.gallery.length
-    ) {
-    
+    else if (project.gallery && project.gallery.length) {
         currentGallery = project.gallery;
         currentImage = 0;
-    
-        viewerMedia.innerHTML = `
-    
-            <img
-                id="viewerGalleryImage"
-                src="${currentGallery[0]}"
-            >
-    
-            <div id="viewerCounter"></div>
-    
-            <div id="viewerThumbs"></div>
-    
-        `;
-    
-        buildViewerGallery();
-    
-    }
 
+        windowEl.classList.add("gallery-mode");
+
+        viewerMedia.innerHTML = `
+            <div id="viewerMediaWrapper">
+                <button class="viewerArrow left" id="viewerPrevMedia">&#10094;</button>
+                <img id="viewerGalleryImage" src="${currentGallery[0]}">
+                <button class="viewerArrow right" id="viewerNextMedia">&#10095;</button>
+                <div id="viewerThumbs"></div>
+            </div>
+            <div id="viewerCounter"></div>
+        `;
+
+        buildViewerGallery();
+    }
 }
 
 
