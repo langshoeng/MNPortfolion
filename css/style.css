@@ -970,63 +970,74 @@ footer{
 }
 
 /* ==========================================
-   Thumbnails
+   Thumbnails (FIXED)
 ========================================== */
 
 #viewerThumbs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 18px;
+    background: #111;
+    border-top: 1px solid #242424;
 
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:12px;
-
-    flex-wrap:wrap;
-
-    padding:18px;
-
-    background:#111;
-
-    border-top:1px solid #242424;
-
+    pointer-events: auto;
 }
 
 .viewerThumb {
     width: 95px;
     height: 60px;
+
+    display: block;
+    flex-shrink: 0;
+
     object-fit: cover;
     object-position: center;
+
     border-radius: 10px;
     cursor: pointer;
+
     opacity: .45;
     border: 2px solid transparent;
-    transition: .25s;
+
+    transition: .25s ease;
 }
 
-.viewerThumb:hover{
-
-    opacity:1;
-
-    transform:translateY(-2px);
-
+.viewerThumb:hover {
+    opacity: 1;
+    transform: translateY(-2px);
 }
 
-.viewerThumb.active{
-
-    opacity:1;
-
-    border-color:white;
-
+.viewerThumb.active {
+    opacity: 1;
+    border-color: white;
 }
+
+/* ==========================================
+   Main Gallery Image (FIXED)
+========================================== */
 
 #viewerGalleryImage {
     width: 100%;
-    height: auto;
+    height: 100%;
     max-height: 70vh;
-    object-fit: contain;   /* IMPORTANT */
+
+    object-fit: contain;
+    object-position: center;
+
     display: block;
+}
+
+/* ==========================================
+   Media Centering Safety (IMPORTANT)
+========================================== */
+
+#viewerMedia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* ==========================================
