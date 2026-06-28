@@ -21,6 +21,9 @@ const viewerSoftware = document.getElementById("viewerSoftware");
 
 let currentProject = null;
 
+let currentGallery = [];
+
+let currentImage = 0;
 
 // ===========================================
 // Convert YouTube URL
@@ -207,27 +210,102 @@ function openProject(project){
     // Gallery
     // -------------------------------------
 
-    else if(
-
+    else if (
         project.gallery &&
-
         project.gallery.length
-
-    ){
-
+    ) {
+    
+        currentGallery = project.gallery;
+        currentImage = 0;
+    
         viewerMedia.innerHTML = `
+    
+            <button class="viewerArrow left" id="viewerPrev">&#10094;</button>
+    
+            <img
+                id="viewerGalleryImage"
+                src="${currentGallery[0]}"
+            >
+    
+            <button class="viewerArrow right" id="viewerNext">&#10095;</button>
+    
+            <div id="viewerCounter"></div>
+    
+            <div id="viewerThumbs"></div>
+    
+        `;
+    
+        buildViewerGallery();
+    
+    }
 
-        <img
+}
 
-            src="${project.gallery[0]}"
+function updateViewerGallery(){
 
-            id="viewerGalleryImage"
+    const img =
+        document.getElementById("viewerGalleryImage");
 
-        >
+    const counter =
+        document.getElementById("viewerCounter");
+
+    const thumbs =
+        document.getElementById("viewerThumbs");
+
+    img.src = currentGallery[currentImage];
+
+    counter.textContent =
+        `${currentImage + 1} / ${currentGallery.length}`;
+
+    thumbs.innerHTML = "";
+
+    currentGallery.forEach((image,index)=>{
+
+        thumbs.innerHTML += `
+
+            <img
+                src="${image}"
+                class="viewerThumb ${
+                    index===currentImage
+                    ? "active"
+                    : ""
+                }"
+                data-index="${index}"
+            >
 
         `;
 
+    });
+
+}
+
+
+function nextViewerImage(){
+
+    currentImage++;
+
+    if(currentImage>=currentGallery.length){
+
+        currentImage=0;
+
     }
+
+    updateViewerGallery();
+
+}
+
+
+function previousViewerImage(){
+
+    currentImage--;
+
+    if(currentImage<0){
+
+        currentImage=currentGallery.length-1;
+
+    }
+
+    updateViewerGallery();
 
 }
 
@@ -273,17 +351,42 @@ document
 
 document.addEventListener("keydown",(e)=>{
 
-    if(
+    if(!viewer.classList.contains("show")) return;
 
-        e.key==="Escape" &&
-
-        viewer.classList.contains("show")
-
-    ){
+    if(e.key==="Escape"){
 
         closeProject();
 
     }
+
+    if(currentGallery.length){
+
+        if(e.key==="ArrowRight"){
+
+            nextViewerImage();
+
+        }
+
+        if(e.key==="ArrowLeft"){
+
+            previousViewerImage();
+
+        }
+
+    }
+
+});
+
+
+document.addEventListener("click",(e)=>{
+
+    if(!e.target.classList.contains("viewerThumb"))
+        return;
+
+    currentImage =
+        Number(e.target.dataset.index);
+
+    updateViewerGallery();
 
 });
 
