@@ -966,11 +966,14 @@ footer{
 .viewerArrow{
 
     position:absolute;
+
     top:50%;
+
     transform:translateY(-50%);
 
-    width:52px;
-    height:52px;
+    width:55px;
+
+    height:55px;
 
     border:none;
 
@@ -984,49 +987,57 @@ footer{
 
     cursor:pointer;
 
-    z-index:20;
-
-    transition:.25s;
+    z-index:5;
 
 }
 
-.viewerArrow:hover{
+.viewerArrow.left{
 
-    background:rgba(255,255,255,.18);
-
-}
-
-#viewerPrevMedia{
-
-    left:18px;
+    left:20px;
 
 }
 
-#viewerNextMedia{
+.viewerArrow.right{
 
-    right:18px;
+    right:20px;
 
 }
 
-/* ===============================
-   Thumbnail Strip
-=============================== */
+#viewerCounter{
+
+    position:absolute;
+
+    bottom:18px;
+
+    right:22px;
+
+    background:rgba(0,0,0,.55);
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+    font-size:14px;
+
+}
 
 #viewerThumbs{
 
     display:flex;
 
-    gap:10px;
+    justify-content:center;
 
-    padding:18px 25px;
+    gap:12px;
 
-    overflow-x:auto;
+    padding:20px;
 
     background:#111;
 
+    flex-wrap:wrap;
+
 }
 
-#viewerThumbs img{
+.viewerThumb{
 
     width:95px;
 
@@ -1042,38 +1053,18 @@ footer{
 
     transition:.25s;
 
-    border:2px solid transparent;
-
-    flex:none;
-
 }
 
-#viewerThumbs img:hover{
+.viewerThumb:hover{
 
     opacity:1;
 
 }
 
-#viewerThumbs img.active{
+.viewerThumb.active{
 
     opacity:1;
 
-    border-color:#fff;
-
-}
-
-/* ===============================
-   Counter
-=============================== */
-
-#viewerCounter{
-
-    text-align:center;
-
-    color:#999;
-
-    margin-bottom:10px;
-
-    font-size:14px;
+    outline:3px solid white;
 
 }
