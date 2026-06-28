@@ -818,11 +818,18 @@ footer{
     background: #000;
     padding: 10px;
     position: relative;
-    flex: 1; /* let media grow */
+    flex: 1;
 }
 
+/* ==========================================
+   Media (Video/Image)
+========================================== */
+#viewerMedia iframe,
+#viewerMedia video,
+#viewerMedia img,
 #viewerGalleryImage {
-    max-width: 70vw;   /* leave space for thumbs */
+    width: 100%;
+    height: auto;
     max-height: 80vh;
     object-fit: contain;
 }
@@ -831,8 +838,8 @@ footer{
    Thumbnails
 ========================================== */
 #viewerThumbs {
-    display: none; /* hidden by default */
-    flex-direction: column; /* stack vertically */
+    display: none;
+    flex-direction: column;
     gap: 10px;
     max-height: 80vh;
     overflow-y: auto;
@@ -862,7 +869,7 @@ footer{
    Counter
 ========================================== */
 #viewerCounter {
-    display: none; /* hidden by default */
+    display: none;
     justify-content: center;
     align-items: center;
     height: 42px;
@@ -908,6 +915,18 @@ footer{
 /* ==========================================
    Video Mode
 ========================================== */
+.viewer-window.video-mode #viewerMediaWrapper {
+    display: block; /* let video fill full width */
+    padding: 0;
+    background: #000;
+}
+.viewer-window.video-mode #viewerMedia iframe,
+.viewer-window.video-mode #viewerMedia video {
+    width: 100%;
+    height: 80vh; /* big preview */
+    max-height: 80vh;
+    object-fit: contain;
+}
 .viewer-window.video-mode #viewerPrevMedia,
 .viewer-window.video-mode #viewerNextMedia,
 .viewer-window.video-mode #viewerThumbs,
@@ -920,10 +939,10 @@ footer{
 ========================================== */
 @media(max-width: 768px) {
     #viewerMediaWrapper {
-        flex-direction: column; /* stack vertically on small screens */
+        flex-direction: column;
     }
     #viewerThumbs {
-        flex-direction: row; /* thumbnails below image */
+        flex-direction: row;
         max-height: none;
         overflow-x: auto;
         overflow-y: hidden;
@@ -940,6 +959,6 @@ footer{
     #viewerGalleryImage,
     #viewerMedia iframe,
     #viewerMedia video {
-        max-height: 60vh; /* leave room for text */
+        max-height: 60vh;
     }
 }
