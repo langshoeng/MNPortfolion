@@ -3,240 +3,404 @@
 // ===========================================
 
 const viewer = document.getElementById("projectViewer");
+
 const viewerMedia = document.getElementById("viewerMedia");
+
 const viewerTitle = document.getElementById("viewerTitle");
+
 const viewerMeta = document.getElementById("viewerMeta");
+
 const viewerDescription = document.getElementById("viewerDescription");
+
 const viewerSoftware = document.getElementById("viewerSoftware");
+
 
 // ===========================================
 // Current Project
 // ===========================================
+
 let currentProject = null;
+
 let currentGallery = [];
+
 let currentImage = 0;
 
 // ===========================================
 // Convert YouTube URL
 // ===========================================
-function getYoutubeEmbed(url) {
+
+function getYoutubeEmbed(url){
+
     let id = "";
-    try {
+
+    try{
+
         const u = new URL(url);
-        if (u.hostname.includes("youtu.be")) {
+
+        if(u.hostname.includes("youtu.be")){
+
             id = u.pathname.substring(1);
-        } else {
+
+        }else{
+
             id = u.searchParams.get("v");
+
         }
-    } catch (e) {
+
+    }catch(e){
+
         return "";
+
     }
+
     return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+
 }
+
 
 // ===========================================
 // Open Project
 // ===========================================
-function openProject(project) {
+
+function openProject(project){
+
     currentProject = project;
+
     viewer.classList.add("show");
 
     currentGallery = [];
     currentImage = 0;
 
-    // Reset mode classes
-    const windowEl = document.querySelector(".viewer-window");
-    windowEl.classList.remove("gallery-mode", "video-mode");
+
 
     // ------------------------------------
     // Title
     // ------------------------------------
+
     viewerTitle.textContent = project.title;
+
+
 
     // ------------------------------------
     // Meta
     // ------------------------------------
+
     viewerMeta.innerHTML = `
+
         <div><strong>Client</strong><br>${project.client || "-"}</div>
+
         <div style="margin-top:12px;">
+
             <strong>Year</strong><br>
+
             ${project.year || "-"}
+
         </div>
+
     `;
+
+
 
     // ------------------------------------
     // Description
     // ------------------------------------
-    viewerDescription.textContent = project.description || "";
+
+    viewerDescription.textContent =
+
+        project.description || "";
+
+
 
     // ------------------------------------
     // Software
     // ------------------------------------
+
     viewerSoftware.innerHTML = "";
-    if (project.software) {
-        project.software.forEach(app => {
-            viewerSoftware.innerHTML += `<span class="viewerBadge">${app}</span>`;
+
+
+
+    if(project.software){
+
+        project.software.forEach(app=>{
+
+            viewerSoftware.innerHTML +=
+
+                `<span class="viewerBadge">${app}</span>`;
+
         });
+
     }
+
+
 
     // =====================================
     // MEDIA
     // =====================================
+
     viewerMedia.innerHTML = "";
+
+
 
     // -------------------------------------
     // YouTube
     // -------------------------------------
-    if (project.video && project.video.type === "youtube") {
-        const windowEl = document.querySelector(".viewer-window");
-        windowEl.classList.add("video-mode");
-        windowEl.classList.remove("gallery-mode");
-    
+
+    if(
+
+        project.video &&
+
+        project.video.type === "youtube"
+
+    ){
+
         viewerMedia.innerHTML = `
-            <div id="viewerMediaWrapper">
-                <iframe
-                    src="${getYoutubeEmbed(project.video.url)}"
-                    allow="autoplay; fullscreen; encrypted-media"
-                    allowfullscreen
-                ></iframe>
-            </div>
+
+        <iframe
+
+            src="${getYoutubeEmbed(project.video.url)}"
+
+            allow="autoplay; fullscreen; encrypted-media"
+
+            allowfullscreen
+
+        ></iframe>
+
         `;
+
     }
-    
+
+
+
     // -------------------------------------
     // Local MP4
     // -------------------------------------
-    else if (project.video && project.video.type === "mp4") {
-        const windowEl = document.querySelector(".viewer-window");
-        windowEl.classList.add("video-mode");
-        windowEl.classList.remove("gallery-mode");
-    
+
+    else if(
+
+        project.video &&
+
+        project.video.type === "mp4"
+
+    ){
+
         viewerMedia.innerHTML = `
-            <div id="viewerMediaWrapper">
-                <video controls autoplay>
-                    <source src="${project.video.url}" type="video/mp4">
-                </video>
-            </div>
+
+        <video
+
+            controls
+
+            autoplay
+
+        >
+
+            <source
+
+                src="${project.video.url}"
+
+                type="video/mp4"
+
+            >
+
+        </video>
+
         `;
+
     }
+
+
 
     // -------------------------------------
     // Gallery
     // -------------------------------------
-    else if (project.gallery && project.gallery.length) {
+
+    else if (
+        project.gallery &&
+        project.gallery.length
+    ) {
+    
         currentGallery = project.gallery;
         currentImage = 0;
-
-        windowEl.classList.add("gallery-mode");
-
+    
         viewerMedia.innerHTML = `
-            <div id="viewerMediaWrapper">
-                <button class="viewerArrow left" id="viewerPrevMedia">&#10094;</button>
-                <img id="viewerGalleryImage" src="${currentGallery[0]}">
-                <button class="viewerArrow right" id="viewerNextMedia">&#10095;</button>
-                <div id="viewerThumbs"></div>
-            </div>
+    
+            <img
+                id="viewerGalleryImage"
+                src="${currentGallery[0]}"
+            >
+    
             <div id="viewerCounter"></div>
+    
+            <div id="viewerThumbs"></div>
+    
         `;
-
+    
         buildViewerGallery();
+    
     }
+
 }
+
 
 // ===========================================
 // Build Gallery
 // ===========================================
-function buildViewerGallery() {
+
+function buildViewerGallery(){
+
     updateViewerGallery();
 
     const prev = document.getElementById("viewerPrevMedia");
     const next = document.getElementById("viewerNextMedia");
 
-    if (prev) prev.onclick = previousViewerImage;
-    if (next) next.onclick = nextViewerImage;
+    if(prev) prev.onclick = previousViewerImage;
+    if(next) next.onclick = nextViewerImage;
+
 }
 
-function updateViewerGallery() {
+
+function updateViewerGallery(){
+
     const img = document.getElementById("viewerGalleryImage");
+
     const counter = document.getElementById("viewerCounter");
+
     const thumbs = document.getElementById("viewerThumbs");
 
     img.src = currentGallery[currentImage];
-    counter.textContent = `${currentImage + 1} / ${currentGallery.length}`;
+
+    counter.textContent =
+        `${currentImage + 1} / ${currentGallery.length}`;
 
     thumbs.innerHTML = "";
-    currentGallery.forEach((image, index) => {
+
+    currentGallery.forEach((image,index)=>{
+
         const thumb = document.createElement("img");
+
         thumb.src = image;
-        thumb.className = index === currentImage ? "viewerThumb active" : "viewerThumb";
+
+        thumb.className =
+            index === currentImage
+                ? "viewerThumb active"
+                : "viewerThumb";
+
         thumb.dataset.index = index;
-        thumb.onclick = () => {
+
+        thumb.onclick = ()=>{
+
             currentImage = index;
+
             updateViewerGallery();
+
         };
+
         thumbs.appendChild(thumb);
+
     });
+
 }
 
-function nextViewerImage() {
+
+function nextViewerImage(){
+
     currentImage++;
-    if (currentImage >= currentGallery.length) {
-        currentImage = 0;
+
+    if(currentImage>=currentGallery.length){
+
+        currentImage=0;
+
     }
+
     updateViewerGallery();
+
 }
 
-function previousViewerImage() {
+
+function previousViewerImage(){
+
     currentImage--;
-    if (currentImage < 0) {
-        currentImage = currentGallery.length - 1;
+
+    if(currentImage<0){
+
+        currentImage=currentGallery.length-1;
+
     }
+
     updateViewerGallery();
+
 }
+
 
 // ===========================================
 // Close
 // ===========================================
-function closeProject() {
+
+function closeProject(){
+
     viewer.classList.remove("show");
 
-    // Stop YouTube / clear media
+
+
+    // Stop YouTube
+
     viewerMedia.innerHTML = "";
 
-    // Reset mode classes
-    const windowEl = document.querySelector(".viewer-window");
-    windowEl.classList.remove("gallery-mode", "video-mode");
+
 
     currentProject = null;
+
 }
+
 
 // ===========================================
 // Close Events
 // ===========================================
-document.getElementById("viewerClose").onclick = closeProject;
-document.querySelector(".viewer-overlay").onclick = closeProject;
+
+document
+.getElementById("viewerClose")
+.onclick = closeProject;
+
+
+document
+.querySelector(".viewer-overlay")
+.onclick = closeProject;
+
 
 // ===========================================
 // ESC
 // ===========================================
-document.addEventListener("keydown", (e) => {
-    if (!viewer.classList.contains("show")) return;
 
-    if (e.key === "Escape") {
+document.addEventListener("keydown",(e)=>{
+
+    if(!viewer.classList.contains("show")) return;
+
+    if(e.key==="Escape"){
+
         closeProject();
+
     }
 
-    if (currentGallery.length) {
-        if (e.key === "ArrowRight") {
+    if(currentGallery.length){
+
+        if(e.key==="ArrowRight"){
+
             nextViewerImage();
+
         }
-        if (e.key === "ArrowLeft") {
+
+        if(e.key==="ArrowLeft"){
+
             previousViewerImage();
+
         }
+
     }
+
 });
+
 
 // ===========================================
 // Global
 // ===========================================
+
 window.openProject = openProject;
