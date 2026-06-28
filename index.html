@@ -264,27 +264,43 @@ video production and visual storytelling.
         <button id="viewerClose">&times;</button>
 
         <!-- ================= MEDIA ================= -->
-
-        <div id="viewerMedia">
-
+        
+        <div id="viewerMediaWrapper">
+        
+            <button id="viewerPrevMedia" class="viewerArrow">
+                &#10094;
+            </button>
+        
+            <div id="viewerMedia"></div>
+        
+            <button id="viewerNextMedia" class="viewerArrow">
+                &#10095;
+            </button>
+        
         </div>
-
+        
+        <!-- ================= THUMBNAILS ================= -->
+        
+        <div id="viewerThumbs"></div>
+        
+        <div id="viewerCounter"></div>
+        
         <!-- ================= INFO ================= -->
-
+        
         <div class="viewerContent">
-
+        
             <div class="viewerHeader">
-
+        
                 <h2 id="viewerTitle"></h2>
-
+        
                 <div id="viewerMeta"></div>
-
+        
             </div>
-
+        
             <p id="viewerDescription"></p>
-
+        
             <div id="viewerSoftware"></div>
-
+        
         </div>
 
     </div>
