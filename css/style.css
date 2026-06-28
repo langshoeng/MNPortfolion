@@ -863,7 +863,16 @@ footer{
     gap: 16px; /* space between image and thumbs */
     background: #000;
     padding: 10px;
+    position: relative; /* keep arrows aligned with image */
 }
+
+#viewerGalleryImage {
+    max-width: 70vw;   /* leave space for thumbs */
+    max-height: 80vh;
+    object-fit: contain;
+    position: relative;
+}
+
 
 /* ==========================================
    Media
