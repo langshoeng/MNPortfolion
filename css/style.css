@@ -731,234 +731,480 @@ footer{
    PROJECT VIEWER V2
 ========================================== */
 
-#projectViewer {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0,0,0,.88);
-    backdrop-filter: blur(10px);
-    opacity: 0;
-    visibility: hidden;
-    transition: .3s;
-    z-index: 99999;
+#projectViewer{
+
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,.88);
+    backdrop-filter:blur(10px);
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.3s;
+
+    z-index:99999;
+
 }
 
-#projectViewer.show {
-    opacity: 1;
-    visibility: visible;
+#projectViewer.show{
+
+    opacity:1;
+    visibility:visible;
+
 }
 
 /* ==========================================
    Overlay
 ========================================== */
-.viewer-overlay {
-    position: absolute;
-    inset: 0;
+
+.viewer-overlay{
+
+    position:absolute;
+    inset:0;
+
 }
 
 /* ==========================================
    Window
 ========================================== */
-.viewer-window {
-    position: relative;
-    width: min(1400px, 95vw);
-    max-height: 94vh;
-    display: flex;
-    flex-direction: column;
-    background: #171717;
-    border-radius: 22px;
-    box-shadow: 0 40px 90px rgba(0,0,0,.45);
-    animation: viewerPop .35s;
-    overflow-y: auto; /* allow scroll if content is long */
+
+.viewer-window{
+
+    position:relative;
+
+    width:min(1400px,95vw);
+    max-height:94vh;
+
+    overflow:hidden;
+
+    display:flex;
+    flex-direction:column;
+
+    background:#171717;
+
+    border-radius:22px;
+
+    box-shadow:
+        0 40px 90px rgba(0,0,0,.45);
+
+    animation:viewerPop .35s;
+
 }
 
-@keyframes viewerPop {
-    from {
-        opacity: 0;
-        transform: translateY(35px) scale(.96);
+@keyframes viewerPop{
+
+    from{
+
+        opacity:0;
+        transform:translateY(35px) scale(.96);
+
     }
-    to {
-        opacity: 1;
-        transform: none;
+
+    to{
+
+        opacity:1;
+        transform:none;
+
     }
+
 }
 
 /* ==========================================
    Close Button
 ========================================== */
-#viewerClose {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-    width: 48px;
-    height: 48px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(0,0,0,.45);
-    color: white;
-    font-size: 34px;
-    cursor: pointer;
-    transition: .25s;
-    z-index: 100;
+
+#viewerClose{
+
+    position:absolute;
+
+    top:18px;
+    right:18px;
+
+    width:48px;
+    height:48px;
+
+    border:none;
+    border-radius:50%;
+
+    background:rgba(0,0,0,.45);
+
+    color:white;
+
+    font-size:34px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    z-index:100;
+
 }
-#viewerClose:hover {
-    background: #ffffff22;
+
+#viewerClose:hover{
+
+    background:#ffffff22;
+
 }
 
 /* ==========================================
    Media Wrapper
 ========================================== */
-#viewerMediaWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    background: #000;
-    padding: 10px;
-    position: relative;
-    flex: 1;
+
+#viewerMediaWrapper{
+
+    position:relative;
+
+    width:100%;
+
+    background:#000;
+
+    aspect-ratio:16/9;
+
+    overflow:hidden;
+
 }
 
 /* ==========================================
-   Media (Video/Image)
+   Media
 ========================================== */
+
+#viewerMedia{
+
+    width:100%;
+    height:100%;
+
+}
+
 #viewerMedia iframe,
 #viewerMedia video,
-#viewerMedia img,
-#viewerGalleryImage {
-    width: 100%;
-    height: auto;
-    max-height: 80vh;
-    object-fit: contain;
-}
+#viewerMedia img{
 
-/* ==========================================
-   Thumbnails
-========================================== */
-#viewerThumbs {
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-    max-height: 80vh;
-    overflow-y: auto;
-    background: #111;
-    padding: 8px;
-    border-radius: 6px;
-}
-.viewerThumb {
-    width: 80px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 6px;
-    cursor: pointer;
-    opacity: .45;
-    transition: .25s;
-}
-.viewerThumb:hover {
-    opacity: 1;
-    transform: translateY(-2px);
-}
-.viewerThumb.active {
-    opacity: 1;
-    outline: 2px solid white;
-}
+    width:100%;
+    height:100%;
 
-/* ==========================================
-   Counter
-========================================== */
-#viewerCounter {
-    display: none;
-    justify-content: center;
-    align-items: center;
-    height: 42px;
-    background: #111;
-    color: #999;
-    font-size: 14px;
+    display:block;
+
+    border:none;
+
+    object-fit:contain;
+
 }
 
 /* ==========================================
    Navigation Arrows
 ========================================== */
-.viewerArrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 55px;
-    height: 55px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(0,0,0,.55);
-    color: #fff;
-    font-size: 28px;
-    cursor: pointer;
-    z-index: 5;
+
+.viewerArrow{
+
+    position:absolute;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:58px;
+    height:58px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:rgba(0,0,0,.55);
+
+    color:white;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    z-index:50;
+
 }
-.viewerArrow.left { left: 20px; }
-.viewerArrow.right { right: 20px; }
+
+.viewerArrow:hover{
+
+    background:rgba(255,255,255,.15);
+
+}
+
+#viewerPrevMedia{
+
+    left:20px;
+
+}
+
+#viewerNextMedia{
+
+    right:20px;
+
+}
+
+/* ==========================================
+   Counter
+========================================== */
+
+#viewerCounter{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    height:42px;
+
+    background:#111;
+
+    color:#999;
+
+    font-size:14px;
+
+}
+
+/* ==========================================
+   Thumbnails
+========================================== */
+
+#viewerThumbs{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+    padding:18px;
+
+    background:#111;
+
+    border-top:1px solid #242424;
+
+}
+
+.viewerThumb{
+
+    width:95px;
+    height:60px;
+
+    object-fit:cover;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    opacity:.45;
+
+    border:2px solid transparent;
+
+    transition:.25s;
+
+}
+
+.viewerThumb:hover{
+
+    opacity:1;
+
+    transform:translateY(-2px);
+
+}
+
+.viewerThumb.active{
+
+    opacity:1;
+
+    border-color:white;
+
+}
+
+/* ==========================================
+   Content
+========================================== */
+
+.viewerContent{
+
+    padding:36px;
+
+}
+
+.viewerHeader{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:30px;
+
+    flex-wrap:wrap;
+
+}
+
+#viewerTitle{
+
+    margin:0;
+
+    font-size:34px;
+
+    font-weight:700;
+
+}
+
+#viewerMeta{
+
+    margin-top:12px;
+
+    color:#9f9f9f;
+
+    line-height:1.8;
+
+}
+
+#viewerDescription{
+
+    margin:28px 0;
+
+    color:#ddd;
+
+    line-height:1.9;
+
+}
+
+#viewerSoftware{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+}
+
+.viewerBadge{
+
+    background:#292929;
+
+    color:white;
+
+    padding:8px 16px;
+
+    border-radius:999px;
+
+    font-size:14px;
+
+}
+
+/* ==========================================
+   Hide Gallery UI by default
+========================================== */
+
+#viewerThumbs{
+
+    display:none;
+
+}
+
+#viewerCounter{
+
+    display:none;
+
+}
 
 /* ==========================================
    Gallery Mode
 ========================================== */
-.viewer-window.gallery-mode #viewerThumbs {
-    display: flex;
+
+.viewer-window.gallery-mode #viewerThumbs{
+
+    display:flex;
+
 }
-.viewer-window.gallery-mode #viewerCounter {
-    display: flex;
+
+.viewer-window.gallery-mode #viewerCounter{
+
+    display:flex;
+
 }
+
 .viewer-window.gallery-mode #viewerPrevMedia,
-.viewer-window.gallery-mode #viewerNextMedia {
-    display: block;
+
+.viewer-window.gallery-mode #viewerNextMedia{
+
+    display:block;
+
 }
 
 /* ==========================================
    Video Mode
 ========================================== */
-.viewer-window.video-mode #viewerMediaWrapper {
-    display: block; /* let video fill full width */
-    padding: 0;
-    background: #000;
-}
-.viewer-window.video-mode #viewerMedia iframe,
-.viewer-window.video-mode #viewerMedia video {
-    width: 100%;
-    height: 80vh; /* big preview */
-    max-height: 80vh;
-    object-fit: contain;
-}
+
 .viewer-window.video-mode #viewerPrevMedia,
+
 .viewer-window.video-mode #viewerNextMedia,
+
 .viewer-window.video-mode #viewerThumbs,
-.viewer-window.video-mode #viewerCounter {
-    display: none;
+
+.viewer-window.video-mode #viewerCounter{
+
+    display:none;
+
 }
 
 /* ==========================================
-   Responsive
+   Mobile
 ========================================== */
-@media(max-width: 768px) {
-    #viewerMediaWrapper {
-        flex-direction: column;
+
+@media(max-width:768px){
+
+    .viewerWindow{
+
+        width:100vw;
+
+        height:100vh;
+
+        border-radius:0;
+
     }
-    #viewerThumbs {
-        flex-direction: row;
-        max-height: none;
-        overflow-x: auto;
-        overflow-y: hidden;
+
+    .viewerContent{
+
+        padding:24px;
+
     }
-    .viewerThumb {
-        width: 72px;
-        height: 50px;
+
+    #viewerTitle{
+
+        font-size:28px;
+
     }
-    .viewerContent {
-        padding: 20px;
-        font-size: 15px;
-        line-height: 1.6;
+
+    .viewerThumb{
+
+        width:72px;
+
+        height:50px;
+
     }
-    #viewerGalleryImage,
-    #viewerMedia iframe,
-    #viewerMedia video {
-        max-height: 60vh;
+
+    .viewerArrow{
+
+        width:46px;
+        height:46px;
+
+        font-size:22px;
+
     }
+
 }
