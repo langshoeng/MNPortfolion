@@ -217,25 +217,18 @@ function openProject(project){
         project.gallery &&
         project.gallery.length
     ) {
-    
         currentGallery = project.gallery;
         currentImage = 0;
     
         viewerMedia.innerHTML = `
-    
-            <img
-                id="viewerGalleryImage"
-                src="${currentGallery[0]}"
-            >
-    
+            <div id="viewerMediaWrapper">
+                <img id="viewerGalleryImage" src="${currentGallery[0]}">
+                <div id="viewerThumbs"></div>
+            </div>
             <div id="viewerCounter"></div>
-    
-            <div id="viewerThumbs"></div>
-    
         `;
     
         buildViewerGallery();
-    
     }
 
 }
