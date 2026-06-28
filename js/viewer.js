@@ -88,25 +88,35 @@ function openProject(project) {
     // YouTube
     // -------------------------------------
     if (project.video && project.video.type === "youtube") {
+        const windowEl = document.querySelector(".viewer-window");
         windowEl.classList.add("video-mode");
+        windowEl.classList.remove("gallery-mode");
+    
         viewerMedia.innerHTML = `
-            <iframe
-                src="${getYoutubeEmbed(project.video.url)}"
-                allow="autoplay; fullscreen; encrypted-media"
-                allowfullscreen
-            ></iframe>
+            <div id="viewerMediaWrapper">
+                <iframe
+                    src="${getYoutubeEmbed(project.video.url)}"
+                    allow="autoplay; fullscreen; encrypted-media"
+                    allowfullscreen
+                ></iframe>
+            </div>
         `;
     }
-
+    
     // -------------------------------------
     // Local MP4
     // -------------------------------------
     else if (project.video && project.video.type === "mp4") {
+        const windowEl = document.querySelector(".viewer-window");
         windowEl.classList.add("video-mode");
+        windowEl.classList.remove("gallery-mode");
+    
         viewerMedia.innerHTML = `
-            <video controls autoplay>
-                <source src="${project.video.url}" type="video/mp4">
-            </video>
+            <div id="viewerMediaWrapper">
+                <video controls autoplay>
+                    <source src="${project.video.url}" type="video/mp4">
+                </video>
+            </div>
         `;
     }
 
