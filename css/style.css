@@ -950,18 +950,43 @@ footer{
 
 }
 
-/* ===============================
-   Viewer Media Wrapper
-=============================== */
+/* ==========================================
+   Viewer Media
+========================================== */
 
-#viewerMediaWrapper{
+#viewerMedia{
+
     position:relative;
+
+    width:100%;
+
     background:#000;
+
+    aspect-ratio:16/9;
+
+    overflow:hidden;
+
 }
 
-/* ===============================
-   Media Arrows
-=============================== */
+#viewerMedia iframe,
+#viewerMedia video,
+#viewerGalleryImage{
+
+    width:100%;
+
+    height:100%;
+
+    display:block;
+
+    object-fit:contain;
+
+    border:none;
+
+}
+
+/* ==========================================
+   Gallery Arrows
+========================================== */
 
 .viewerArrow{
 
@@ -971,9 +996,9 @@ footer{
 
     transform:translateY(-50%);
 
-    width:55px;
+    width:56px;
 
-    height:55px;
+    height:56px;
 
     border:none;
 
@@ -987,7 +1012,15 @@ footer{
 
     cursor:pointer;
 
-    z-index:5;
+    transition:.25s;
+
+    z-index:20;
+
+}
+
+.viewerArrow:hover{
+
+    background:rgba(255,255,255,.18);
 
 }
 
@@ -1003,23 +1036,35 @@ footer{
 
 }
 
+/* ==========================================
+   Counter
+========================================== */
+
 #viewerCounter{
 
     position:absolute;
 
+    right:18px;
+
     bottom:18px;
 
-    right:22px;
+    padding:8px 15px;
+
+    border-radius:20px;
 
     background:rgba(0,0,0,.55);
 
-    padding:8px 14px;
-
-    border-radius:30px;
+    color:#fff;
 
     font-size:14px;
 
+    z-index:20;
+
 }
+
+/* ==========================================
+   Thumbnail Strip
+========================================== */
 
 #viewerThumbs{
 
@@ -1029,19 +1074,19 @@ footer{
 
     gap:12px;
 
-    padding:20px;
+    flex-wrap:wrap;
+
+    padding:18px;
 
     background:#111;
-
-    flex-wrap:wrap;
 
 }
 
 .viewerThumb{
 
-    width:95px;
+    width:100px;
 
-    height:60px;
+    height:65px;
 
     object-fit:cover;
 
@@ -1052,6 +1097,8 @@ footer{
     opacity:.45;
 
     transition:.25s;
+
+    border:2px solid transparent;
 
 }
 
@@ -1065,6 +1112,6 @@ footer{
 
     opacity:1;
 
-    outline:3px solid white;
+    border-color:#fff;
 
 }
