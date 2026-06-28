@@ -68,9 +68,6 @@ function openProject(project){
 
     viewer.classList.add("show");
 
-    currentGallery = [];
-    currentImage = 0;
-
 
 
     // ------------------------------------
@@ -223,10 +220,14 @@ function openProject(project){
     
         viewerMedia.innerHTML = `
     
+            <button class="viewerArrow left" id="viewerPrev">&#10094;</button>
+    
             <img
                 id="viewerGalleryImage"
                 src="${currentGallery[0]}"
             >
+    
+            <button class="viewerArrow right" id="viewerNext">&#10095;</button>
     
             <div id="viewerCounter"></div>
     
@@ -249,11 +250,13 @@ function buildViewerGallery(){
 
     updateViewerGallery();
 
-    const prev = document.getElementById("viewerPrevMedia");
-    const next = document.getElementById("viewerNextMedia");
+    document
+        .getElementById("viewerPrev")
+        .onclick = previousViewerImage;
 
-    if(prev) prev.onclick = previousViewerImage;
-    if(next) next.onclick = nextViewerImage;
+    document
+        .getElementById("viewerNext")
+        .onclick = nextViewerImage;
 
 }
 
