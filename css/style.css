@@ -855,7 +855,6 @@ footer{
 /* ==========================================
    Media Wrapper
 ========================================== */
-
 #viewerMediaWrapper {
     display: flex;
     align-items: center;
@@ -863,122 +862,20 @@ footer{
     gap: 16px; /* space between image and thumbs */
     background: #000;
     padding: 10px;
-    position: relative; /* keep arrows aligned with image */
+    position: relative; /* keeps arrows aligned with image */
 }
 
 #viewerGalleryImage {
     max-width: 70vw;   /* leave space for thumbs */
     max-height: 80vh;
     object-fit: contain;
-    position: relative;
-}
-
-
-/* ==========================================
-   Media
-========================================== */
-
-#viewerMedia{
-
-    width:100%;
-    height:100%;
-
-}
-
-#viewerMedia iframe,
-#viewerMedia video,
-#viewerMedia img{
-
-    width:100%;
-    height:100%;
-
-    display:block;
-
-    border:none;
-
-    object-fit:contain;
-
-}
-
-/* ==========================================
-   Navigation Arrows
-========================================== */
-
-.viewerArrow{
-
-    position:absolute;
-
-    top:50%;
-
-    transform:translateY(-50%);
-
-    width:58px;
-    height:58px;
-
-    border:none;
-
-    border-radius:50%;
-
-    background:rgba(0,0,0,.55);
-
-    color:white;
-
-    font-size:28px;
-
-    cursor:pointer;
-
-    transition:.25s;
-
-    z-index:50;
-
-}
-
-.viewerArrow:hover{
-
-    background:rgba(255,255,255,.15);
-
-}
-
-#viewerPrevMedia{
-
-    left:20px;
-
-}
-
-#viewerNextMedia{
-
-    right:20px;
-
-}
-
-/* ==========================================
-   Counter
-========================================== */
-
-#viewerCounter{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    height:42px;
-
-    background:#111;
-
-    color:#999;
-
-    font-size:14px;
-
 }
 
 /* ==========================================
    Thumbnails
 ========================================== */
-
 #viewerThumbs {
-    display: flex;
+    display: none; /* hidden by default */
     flex-direction: column; /* stack vertically */
     gap: 10px;
     max-height: 80vh;
@@ -987,6 +884,7 @@ footer{
     padding: 8px;
     border-radius: 6px;
 }
+
 .viewerThumb {
     width: 80px;
     height: 50px;
@@ -997,12 +895,9 @@ footer{
     transition: .25s;
 }
 
-.viewerThumb:hover{
-
-    opacity:1;
-
-    transform:translateY(-2px);
-
+.viewerThumb:hover {
+    opacity: 1;
+    transform: translateY(-2px);
 }
 
 .viewerThumb.active {
@@ -1011,182 +906,59 @@ footer{
 }
 
 /* ==========================================
-   Content
+   Counter
 ========================================== */
-
-.viewerContent{
-
-    padding:36px;
-
-}
-
-.viewerHeader{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:flex-start;
-
-    gap:30px;
-
-    flex-wrap:wrap;
-
-}
-
-#viewerTitle{
-
-    margin:0;
-
-    font-size:34px;
-
-    font-weight:700;
-
-}
-
-#viewerMeta{
-
-    margin-top:12px;
-
-    color:#9f9f9f;
-
-    line-height:1.8;
-
-}
-
-#viewerDescription{
-
-    margin:28px 0;
-
-    color:#ddd;
-
-    line-height:1.9;
-
-}
-
-#viewerSoftware{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:10px;
-
-}
-
-.viewerBadge{
-
-    background:#292929;
-
-    color:white;
-
-    padding:8px 16px;
-
-    border-radius:999px;
-
-    font-size:14px;
-
+#viewerCounter {
+    display: none; /* hidden by default */
+    justify-content: center;
+    align-items: center;
+    height: 42px;
+    background: #111;
+    color: #999;
+    font-size: 14px;
 }
 
 /* ==========================================
-   Hide Gallery UI by default
+   Navigation Arrows
 ========================================== */
-
-#viewerThumbs{
-
-    display:none;
-
+.viewerArrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 55px;
+    height: 55px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0,0,0,.55);
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 5;
 }
-
-#viewerCounter{
-
-    display:none;
-
-}
+.viewerArrow.left { left: 20px; }
+.viewerArrow.right { right: 20px; }
 
 /* ==========================================
    Gallery Mode
 ========================================== */
-
-.viewer-window.gallery-mode #viewerThumbs{
-
-    display:flex;
-
+.viewer-window.gallery-mode #viewerThumbs {
+    display: flex;
 }
-
-.viewer-window.gallery-mode #viewerCounter{
-
-    display:flex;
-
+.viewer-window.gallery-mode #viewerCounter {
+    display: flex;
 }
-
 .viewer-window.gallery-mode #viewerPrevMedia,
-
-.viewer-window.gallery-mode #viewerNextMedia{
-
-    display:block;
-
+.viewer-window.gallery-mode #viewerNextMedia {
+    display: block;
 }
 
 /* ==========================================
    Video Mode
 ========================================== */
-
 .viewer-window.video-mode #viewerPrevMedia,
-
 .viewer-window.video-mode #viewerNextMedia,
-
 .viewer-window.video-mode #viewerThumbs,
-
-.viewer-window.video-mode #viewerCounter{
-
-    display:none;
-
+.viewer-window.video-mode #viewerCounter {
+    display: none;
 }
 
-/* ==========================================
-   Mobile
-========================================== */
-
-@media(max-width:768px){
-
-    .viewerWindow{
-
-        width:100vw;
-
-        height:100vh;
-
-        border-radius:0;
-
-    }
-
-    .viewerContent{
-
-        padding:24px;
-
-    }
-
-    #viewerTitle{
-
-        font-size:28px;
-
-    }
-
-    .viewerThumb{
-
-        width:72px;
-
-        height:50px;
-
-    }
-
-    .viewerArrow{
-
-        width:46px;
-        height:46px;
-
-        font-size:22px;
-
-    }
-
-}
