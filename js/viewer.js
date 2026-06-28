@@ -129,7 +129,7 @@ function openProject(project) {
             <div id="viewerThumbs"></div>
         `;
 
-        requestAnimationFrame(buildViewerGallery);
+        setTimeout(buildViewerGallery, 0);
     }
 }
 
@@ -138,7 +138,10 @@ function openProject(project) {
 // ===========================================
 
 function buildViewerGallery() {
-    updateViewerGallery();
+    // wait one tick to ensure DOM is fully mounted
+    requestAnimationFrame(() => {
+        updateViewerGallery();
+    });
 }
 
 // ===========================================
@@ -150,14 +153,16 @@ function updateViewerGallery() {
     const counter = document.getElementById("viewerCounter");
     const thumbs = document.getElementById("viewerThumbs");
 
-    // SAFETY CHECKS (IMPORTANT FIX)
-    if (!img || !counter || !thumbs) return;
+    // SAFETY CHECKS
+    if (!img || !counter || !thumbs) {
+        console.warn("Viewer DOM not ready");
+        return;
+    }
 
     img.src = currentGallery[currentImage];
 
     counter.textContent = `${currentImage + 1} / ${currentGallery.length}`;
 
-    // clear thumbs
     thumbs.innerHTML = "";
 
     currentGallery.forEach((image, index) => {
