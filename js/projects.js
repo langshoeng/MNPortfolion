@@ -29,6 +29,7 @@ async function loadProjects() {
 }
 
 
+
 // =======================================
 // Render Projects
 // =======================================
@@ -59,9 +60,9 @@ function renderProjects(filter = "All") {
             ? project.categories.join(" / ")
             : "";
 
-        // -------------------------------
-        // Media Badge
-        // -------------------------------
+        //-----------------------------------
+        // Badge
+        //-----------------------------------
 
         let mediaBadge = "";
 
@@ -71,28 +72,40 @@ function renderProjects(filter = "All") {
         ) {
 
             mediaBadge = `
+
                 <span class="project-badge video">
+
                     ▶ ${project.duration || ""}
+
                 </span>
+
             `;
 
         }
+
         else if (
+
             project.gallery &&
             project.gallery.length
+
         ) {
 
             mediaBadge = `
+
                 <span class="project-badge image">
+
                     🖼 ${project.gallery.length} Images
+
                 </span>
+
             `;
 
         }
 
-        // -------------------------------
+
+        //-----------------------------------
         // Card
-        // -------------------------------
+        //-----------------------------------
 
         grid.innerHTML += `
 
@@ -117,12 +130,22 @@ function renderProjects(filter = "All") {
                 <div class="project-info">
 
                     <span class="project-category">
+
                         ${category}
+
                     </span>
 
-                    <h4>${project.title}</h4>
+                    <h4>
 
-                    <p>${software}</p>
+                        ${project.title}
+
+                    </h4>
+
+                    <p>
+
+                        ${software}
+
+                    </p>
 
                 </div>
 
@@ -137,6 +160,7 @@ function renderProjects(filter = "All") {
 }
 
 
+
 // =======================================
 // Initial Load
 // =======================================
@@ -144,23 +168,25 @@ function renderProjects(filter = "All") {
 loadProjects();
 
 
+
 // =======================================
 // Global Click Events
 // =======================================
 
-document.addEventListener("click", (e) => {
+document.addEventListener("click",(e)=>{
 
-    // ===================================
+
+    //-----------------------------------
     // Filter Buttons
-    // ===================================
+    //-----------------------------------
 
     const filterBtn = e.target.closest(".filter-btn");
 
-    if (filterBtn) {
+    if(filterBtn){
 
         document
-            .querySelectorAll(".filter-btn")
-            .forEach(btn => btn.classList.remove("active"));
+        .querySelectorAll(".filter-btn")
+        .forEach(btn=>btn.classList.remove("active"));
 
         filterBtn.classList.add("active");
 
@@ -173,55 +199,32 @@ document.addEventListener("click", (e) => {
     }
 
 
-    // ===================================
+    //-----------------------------------
     // Project Card
-    // ===================================
+    //-----------------------------------
 
     const card = e.target.closest(".project-card");
 
-    if (!card) return;
+    if(!card) return;
+
 
     const projectId = card.dataset.project;
 
+
     const project = allProjects.find(
+
         p => p.id === projectId
+
     );
 
-    if (!project) return;
+
+    if(!project) return;
 
 
-    // ===================================
-    // Video Project
-    // ===================================
+    //-----------------------------------
+    // NEW
+    //-----------------------------------
 
-    if (
-        project.video &&
-        project.video.type !== "none"
-    ) {
-
-        window.open(
-            project.video.url,
-            "_blank"
-        );
-
-        return;
-
-    }
-
-
-    // ===================================
-    // Image Gallery Project
-    // ===================================
-
-    if (
-        project.gallery &&
-        project.gallery.length
-    ) {
-
-        openGallery(project.gallery);
-
-        return;
-
-    }
+    openProject(project);
 
 });
