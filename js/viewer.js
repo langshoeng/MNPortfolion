@@ -276,28 +276,30 @@ function updateViewerGallery(){
 
     img.src = currentGallery[currentImage];
 
-    // -----------------------------
     // Counter
-    // -----------------------------
 
     viewerCounter.textContent =
         `${currentImage + 1} of ${currentGallery.length}`;
 
-    // -----------------------------
     // Dots
-    // -----------------------------
 
     viewerDots.innerHTML = "";
 
     currentGallery.forEach((image,index)=>{
 
-        const dot =
-            document.createElement("div");
+        const dot = document.createElement("button");
+
+        dot.type = "button";
 
         dot.className =
             index === currentImage
                 ? "viewerDot active"
                 : "viewerDot";
+
+        dot.setAttribute(
+            "aria-label",
+            `Image ${index + 1}`
+        );
 
         dot.onclick = ()=>{
 
