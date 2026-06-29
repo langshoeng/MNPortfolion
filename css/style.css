@@ -969,11 +969,11 @@ footer{
 
 }
 
-/* ==========================================
-   Thumbnails
-========================================== */
+/* ===============================
+   Gallery Navigation
+=============================== */
 
-#viewerThumbs{
+#viewerGalleryNav{
 
     display:flex;
 
@@ -981,50 +981,47 @@ footer{
 
     align-items:center;
 
-    gap:12px;
+    gap:18px;
 
-    flex-wrap:wrap;
-
-    padding:18px;
+    padding:18px 24px;
 
     background:#111;
 
-    border-top:1px solid #242424;
+    border-top:1px solid #2b2b2b;
 
 }
 
-.viewerThumb{
+#viewerDots{
 
-    width:95px;
-    height:60px;
+    display:flex;
 
-    object-fit:cover;
+    gap:12px;
 
-    border-radius:10px;
+}
+
+.viewerDot{
+
+    width:10px;
+
+    height:10px;
+
+    border-radius:50%;
+
+    background:#555;
 
     cursor:pointer;
 
-    opacity:.45;
-
-    border:2px solid transparent;
-
-    transition:.25s;
+    transition:.3s;
 
 }
 
-.viewerThumb:hover{
+.viewerDot.active{
 
-    opacity:1;
+    width:32px;
 
-    transform:translateY(-2px);
+    border-radius:999px;
 
-}
-
-.viewerThumb.active{
-
-    opacity:1;
-
-    border-color:white;
+    background:white;
 
 }
 
@@ -1107,10 +1104,10 @@ footer{
 }
 
 /* ==========================================
-   Hide Gallery UI by default
+   Hide Gallery Navigation by Default
 ========================================== */
 
-#viewerThumbs{
+#viewerGalleryNav{
 
     display:none;
 
@@ -1118,7 +1115,17 @@ footer{
 
 #viewerCounter{
 
-    display:none;
+    justify-content:center;
+
+    align-items:center;
+
+    height:42px;
+
+    background:#111;
+
+    color:#999;
+
+    font-size:14px;
 
 }
 
@@ -1126,13 +1133,7 @@ footer{
    Gallery Mode
 ========================================== */
 
-.viewer-window.gallery-mode #viewerThumbs{
-
-    display:flex;
-
-}
-
-.viewer-window.gallery-mode #viewerCounter{
+.viewer-window.gallery-mode #viewerGalleryNav{
 
     display:flex;
 
@@ -1146,15 +1147,21 @@ footer{
 
 }
 
+.viewer-window.gallery-mode #viewerCounter{
+
+    display:flex;
+
+}
+
 /* ==========================================
    Video Mode
 ========================================== */
 
+.viewer-window.video-mode #viewerGalleryNav,
+
 .viewer-window.video-mode #viewerPrevMedia,
 
 .viewer-window.video-mode #viewerNextMedia,
-
-.viewer-window.video-mode #viewerThumbs,
 
 .viewer-window.video-mode #viewerCounter{
 
@@ -1166,13 +1173,15 @@ footer{
    Mobile
 ========================================== */
 
-@media(max-width:768px){
+@media (max-width:768px){
 
-    .viewerWindow{
+    .viewer-window{
 
         width:100vw;
 
         height:100vh;
+
+        max-height:100vh;
 
         border-radius:0;
 
@@ -1190,20 +1199,35 @@ footer{
 
     }
 
-    .viewerThumb{
-
-        width:72px;
-
-        height:50px;
-
-    }
-
     .viewerArrow{
 
         width:46px;
+
         height:46px;
 
         font-size:22px;
+
+    }
+
+    #viewerGalleryNav{
+
+        gap:12px;
+
+        padding:14px 16px;
+
+    }
+
+    .viewerDot{
+
+        width:8px;
+
+        height:8px;
+
+    }
+
+    .viewerDot.active{
+
+        width:24px;
 
     }
 
