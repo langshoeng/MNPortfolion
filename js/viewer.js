@@ -1,22 +1,26 @@
 // ===========================================
-// PROJECT VIEWER
+// PROJECT VIEWER V2
 // ===========================================
 
 const viewer = document.getElementById("projectViewer");
+const viewerWindow = document.querySelector(".viewer-window");
 
 const viewerMedia = document.getElementById("viewerMedia");
 
 const viewerTitle = document.getElementById("viewerTitle");
-
 const viewerMeta = document.getElementById("viewerMeta");
-
 const viewerDescription = document.getElementById("viewerDescription");
-
 const viewerSoftware = document.getElementById("viewerSoftware");
+
+const viewerPrev = document.getElementById("viewerPrevMedia");
+const viewerNext = document.getElementById("viewerNextMedia");
+
+const viewerDots = document.getElementById("viewerDots");
+const viewerCounter = document.getElementById("viewerCounter");
 
 
 // ===========================================
-// Current Project
+// CURRENT STATE
 // ===========================================
 
 let currentProject = null;
@@ -25,8 +29,9 @@ let currentGallery = [];
 
 let currentImage = 0;
 
+
 // ===========================================
-// Convert YouTube URL
+// YOUTUBE
 // ===========================================
 
 function getYoutubeEmbed(url){
@@ -59,35 +64,51 @@ function getYoutubeEmbed(url){
 
 
 // ===========================================
-// Open Project
+// OPEN PROJECT
 // ===========================================
 
 function openProject(project){
 
     currentProject = project;
 
-    viewer.classList.add("show");
-
     currentGallery = [];
+
     currentImage = 0;
 
+    viewer.classList.add("show");
+
+    viewerWindow.classList.remove(
+        "gallery-mode",
+        "video-mode"
+    );
+
+    viewerMedia.innerHTML = "";
+
+    viewerDots.innerHTML = "";
+
+    viewerCounter.textContent = "";
 
 
-    // ------------------------------------
-    // Title
-    // ------------------------------------
+    // ======================================
+    // TITLE
+    // ======================================
 
-    viewerTitle.textContent = project.title;
+    viewerTitle.textContent = project.title || "";
 
 
-
-    // ------------------------------------
-    // Meta
-    // ------------------------------------
+    // ======================================
+    // META
+    // ======================================
 
     viewerMeta.innerHTML = `
 
-        <div><strong>Client</strong><br>${project.client || "-"}</div>
+        <div>
+
+            <strong>Client</strong><br>
+
+            ${project.client || "-"}
+
+        </div>
 
         <div style="margin-top:12px;">
 
@@ -100,193 +121,206 @@ function openProject(project){
     `;
 
 
-
-    // ------------------------------------
-    // Description
-    // ------------------------------------
+    // ======================================
+    // DESCRIPTION
+    // ======================================
 
     viewerDescription.textContent =
-
         project.description || "";
 
 
-
-    // ------------------------------------
-    // Software
-    // ------------------------------------
+    // ======================================
+    // SOFTWARE
+    // ======================================
 
     viewerSoftware.innerHTML = "";
-
-
 
     if(project.software){
 
         project.software.forEach(app=>{
 
-            viewerSoftware.innerHTML +=
+            const badge =
+                document.createElement("span");
 
-                `<span class="viewerBadge">${app}</span>`;
+            badge.className =
+                "viewerBadge";
+
+            badge.textContent = app;
+
+            viewerSoftware.appendChild(badge);
 
         });
 
     }
 
 
-
-    // =====================================
-    // MEDIA
-    // =====================================
-
-    viewerMedia.innerHTML = "";
-
-
-
-    // -------------------------------------
-    // YouTube
-    // -------------------------------------
+    // ======================================
+    // YOUTUBE
+    // ======================================
 
     if(
 
         project.video &&
-
         project.video.type === "youtube"
 
     ){
 
+        viewerWindow.classList.add(
+            "video-mode"
+        );
+
         viewerMedia.innerHTML = `
 
-        <iframe
+            <iframe
 
-            src="${getYoutubeEmbed(project.video.url)}"
+                src="${getYoutubeEmbed(project.video.url)}"
 
-            allow="autoplay; fullscreen; encrypted-media"
+                allow="autoplay; fullscreen; encrypted-media"
 
-            allowfullscreen
+                allowfullscreen
 
-        ></iframe>
+            ></iframe>
 
         `;
+
+        return;
 
     }
 
 
+    // ======================================
+    // LOCAL VIDEO
+    // ======================================
 
-    // -------------------------------------
-    // Local MP4
-    // -------------------------------------
-
-    else if(
+    if(
 
         project.video &&
-
         project.video.type === "mp4"
 
     ){
 
+        viewerWindow.classList.add(
+            "video-mode"
+        );
+
         viewerMedia.innerHTML = `
 
-        <video
+            <video
 
-            controls
+                controls
 
-            autoplay
-
-        >
-
-            <source
-
-                src="${project.video.url}"
-
-                type="video/mp4"
+                autoplay
 
             >
 
-        </video>
+                <source
+
+                    src="${project.video.url}"
+
+                    type="video/mp4"
+
+                >
+
+            </video>
 
         `;
+
+        return;
 
     }
 
 
+    // ======================================
+    // IMAGE GALLERY
+    // ======================================
 
-    // -------------------------------------
-    // Gallery
-    // -------------------------------------
+    if(
 
-    else if (
         project.gallery &&
         project.gallery.length
-    ) {
-    
+
+    ){
+
+        viewerWindow.classList.add(
+            "gallery-mode"
+        );
+
         currentGallery = project.gallery;
+
         currentImage = 0;
-    
+
         viewerMedia.innerHTML = `
-    
+
             <img
+
                 id="viewerGalleryImage"
+
                 src="${currentGallery[0]}"
+
+                alt="Gallery Image"
+
             >
-    
-            <div id="viewerCounter"></div>
-    
-            <div id="viewerThumbs"></div>
-    
+
         `;
-    
+
         buildViewerGallery();
-    
+
     }
 
 }
 
-
 // ===========================================
-// Build Gallery
+// BUILD GALLERY
 // ===========================================
 
 function buildViewerGallery(){
 
+    viewerPrev.onclick = previousViewerImage;
+
+    viewerNext.onclick = nextViewerImage;
+
     updateViewerGallery();
-
-    const prev = document.getElementById("viewerPrevMedia");
-    const next = document.getElementById("viewerNextMedia");
-
-    if(prev) prev.onclick = previousViewerImage;
-    if(next) next.onclick = nextViewerImage;
 
 }
 
 
+// ===========================================
+// UPDATE GALLERY
+// ===========================================
+
 function updateViewerGallery(){
 
-    const img = document.getElementById("viewerGalleryImage");
+    const img =
+        document.getElementById("viewerGalleryImage");
 
-    const counter = document.getElementById("viewerCounter");
-
-    const thumbs = document.getElementById("viewerThumbs");
+    if(!img) return;
 
     img.src = currentGallery[currentImage];
 
-    counter.textContent =
-        `${currentImage + 1} / ${currentGallery.length}`;
+    // -----------------------------
+    // Counter
+    // -----------------------------
 
-    thumbs.innerHTML = "";
+    viewerCounter.textContent =
+        `${currentImage + 1} of ${currentGallery.length}`;
+
+    // -----------------------------
+    // Dots
+    // -----------------------------
+
+    viewerDots.innerHTML = "";
 
     currentGallery.forEach((image,index)=>{
 
-        const thumb = document.createElement("img");
+        const dot =
+            document.createElement("div");
 
-        thumb.src = image;
-
-        thumb.className =
+        dot.className =
             index === currentImage
-                ? "viewerThumb active"
-                : "viewerThumb";
+                ? "viewerDot active"
+                : "viewerDot";
 
-        thumb.dataset.index = index;
-
-        thumb.onclick = ()=>{
+        dot.onclick = ()=>{
 
             currentImage = index;
 
@@ -294,20 +328,27 @@ function updateViewerGallery(){
 
         };
 
-        thumbs.appendChild(thumb);
+        viewerDots.appendChild(dot);
 
     });
 
 }
 
 
+// ===========================================
+// NEXT IMAGE
+// ===========================================
+
 function nextViewerImage(){
+
+    if(!currentGallery.length)
+        return;
 
     currentImage++;
 
-    if(currentImage>=currentGallery.length){
+    if(currentImage >= currentGallery.length){
 
-        currentImage=0;
+        currentImage = 0;
 
     }
 
@@ -315,14 +356,22 @@ function nextViewerImage(){
 
 }
 
+
+// ===========================================
+// PREVIOUS IMAGE
+// ===========================================
 
 function previousViewerImage(){
 
+    if(!currentGallery.length)
+        return;
+
     currentImage--;
 
-    if(currentImage<0){
+    if(currentImage < 0){
 
-        currentImage=currentGallery.length-1;
+        currentImage =
+            currentGallery.length - 1;
 
     }
 
@@ -330,77 +379,3 @@ function previousViewerImage(){
 
 }
 
-
-// ===========================================
-// Close
-// ===========================================
-
-function closeProject(){
-
-    viewer.classList.remove("show");
-
-
-
-    // Stop YouTube
-
-    viewerMedia.innerHTML = "";
-
-
-
-    currentProject = null;
-
-}
-
-
-// ===========================================
-// Close Events
-// ===========================================
-
-document
-.getElementById("viewerClose")
-.onclick = closeProject;
-
-
-document
-.querySelector(".viewer-overlay")
-.onclick = closeProject;
-
-
-// ===========================================
-// ESC
-// ===========================================
-
-document.addEventListener("keydown",(e)=>{
-
-    if(!viewer.classList.contains("show")) return;
-
-    if(e.key==="Escape"){
-
-        closeProject();
-
-    }
-
-    if(currentGallery.length){
-
-        if(e.key==="ArrowRight"){
-
-            nextViewerImage();
-
-        }
-
-        if(e.key==="ArrowLeft"){
-
-            previousViewerImage();
-
-        }
-
-    }
-
-});
-
-
-// ===========================================
-// Global
-// ===========================================
-
-window.openProject = openProject;
