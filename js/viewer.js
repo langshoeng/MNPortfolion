@@ -285,6 +285,7 @@ function updateViewerGallery(){
         viewerCounter.textContent =
             `${currentImage + 1} of ${currentGallery.length}`;
 
+        preloadGallery();
         viewerDots.innerHTML = "";
 
         currentGallery.forEach((image,index)=>{
@@ -312,6 +313,33 @@ function updateViewerGallery(){
         });
 
     },120);
+
+}
+
+function preloadGallery(){
+
+    if(currentGallery.length<2)
+        return;
+
+    const next =
+        new Image();
+
+    next.src =
+        currentGallery[
+            (currentImage+1)
+            %
+            currentGallery.length
+        ];
+
+    const prev =
+        new Image();
+
+    prev.src =
+        currentGallery[
+            (currentImage-1+currentGallery.length)
+            %
+            currentGallery.length
+        ];
 
 }
 
