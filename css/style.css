@@ -953,19 +953,13 @@ footer{
 
 #viewerCounter{
 
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    height:42px;
-
-    background:#111;
-
-    color:#999;
+    color:#b5b5b5;
 
     font-size:14px;
+
+    font-weight:500;
+
+    letter-spacing:.5px;
 
 }
 
@@ -981,13 +975,13 @@ footer{
 
     align-items:center;
 
-    gap:18px;
+    gap:22px;
 
-    padding:18px 24px;
+    padding:18px 30px;
 
     background:#111;
 
-    border-top:1px solid #2b2b2b;
+    border-top:1px solid #272727;
 
 }
 
@@ -1005,23 +999,38 @@ footer{
 
     height:10px;
 
+    border:none;
+
     border-radius:50%;
 
-    background:#555;
+    background:#666;
 
     cursor:pointer;
 
-    transition:.3s;
+    padding:0;
+
+    transition:
+        width .25s,
+        background .25s,
+        transform .25s;
+
+}
+
+.viewerDot:hover{
+
+    transform:scale(1.15);
+
+    background:#aaa;
 
 }
 
 .viewerDot.active{
 
-    width:32px;
+    width:30px;
 
     border-radius:999px;
 
-    background:white;
+    background:#fff;
 
 }
 
