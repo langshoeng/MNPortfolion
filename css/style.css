@@ -888,11 +888,14 @@ footer{
     width:100%;
     height:100%;
 
+    object-fit:contain;
+
     display:block;
 
-    border:none;
+    opacity:1;
 
-    object-fit:contain;
+    transition:
+        opacity .25s ease;
 
 }
 
