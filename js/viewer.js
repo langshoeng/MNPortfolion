@@ -274,47 +274,56 @@ function updateViewerGallery(){
 
     if(!img) return;
 
-    img.src = currentGallery[currentImage];
+    // Fade Out
 
-    // Counter
+    img.style.opacity = "0";
 
-    viewerCounter.textContent =
-        `${currentImage + 1} of ${currentGallery.length}`;
+    setTimeout(()=>{
 
-    // Dots
+        img.src = currentGallery[currentImage];
 
-    viewerDots.innerHTML = "";
+        viewerCounter.textContent =
+            `${currentImage + 1} of ${currentGallery.length}`;
 
-    currentGallery.forEach((image,index)=>{
+        viewerDots.innerHTML = "";
 
-        const dot = document.createElement("button");
+        currentGallery.forEach((image,index)=>{
 
-        dot.type = "button";
+            const dot =
+                document.createElement("button");
 
-        dot.className =
-            index === currentImage
+            dot.type = "button";
+
+            dot.className =
+                index===currentImage
                 ? "viewerDot active"
                 : "viewerDot";
 
-        dot.setAttribute(
-            "aria-label",
-            `Image ${index + 1}`
-        );
+            dot.onclick=()=>{
 
-        dot.onclick = ()=>{
+                currentImage=index;
 
-            currentImage = index;
+                updateViewerGallery();
 
-            updateViewerGallery();
+            };
 
-        };
+            viewerDots.appendChild(dot);
 
-        viewerDots.appendChild(dot);
+        });
 
-    });
+    },120);
 
 }
 
+document.addEventListener("load",(e)=>{
+
+    if(e.target.id==="viewerGalleryImage"){
+
+        e.target.style.opacity="1";
+
+    }
+
+},true);
 
 // ===========================================
 // NEXT IMAGE
