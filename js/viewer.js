@@ -77,10 +77,15 @@ function openProject(project){
 
     viewer.classList.add("show");
 
+    // Reset viewer mode
     viewerWindow.classList.remove(
         "gallery-mode",
         "video-mode"
     );
+
+    // Hide gallery controls by default
+    viewerPrev.style.display = "none";
+    viewerNext.style.display = "none";
 
     viewerMedia.innerHTML = "";
 
@@ -142,8 +147,7 @@ function openProject(project){
             const badge =
                 document.createElement("span");
 
-            badge.className =
-                "viewerBadge";
+            badge.className = "viewerBadge";
 
             badge.textContent = app;
 
@@ -159,26 +163,18 @@ function openProject(project){
     // ======================================
 
     if(
-
         project.video &&
         project.video.type === "youtube"
-
     ){
 
-        viewerWindow.classList.add(
-            "video-mode"
-        );
+        viewerWindow.classList.add("video-mode");
 
         viewerMedia.innerHTML = `
 
             <iframe
-
                 src="${getYoutubeEmbed(project.video.url)}"
-
                 allow="autoplay; fullscreen; encrypted-media"
-
                 allowfullscreen
-
             ></iframe>
 
         `;
@@ -193,32 +189,19 @@ function openProject(project){
     // ======================================
 
     if(
-
         project.video &&
         project.video.type === "mp4"
-
     ){
 
-        viewerWindow.classList.add(
-            "video-mode"
-        );
+        viewerWindow.classList.add("video-mode");
 
         viewerMedia.innerHTML = `
 
-            <video
-
-                controls
-
-                autoplay
-
-            >
+            <video controls autoplay>
 
                 <source
-
                     src="${project.video.url}"
-
                     type="video/mp4"
-
                 >
 
             </video>
@@ -235,30 +218,26 @@ function openProject(project){
     // ======================================
 
     if(
-
         project.gallery &&
         project.gallery.length
-
     ){
 
-        viewerWindow.classList.add(
-            "gallery-mode"
-        );
+        viewerWindow.classList.add("gallery-mode");
 
         currentGallery = project.gallery;
 
         currentImage = 0;
 
+        // Show gallery arrows
+        viewerPrev.style.display = "";
+        viewerNext.style.display = "";
+
         viewerMedia.innerHTML = `
 
             <img
-
                 id="viewerGalleryImage"
-
                 src="${currentGallery[0]}"
-
                 alt="Gallery Image"
-
             >
 
         `;
@@ -379,3 +358,92 @@ function previousViewerImage(){
 
 }
 
+// ===========================================
+// CLOSE
+// ===========================================
+
+function closeProject(){
+
+    viewer.classList.remove("show");
+
+    viewerWindow.classList.remove(
+        "gallery-mode",
+        "video-mode"
+    );
+
+    viewerMedia.innerHTML = "";
+
+    viewerDots.innerHTML = "";
+
+    viewerCounter.textContent = "";
+
+    currentGallery = [];
+
+    currentImage = 0;
+
+    currentProject = null;
+
+}
+
+
+// ===========================================
+// BUTTON EVENTS
+// ===========================================
+
+document
+.getElementById("viewerClose")
+.onclick = closeProject;
+
+
+document
+.querySelector(".viewer-overlay")
+.onclick = closeProject;
+
+
+// ===========================================
+// KEYBOARD
+// ===========================================
+
+document.addEventListener("keydown",(e)=>{
+
+    if(!viewer.classList.contains("show"))
+        return;
+
+    switch(e.key){
+
+        case "Escape":
+
+            closeProject();
+
+            break;
+
+        case "ArrowLeft":
+
+            if(currentGallery.length){
+
+                previousViewerImage();
+
+            }
+
+            break;
+
+        case "ArrowRight":
+
+            if(currentGallery.length){
+
+                nextViewerImage();
+
+            }
+
+            break;
+
+    }
+
+});
+
+
+// ===========================================
+// GLOBAL
+// ===========================================
+
+window.openProject = openProject;
