@@ -245,9 +245,8 @@ body{
   position: absolute;
   left: 50%;               /* center horizontally */
   transform: translateX(-50%);
-  bottom: 100%;            /* place above the badge */
-  margin-bottom: 6px;      /* small gap above badge */
-  font-size: 14px;
+  bottom: -24px;           /* place directly on top of the bar */
+  font-size: 13px;
   font-weight: 600;
   color: #fff;             /* white for visibility */
   opacity: 0;
