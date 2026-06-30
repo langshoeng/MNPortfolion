@@ -365,46 +365,31 @@ document.addEventListener("load",(e)=>{
 // ===========================================
 // NEXT IMAGE
 // ===========================================
-
-function nextViewerImage(){
-
-    if(!currentGallery.length)
-        return;
+function nextViewerImage() {
+    if (!currentGallery.length) return;
 
     currentImage++;
-
-    if(currentImage >= currentGallery.length){
-
+    if (currentImage >= currentGallery.length) {
         currentImage = 0;
-
     }
 
-    updateViewerGallery();
-
+    updateViewerGallery(); // preload-based transition
 }
-
 
 // ===========================================
 // PREVIOUS IMAGE
 // ===========================================
-
-function previousViewerImage(){
-
-    if(!currentGallery.length)
-        return;
+function previousViewerImage() {
+    if (!currentGallery.length) return;
 
     currentImage--;
-
-    if(currentImage < 0){
-
-        currentImage =
-            currentGallery.length - 1;
-
+    if (currentImage < 0) {
+        currentImage = currentGallery.length - 1;
     }
 
-    updateViewerGallery();
-
+    updateViewerGallery(); // preload-based transition
 }
+
 
 // ===========================================
 // CLOSE
