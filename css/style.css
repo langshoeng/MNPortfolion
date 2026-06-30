@@ -195,18 +195,8 @@ body{
 
 .skill-badge {
   position: relative;
-  background: #292929;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  cursor: pointer;
-  overflow: visible; /* allow percent text above */
+  /* keep your existing styles */
 }
-
 .skill-badge:hover {
   background: #444;
   transform: translateY(-12px);
@@ -243,15 +233,16 @@ body{
 
 .skill-percent {
   position: absolute;
-  left: 50%;               /* center horizontally */
+  left: 50%;                  /* center horizontally */
   transform: translateX(-50%);
-  bottom: 28px;            /* place ABOVE the bar, not inside */
-  font-size: 14px;
+  top: -40px;                 /* clearly above the badge */
+  font-size: 16px;
   font-weight: 700;
-  color: #fff;             /* white for visibility */
+  color: #4cafef;             /* accent color */
   opacity: 0;
   transition: opacity 0.25s ease;
   pointer-events: none;
+  z-index: 10;                /* force it above everything */
 }
 
 .skill-badge:hover .skill-progress {
