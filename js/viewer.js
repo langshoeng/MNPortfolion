@@ -266,6 +266,15 @@ function disableFullscreenGestures() {
     document.removeEventListener("touchend", touchDragEnd);
 }
 
+window.addEventListener("resize", () => {
+    const img = document.getElementById("viewerGalleryImage");
+    if (img) applyZoom(img); // re‑clamp offsets after resize
+});
+
+window.addEventListener("orientationchange", () => {
+    const img = document.getElementById("viewerGalleryImage");
+    if (img) applyZoom(img); // re‑clamp offsets after phone rotation
+});
 
 // ===========================================
 // Spinner between each transition
