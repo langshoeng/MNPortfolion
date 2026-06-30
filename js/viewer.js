@@ -96,10 +96,13 @@ function getDistance(touches) {
 // ===========================================
 // Pinch Gesture Handlers (fullscreen only)
 // ===========================================
+let pinchActive = false; // <-- add this at the top
+
 function pinchStart(e) {
     if (e.touches.length === 2) {
         initialDistance = getDistance(e.touches);
         pinchZoomLevel = zoomLevel;
+        pinchActive = true; // mark pinch as active
     }
 }
 
@@ -114,7 +117,7 @@ function pinchMove(e) {
 }
 
 function pinchEnd(e) {
-    // optional: finalize zoom state
+    pinchActive = false; // reset flag when pinch ends
 }
 
 // ===========================================
@@ -183,16 +186,19 @@ function touchDragEnd(e) {
 let swipeStartX = 0, swipeStartY = 0;
 let isSwipeCandidate = false;
 
-document.addEventListener("touchstart", e => {
+document.addEventListener("touchend", e => {
     if (!viewerWindow.classList.contains("fullscreen-mode")) return;
-    if (e.touches.length === 1 && zoomLevel === 1) {
-        // Only allow swipe if not zoomed
-        swipeStartX = e.touches[0].clientX;
-        swipeStartY = e.touches[0].clientY;
-        isSwipeCandidate = true;
-    } else {
-        isSwipeCandidate = false; // disable swipe if zoomed or multi-touch
+    if (!isSwipeCandidate) return;
+    if (pinchActive) return; // <-- block swipe if pinch was active
+
+    const dx = e.changedTouches[0].clientX - swipeStartX;
+    const dy = e.changedTouches[0].clientY - swipeStartY;
+
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0) previousViewerImage();
+        else nextViewerImage();
     }
+    isSwipeCandidate = false;
 }, { passive:true });
 
 document.addEventListener("touchend", e => {
