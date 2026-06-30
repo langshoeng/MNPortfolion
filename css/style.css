@@ -245,9 +245,9 @@ body{
   position: absolute;
   left: 50%;               /* center horizontally */
   transform: translateX(-50%);
-  top: -24px;              /* place above the badge */
+  top: -32px;              /* clearly above the badge text */
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: #4cafef;          /* accent color */
   opacity: 0;
   transition: opacity 0.25s ease;
