@@ -1,6 +1,9 @@
 // ===========================================
-// PROJECT VIEWER V2
+// PROJECT VIEWER V3
+// Part 1 - Variables + Helpers
 // ===========================================
+
+// ---------- Main Elements ----------
 
 const viewer = document.getElementById("projectViewer");
 const viewerWindow = document.querySelector(".viewer-window");
@@ -20,63 +23,18 @@ const viewerCounter = document.getElementById("viewerCounter");
 
 
 // ===========================================
-// CURRENT STATE
+// STATE
 // ===========================================
 
 let currentProject = null;
+
 let currentGallery = [];
+
 let currentImage = 0;
 
 
 // ===========================================
-// PLACEHOLDER
-// ===========================================
-
-function showPlaceholder(
-
-    icon = "🖼️",
-    title = "Preview Coming Soon",
-    text = "This project doesn't have any preview images or videos yet."
-
-){
-
-    viewerMedia.innerHTML = `
-
-        <div id="viewerPlaceholder" class="show">
-
-            <div class="viewerPlaceholderIcon">
-
-                ${icon}
-
-            </div>
-
-            <h3 id="viewerPlaceholderTitle">
-
-                ${title}
-
-            </h3>
-
-            <p id="viewerPlaceholderText">
-
-                ${text}
-
-            </p>
-
-        </div>
-
-    `;
-
-}
-
-function clearViewerMedia(){
-
-    viewerMedia.innerHTML = "";
-
-}
-
-
-// ===========================================
-// YOUTUBE
+// YOUTUBE EMBED
 // ===========================================
 
 function getYoutubeEmbed(url){
@@ -91,23 +49,143 @@ function getYoutubeEmbed(url){
 
             id = u.pathname.substring(1);
 
-        }
-
-        else{
+        }else{
 
             id = u.searchParams.get("v");
 
         }
 
-    }
-
-    catch(e){
+    }catch(e){
 
         return "";
 
     }
 
     return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+
+}
+
+
+// ===========================================
+// RESET VIEWER
+// ===========================================
+
+function resetViewer(){
+
+    viewerWindow.classList.remove(
+        "gallery-mode",
+        "video-mode"
+    );
+
+    viewerMedia.innerHTML = "";
+
+    viewerDots.innerHTML = "";
+
+    viewerCounter.textContent = "";
+
+    viewerPrev.style.display = "none";
+    viewerNext.style.display = "none";
+
+    currentGallery = [];
+
+    currentImage = 0;
+
+}
+
+
+// ===========================================
+// PLACEHOLDER
+// ===========================================
+
+function showPlaceholder(
+
+    icon = "🖼️",
+
+    title = "Preview Coming Soon",
+
+    text = "This project doesn't have any preview images or videos yet."
+
+){
+
+    viewerMedia.innerHTML = `
+
+        <div class="viewerPlaceholder">
+
+            <div class="viewerPlaceholderIcon">
+
+                ${icon}
+
+            </div>
+
+            <h3>
+
+                ${title}
+
+            </h3>
+
+            <p>
+
+                ${text}
+
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+
+// ===========================================
+// BUILD SOFTWARE BADGES
+// ===========================================
+
+function buildSoftware(project){
+
+    viewerSoftware.innerHTML = "";
+
+    if(!project.software) return;
+
+    project.software.forEach(app=>{
+
+        const badge = document.createElement("span");
+
+        badge.className = "viewerBadge";
+
+        badge.textContent = app;
+
+        viewerSoftware.appendChild(badge);
+
+    });
+
+}
+
+
+// ===========================================
+// BUILD META
+// ===========================================
+
+function buildMeta(project){
+
+    viewerMeta.innerHTML = `
+
+        <div>
+
+            <strong>Client</strong><br>
+
+            ${project.client || "-"}
+
+        </div>
+
+        <div style="margin-top:12px;">
+
+            <strong>Year</strong><br>
+
+            ${project.year || "-"}
+
+        </div>
+
+    `;
 
 }
 
@@ -130,13 +208,16 @@ function openProject(project){
         "video-mode"
     );
 
+    hidePlaceholder();
+
     viewerPrev.style.display = "none";
     viewerNext.style.display = "none";
 
-    viewerDots.innerHTML = "";
-    viewerCounter.textContent = "";
+    viewerMedia.innerHTML = "";
 
-    clearViewerMedia();
+    viewerDots.innerHTML = "";
+
+    viewerCounter.textContent = "";
 
 
     // ======================================
@@ -199,9 +280,7 @@ function openProject(project){
             badge.textContent =
                 app;
 
-            viewerSoftware.appendChild(
-                badge
-            );
+            viewerSoftware.appendChild(badge);
 
         });
 
@@ -213,10 +292,8 @@ function openProject(project){
     // ======================================
 
     if(
-
         project.video &&
-        project.video.type==="youtube"
-
+        project.video.type === "youtube"
     ){
 
         viewerWindow.classList.add(
@@ -226,13 +303,9 @@ function openProject(project){
         viewerMedia.innerHTML = `
 
             <iframe
-
                 src="${getYoutubeEmbed(project.video.url)}"
-
                 allow="autoplay; fullscreen; encrypted-media"
-
                 allowfullscreen
-
             ></iframe>
 
         `;
@@ -243,14 +316,12 @@ function openProject(project){
 
 
     // ======================================
-    // LOCAL VIDEO
+    // LOCAL MP4
     // ======================================
 
     if(
-
         project.video &&
-        project.video.type==="mp4"
-
+        project.video.type === "mp4"
     ){
 
         viewerWindow.classList.add(
@@ -259,10 +330,7 @@ function openProject(project){
 
         viewerMedia.innerHTML = `
 
-            <video
-                controls
-                autoplay
-            >
+            <video controls autoplay>
 
                 <source
                     src="${project.video.url}"
@@ -283,10 +351,8 @@ function openProject(project){
     // ======================================
 
     if(
-
         project.gallery &&
         project.gallery.length
-
     ){
 
         viewerWindow.classList.add(
@@ -294,25 +360,19 @@ function openProject(project){
         );
 
         currentGallery =
-            [...project.gallery];
+            project.gallery;
 
         currentImage = 0;
 
         viewerPrev.style.display = "";
+
         viewerNext.style.display = "";
 
         viewerMedia.innerHTML = `
 
             <img
-
                 id="viewerGalleryImage"
-
-                src=""
-
                 alt="Gallery Image"
-
-                style="opacity:0"
-
             >
 
         `;
@@ -325,17 +385,13 @@ function openProject(project){
 
 
     // ======================================
-    // FALLBACK
+    // NO MEDIA
     // ======================================
 
     showPlaceholder(
-
         "🖼️",
-
         "Preview Coming Soon",
-
-        "This project doesn't have any preview images or videos yet."
-
+        "This project doesn't have preview images or videos yet."
     );
 
 }
@@ -349,34 +405,61 @@ function buildViewerGallery(){
     viewerPrev.onclick = previousViewerImage;
     viewerNext.onclick = nextViewerImage;
 
-    buildGalleryDots();
-
     updateViewerGallery();
 
 }
 
+
+// ===========================================
+// UPDATE GALLERY
+// ===========================================
+
+function updateViewerGallery(){
+
+    const img = document.getElementById("viewerGalleryImage");
+
+    if(!img) return;
+
+    img.style.opacity = "0";
+
+    setTimeout(()=>{
+
+        img.src = currentGallery[currentImage];
+
+        viewerCounter.textContent =
+            `${currentImage + 1} of ${currentGallery.length}`;
+
+        buildViewerDots();
+
+        preloadGallery();
+
+    },120);
+
+}
 
 
 // ===========================================
 // BUILD DOTS
 // ===========================================
 
-function buildGalleryDots(){
+function buildViewerDots(){
 
     viewerDots.innerHTML = "";
 
     currentGallery.forEach((image,index)=>{
 
-        const dot =
-            document.createElement("button");
+        const dot = document.createElement("button");
 
         dot.type = "button";
 
-        dot.className = "viewerDot";
+        dot.className =
+            index === currentImage
+            ? "viewerDot active"
+            : "viewerDot";
 
         dot.onclick = ()=>{
 
-            if(index===currentImage)
+            if(index === currentImage)
                 return;
 
             currentImage = index;
@@ -392,123 +475,48 @@ function buildGalleryDots(){
 }
 
 
-
-// ===========================================
-// UPDATE GALLERY
-// ===========================================
-
-function updateViewerGallery(){
-
-    const img =
-        document.getElementById("viewerGalleryImage");
-
-    if(!img)
-        return;
-
-    hidePlaceholder();
-
-    img.style.display = "block";
-
-    img.style.opacity = "0";
-
-    img.onload = ()=>{
-
-        img.style.opacity = "1";
-
-    };
-
-    img.onerror = ()=>{
-
-        img.style.display = "none";
-
-        showPlaceholder(
-
-            "⚠️",
-
-            "Image Not Found",
-
-            "This gallery image is missing or could not be loaded."
-
-        );
-
-    };
-
-    img.src = currentGallery[currentImage];
-
-
-
-    // -------------------------
-    // Counter
-    // -------------------------
-
-    viewerCounter.textContent =
-        `${currentImage + 1} of ${currentGallery.length}`;
-
-
-
-    // -------------------------
-    // Active Dot
-    // -------------------------
-
-    document
-        .querySelectorAll(".viewerDot")
-        .forEach((dot,index)=>{
-
-            dot.classList.toggle(
-
-                "active",
-
-                index===currentImage
-
-            );
-
-        });
-
-
-
-    preloadGallery();
-
-}
-
-
-
 // ===========================================
 // PRELOAD
 // ===========================================
 
 function preloadGallery(){
 
-    if(currentGallery.length<2)
+    if(currentGallery.length < 2)
         return;
 
-
-
-    const next =
-        new Image();
+    const next = new Image();
 
     next.src =
         currentGallery[
-            (currentImage+1)
-            %
+            (currentImage + 1) %
             currentGallery.length
         ];
 
-
-
-    const prev =
-        new Image();
+    const prev = new Image();
 
     prev.src =
         currentGallery[
-            (
-                currentImage-1+
-                currentGallery.length
-            )
-            %
+            (currentImage - 1 + currentGallery.length) %
             currentGallery.length
         ];
 
 }
+
+
+// ===========================================
+// IMAGE LOADED
+// ===========================================
+
+document.addEventListener("load",(e)=>{
+
+    if(e.target.id === "viewerGalleryImage"){
+
+        e.target.style.opacity = "1";
+
+    }
+
+},true);
+
 
 // ===========================================
 // NEXT IMAGE
@@ -516,8 +524,7 @@ function preloadGallery(){
 
 function nextViewerImage(){
 
-    if(currentGallery.length <= 1)
-        return;
+    if(!currentGallery.length) return;
 
     currentImage++;
 
@@ -532,22 +539,19 @@ function nextViewerImage(){
 }
 
 
-
 // ===========================================
 // PREVIOUS IMAGE
 // ===========================================
 
 function previousViewerImage(){
 
-    if(currentGallery.length <= 1)
-        return;
+    if(!currentGallery.length) return;
 
     currentImage--;
 
     if(currentImage < 0){
 
-        currentImage =
-            currentGallery.length - 1;
+        currentImage = currentGallery.length - 1;
 
     }
 
@@ -556,41 +560,37 @@ function previousViewerImage(){
 }
 
 
-
 // ===========================================
 // PLACEHOLDER
 // ===========================================
 
-function showPlaceholder(
+function showPlaceholder(icon,title,text){
 
-    icon,
-    title,
-    text
+    viewerMedia.innerHTML = `
 
-){
+        <div class="viewerPlaceholder">
 
-    viewerPlaceholderIcon.textContent = icon;
+            <div class="viewerPlaceholderIcon">
+                ${icon}
+            </div>
 
-    viewerPlaceholderTitle.textContent = title;
+            <h3>
+                ${title}
+            </h3>
 
-    viewerPlaceholderText.textContent = text;
+            <p>
+                ${text}
+            </p>
 
-    viewerPlaceholder.classList.add("show");
+        </div>
 
-}
-
-
-
-function hidePlaceholder(){
-
-    viewerPlaceholder.classList.remove("show");
+    `;
 
 }
-
 
 
 // ===========================================
-// CLOSE VIEWER
+// CLOSE
 // ===========================================
 
 function closeProject(){
@@ -598,35 +598,18 @@ function closeProject(){
     viewer.classList.remove("show");
 
     viewerWindow.classList.remove(
-
         "gallery-mode",
         "video-mode"
-
     );
-
-
-
-    hidePlaceholder();
-
-
 
     viewerMedia.innerHTML = "";
 
-
-
     viewerDots.innerHTML = "";
-
-
 
     viewerCounter.textContent = "";
 
-
-
     viewerPrev.style.display = "none";
-
     viewerNext.style.display = "none";
-
-
 
     currentGallery = [];
 
@@ -637,68 +620,78 @@ function closeProject(){
 }
 
 
-
 // ===========================================
 // BUTTON EVENTS
 // ===========================================
 
-viewerPrev.onclick =
-    previousViewerImage;
+viewerPrev.onclick = previousViewerImage;
 
-viewerNext.onclick =
-    nextViewerImage;
+viewerNext.onclick = nextViewerImage;
 
 document
-    .getElementById("viewerClose")
-    .onclick = closeProject;
+.getElementById("viewerClose")
+.onclick = closeProject;
 
 document
-    .querySelector(".viewer-overlay")
-    .onclick = closeProject;
-
+.querySelector(".viewer-overlay")
+.onclick = closeProject;
 
 
 // ===========================================
 // KEYBOARD
 // ===========================================
 
-document.addEventListener(
+document.addEventListener("keydown",(e)=>{
 
-    "keydown",
+    if(!viewer.classList.contains("show"))
+        return;
 
-    (e)=>{
+    switch(e.key){
 
-        if(
-            !viewer.classList.contains("show")
-        )
-            return;
+        case "Escape":
 
-        switch(e.key){
+            closeProject();
 
-            case "Escape":
+            break;
 
-                closeProject();
+        case "ArrowLeft":
 
-                break;
-
-            case "ArrowLeft":
+            if(currentGallery.length){
 
                 previousViewerImage();
 
-                break;
+            }
 
-            case "ArrowRight":
+            break;
+
+        case "ArrowRight":
+
+            if(currentGallery.length){
 
                 nextViewerImage();
 
-                break;
+            }
 
-        }
+            break;
 
     }
 
-);
+});
 
+
+// ===========================================
+// IMAGE FADE-IN
+// ===========================================
+
+document.addEventListener("load",(e)=>{
+
+    if(e.target.id === "viewerGalleryImage"){
+
+        e.target.style.opacity = "1";
+
+    }
+
+},true);
 
 
 // ===========================================
