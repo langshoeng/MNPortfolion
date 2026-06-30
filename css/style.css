@@ -1278,6 +1278,11 @@ footer{
     transition:transform 0.25s ease;
 }
 
+.viewer-arrow.disabled {
+    opacity: 0.3;
+    pointer-events: none; /* prevent clicks */
+}
+
 .viewer-loading {
     position:absolute;
     inset:0;
