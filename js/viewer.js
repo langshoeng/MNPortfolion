@@ -23,15 +23,12 @@ let touchStartX = 0, touchStartY = 0;
 let initialDistance = 0;
 let pinchZoomLevel = 1;
 
-
 // ===========================================
 // CURRENT STATE
 // ===========================================
 
 let currentProject = null;
-
 let currentGallery = [];
-
 let currentImage = 0;
 
 // ===========================================
@@ -47,6 +44,14 @@ function createMissingPlaceholder() {
 // Fullscreen toggle
 function toggleFullscreen() {
     viewerWindow.classList.toggle("fullscreen-mode");
+    if (viewerWindow.classList.contains("fullscreen-mode")) {
+        enableFullscreenGestures();
+    } else {
+        disableFullscreenGestures();
+        zoomLevel = 1; offsetX = 0; offsetY = 0;
+        const img = document.getElementById("viewerGalleryImage");
+        if (img) applyZoom(img);
+    }
 }
 
 // Zoom controls
@@ -75,21 +80,112 @@ function getDistance(touches) {
     return Math.sqrt(dx*dx + dy*dy);
 }
 
-document.addEventListener("touchstart", e => {
-    if (e.target.id === "viewerGalleryImage" && e.touches.length === 2) {
+// ===========================================
+// Pinch Gesture Handlers (fullscreen only)
+// ===========================================
+function pinchStart(e) {
+    if (e.touches.length === 2) {
         initialDistance = getDistance(e.touches);
-        pinchZoomLevel = zoomLevel; // use your existing zoomLevel
+        pinchZoomLevel = zoomLevel;
     }
-}, { passive:true });
+}
 
-document.addEventListener("touchmove", e => {
-    if (e.target.id === "viewerGalleryImage" && e.touches.length === 2) {
+function pinchMove(e) {
+    if (e.touches.length === 2) {
+        e.preventDefault(); // block browser zoom
         const newDistance = getDistance(e.touches);
         const scaleChange = newDistance / initialDistance;
-        zoomLevel = Math.min(4, Math.max(1, pinchZoomLevel * scaleChange)); // clamp between 1x–4x
+        zoomLevel = Math.min(4, Math.max(1, pinchZoomLevel * scaleChange));
         applyZoom(document.getElementById("viewerGalleryImage"));
     }
-}, { passive:true });
+}
+
+function pinchEnd(e) {
+    // optional: finalize zoom state
+}
+
+// ===========================================
+// Double‑tap to Zoom (fullscreen only)
+// ===========================================
+let lastTapTime = 0;
+
+function handleDoubleTap(e) {
+    if (!viewerWindow.classList.contains("fullscreen-mode")) return;
+    if (e.target.id !== "viewerGalleryImage") return;
+
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapTime;
+
+    if (tapLength < 300 && tapLength > 0) {
+        // Double‑tap detected
+        if (zoomLevel === 1) {
+            zoomLevel = 2; // zoom in
+        } else {
+            zoomLevel = 1; offsetX = 0; offsetY = 0; // reset zoom
+        }
+        applyZoom(document.getElementById("viewerGalleryImage"));
+    }
+
+    lastTapTime = currentTime;
+}
+
+document.addEventListener("touchend", handleDoubleTap, { passive:true });
+
+
+// ===========================================
+// Touch Drag to Pan (fullscreen only)
+// ===========================================
+let isTouchDragging = false;
+let lastTouchX = 0, lastTouchY = 0;
+
+function touchDragStart(e) {
+    if (!viewerWindow.classList.contains("fullscreen-mode")) return;
+    if (e.touches.length === 1 && zoomLevel > 1) {
+        isTouchDragging = true;
+        lastTouchX = e.touches[0].clientX;
+        lastTouchY = e.touches[0].clientY;
+    }
+}
+
+function touchDragMove(e) {
+    if (!isTouchDragging) return;
+    if (e.touches.length === 1) {
+        e.preventDefault(); // prevent page scroll
+        const dx = e.touches[0].clientX - lastTouchX;
+        const dy = e.touches[0].clientY - lastTouchY;
+        lastTouchX = e.touches[0].clientX;
+        lastTouchY = e.touches[0].clientY;
+        offsetX += dx / zoomLevel;
+        offsetY += dy / zoomLevel;
+        const img = document.getElementById("viewerGalleryImage");
+        if (img) applyZoom(img);
+    }
+}
+
+function touchDragEnd(e) {
+    isTouchDragging = false;
+}
+
+function enableFullscreenGestures() {
+    document.addEventListener("touchstart", pinchStart, { passive:false });
+    document.addEventListener("touchmove", pinchMove, { passive:false });
+    document.addEventListener("touchend", pinchEnd, { passive:false });
+
+    document.addEventListener("touchstart", touchDragStart, { passive:false });
+    document.addEventListener("touchmove", touchDragMove, { passive:false });
+    document.addEventListener("touchend", touchDragEnd, { passive:false });
+}
+
+function disableFullscreenGestures() {
+    document.removeEventListener("touchstart", pinchStart);
+    document.removeEventListener("touchmove", pinchMove);
+    document.removeEventListener("touchend", pinchEnd);
+
+    document.removeEventListener("touchstart", touchDragStart);
+    document.removeEventListener("touchmove", touchDragMove);
+    document.removeEventListener("touchend", touchDragEnd);
+}
+
 
 // ===========================================
 // Spinner between each transition
