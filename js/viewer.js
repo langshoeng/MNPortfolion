@@ -39,6 +39,31 @@ function createMissingPlaceholder() {
     return div;
 }
 
+// Fullscreen toggle
+function toggleFullscreen() {
+    viewerWindow.classList.toggle("fullscreen-mode");
+}
+
+// Zoom controls
+let zoomLevel = 1;
+let offsetX = 0, offsetY = 0;
+
+function applyZoom(img) {
+    img.style.transform = `scale(${zoomLevel}) translate(${offsetX}px, ${offsetY}px)`;
+}
+
+function zoomIn() {
+    zoomLevel += 0.25;
+    const img = document.getElementById("viewerGalleryImage");
+    if (img) applyZoom(img);
+}
+
+function zoomOut() {
+    zoomLevel = Math.max(1, zoomLevel - 0.25);
+    const img = document.getElementById("viewerGalleryImage");
+    if (img) applyZoom(img);
+}
+
 // ===========================================
 // Spinner between each transition
 // ===========================================
@@ -487,6 +512,42 @@ document.addEventListener("keydown",(e)=>{
 
 });
 
+// Double-click image to toggle fullscreen
+document.addEventListener("dblclick", e => {
+    if (e.target.id === "viewerGalleryImage") {
+        toggleFullscreen();
+    }
+});
+
+// Mouse wheel zoom
+document.addEventListener("wheel", e => {
+    const img = document.getElementById("viewerGalleryImage");
+    if (!img) return;
+    if (e.deltaY < 0) zoomIn();
+    else zoomOut();
+});
+
+// Drag to pan when zoomed
+let isDragging = false, startX, startY;
+document.addEventListener("mousedown", e => {
+    const img = document.getElementById("viewerGalleryImage");
+    if (!img) return;
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+});
+document.addEventListener("mouseup", () => { isDragging = false; });
+document.addEventListener("mousemove", e => {
+    if (!isDragging) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    startX = e.clientX;
+    startY = e.clientY;
+    offsetX += dx / zoomLevel;
+    offsetY += dy / zoomLevel;
+    const img = document.getElementById("viewerGalleryImage");
+    if (img) applyZoom(img);
+});
 
 // ===========================================
 // GLOBAL
