@@ -223,7 +223,7 @@ body{
 /* Progress Bar */
 .skill-progress {
   position: absolute;
-  bottom: -12px;
+  bottom: -12px;   /* bar stays below badge */
   left: 0;
   width: 100%;
   height: 6px;
@@ -243,22 +243,22 @@ body{
 
 .skill-percent {
   position: absolute;
-  left: 50%;                  /* center horizontally */
+  left: 50%;               /* center horizontally */
   transform: translateX(-50%);
-  top: -8px;                  /* just above the skill text */
+  bottom: 28px;            /* place ABOVE the bar, not inside */
   font-size: 14px;
   font-weight: 700;
-  color: #4cafef;             /* accent color */
+  color: #fff;             /* white for visibility */
   opacity: 0;
   transition: opacity 0.25s ease;
   pointer-events: none;
 }
 
-.skill-badge:hover .skill-percent {
+.skill-badge:hover .skill-progress {
   opacity: 1;
 }
 
-.skill-badge:hover .skill-progress {
+.skill-badge:hover .skill-percent {
   opacity: 1;
 }
 
