@@ -18,6 +18,18 @@ const viewerNext = document.getElementById("viewerNextMedia");
 const viewerDots = document.getElementById("viewerDots");
 const viewerCounter = document.getElementById("viewerCounter");
 
+const viewerPlaceholder =
+    document.getElementById("viewerPlaceholder");
+
+const viewerPlaceholderIcon =
+    document.querySelector(".viewerPlaceholderIcon");
+
+const viewerPlaceholderTitle =
+    document.getElementById("viewerPlaceholderTitle");
+
+const viewerPlaceholderText =
+    document.getElementById("viewerPlaceholderText");
+
 
 // ===========================================
 // CURRENT STATE
@@ -72,7 +84,6 @@ function openProject(project){
     currentProject = project;
 
     currentGallery = [];
-
     currentImage = 0;
 
     viewer.classList.add("show");
@@ -83,14 +94,12 @@ function openProject(project){
         "video-mode"
     );
 
-    // Hide gallery controls by default
+    // Hide gallery controls
     viewerPrev.style.display = "none";
     viewerNext.style.display = "none";
 
     viewerMedia.innerHTML = "";
-
     viewerDots.innerHTML = "";
-
     viewerCounter.textContent = "";
 
 
@@ -144,8 +153,7 @@ function openProject(project){
 
         project.software.forEach(app=>{
 
-            const badge =
-                document.createElement("span");
+            const badge = document.createElement("span");
 
             badge.className = "viewerBadge";
 
@@ -225,10 +233,8 @@ function openProject(project){
         viewerWindow.classList.add("gallery-mode");
 
         currentGallery = project.gallery;
-
         currentImage = 0;
 
-        // Show gallery arrows
         viewerPrev.style.display = "";
         viewerNext.style.display = "";
 
@@ -244,7 +250,30 @@ function openProject(project){
 
         buildViewerGallery();
 
+        return;
+
     }
+
+
+    // ======================================
+    // NO MEDIA AVAILABLE
+    // ======================================
+
+    viewerMedia.innerHTML = `
+
+        <div class="viewerPlaceholder">
+
+            <div class="viewerPlaceholderIcon">🖼️</div>
+
+            <h3>Preview Coming Soon</h3>
+
+            <p>
+                This project doesn't have any preview images or videos yet.
+            </p>
+
+        </div>
+
+    `;
 
 }
 
@@ -394,6 +423,28 @@ function previousViewerImage(){
     }
 
     updateViewerGallery();
+
+}
+
+function showPlaceholder(
+    icon,
+    title,
+    text
+){
+
+    viewerPlaceholderIcon.textContent = icon;
+
+    viewerPlaceholderTitle.textContent = title;
+
+    viewerPlaceholderText.textContent = text;
+
+    viewerPlaceholder.classList.add("show");
+
+}
+
+function hidePlaceholder(){
+
+    viewerPlaceholder.classList.remove("show");
 
 }
 
