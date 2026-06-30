@@ -46,6 +46,7 @@ function toggleFullscreen() {
     viewerWindow.classList.toggle("fullscreen-mode");
     if (viewerWindow.classList.contains("fullscreen-mode")) {
         enableFullscreenGestures();
+        updateArrowState(); // <-- add here
     } else {
         disableFullscreenGestures();
         zoomLevel = 1; offsetX = 0; offsetY = 0;
