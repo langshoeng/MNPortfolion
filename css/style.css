@@ -1259,6 +1259,25 @@ footer{
     text-align:center;
 }
 
+/* Fullscreen mode */
+.viewer-window.fullscreen-mode {
+    width:100vw;
+    height:100vh;
+    max-height:100vh;
+    border-radius:0;
+    background:#000;
+}
+
+.viewer-window.fullscreen-mode .viewerContent {
+    display:none; /* hide metadata */
+}
+
+/* Zoomable image */
+.zoomable {
+    cursor:grab;
+    transition:transform 0.25s ease;
+}
+
 .viewer-loading {
     position:absolute;
     inset:0;
@@ -1281,3 +1300,4 @@ footer{
 @keyframes spin {
     to { transform:rotate(360deg); }
 }
+
