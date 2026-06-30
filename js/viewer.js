@@ -691,6 +691,9 @@ document.getElementById("viewerClose").addEventListener("click", handleCloseButt
 // Overlay click always closes viewer
 document.querySelector(".viewer-overlay").addEventListener("click", closeProject);
 
+document.getElementById("viewerPrevProject").addEventListener("click", previousProject);
+document.getElementById("viewerNextProject").addEventListener("click", nextProject);
+
 // ===========================================
 // KEYBOARD
 // ===========================================
