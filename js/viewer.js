@@ -557,6 +557,7 @@ function updateViewerGallery() {
 function nextViewerImage() {
     if (!currentGallery.length) return;
     currentImage = (currentImage + 1) % currentGallery.length;
+    zoomLevel = 1; offsetX = 0; offsetY = 0; // reset here
     updateViewerGallery();
 }
 
@@ -566,6 +567,7 @@ function nextViewerImage() {
 function previousViewerImage() {
     if (!currentGallery.length) return;
     currentImage = (currentImage - 1 + currentGallery.length) % currentGallery.length;
+    zoomLevel = 1; offsetX = 0; offsetY = 0; // reset here
     updateViewerGallery();
 }
 
