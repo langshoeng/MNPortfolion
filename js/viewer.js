@@ -657,23 +657,6 @@ document.addEventListener("touchstart", e => {
     }
 }, { passive:true });
 
-document.addEventListener("touchend", e => {
-    if (e.target.id === "viewerGalleryImage") {
-        const dx = e.changedTouches[0].clientX - touchStartX;
-        const dy = e.changedTouches[0].clientY - touchStartY;
-
-        // Only trigger if horizontal swipe is dominant
-        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
-            if (dx > 0) {
-                previousViewerImage(); // swipe right → previous
-            } else {
-                nextViewerImage(); // swipe left → next
-            }
-        }
-    }
-}, { passive:true });
-
-
 document.addEventListener("keydown",(e)=>{
 
     if(!viewer.classList.contains("show"))
