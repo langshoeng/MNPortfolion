@@ -229,15 +229,27 @@ function clampOffsets(img) {
     const containerWidth = container.width;
     const containerHeight = container.height;
 
-    // Base size of the image as rendered (before zoom)
-    const baseWidth = img.offsetWidth;
-    const baseHeight = img.offsetHeight;
+    // Natural image ratio
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const containerRatio = containerWidth / containerHeight;
 
-    // Scaled size (after zoom)
+    // Base size of image as displayed with object-fit:contain
+    let baseWidth, baseHeight;
+    if (imgRatio > containerRatio) {
+        // Image is wider than container
+        baseWidth = containerWidth;
+        baseHeight = containerWidth / imgRatio;
+    } else {
+        // Image is taller than container
+        baseHeight = containerHeight;
+        baseWidth = containerHeight * imgRatio;
+    }
+
+    // Scaled size after zoom
     const scaledWidth = baseWidth * zoomLevel;
     const scaledHeight = baseHeight * zoomLevel;
 
-    // Calculate max pan in translate space
+    // Max allowed offsets in translate space
     const maxOffsetX = Math.max(0, (scaledWidth - containerWidth) / (2 * zoomLevel));
     const maxOffsetY = Math.max(0, (scaledHeight - containerHeight) / (2 * zoomLevel));
 
