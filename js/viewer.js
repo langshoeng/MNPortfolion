@@ -273,55 +273,65 @@ function buildViewerGallery(){
 // UPDATE GALLERY
 // ===========================================
 
-function updateViewerGallery(){
+function updateViewerGallery() {
+    // Try to get the current image element
+    const img = document.getElementById("viewerGalleryImage");
 
-    const img =
-        document.getElementById("viewerGalleryImage");
+    // If no image element exists, rebuild it
+    if (!img) {
+        viewerMedia.innerHTML = `
+            <img
+                id="viewerGalleryImage"
+                alt="Gallery Image"
+            >
+        `;
+    }
 
-    if(!img) return;
+    const galleryImg = document.getElementById("viewerGalleryImage");
 
-    // Fade Out
+    // Fade out before switching
+    galleryImg.style.opacity = "0";
 
-    img.style.opacity = "0";
+    setTimeout(() => {
+        galleryImg.src = currentGallery[currentImage];
 
-    setTimeout(()=>{
-        img.src = currentGallery[currentImage];
-    
         // Fallback if image fails
-        img.onerror = () => {
-            // Clear out the media wrapper
-            viewerMedia.innerHTML = "";
-    
-            // Insert placeholder instead of image
+        galleryImg.onerror = () => {
             const placeholder = createMissingPlaceholder();
-            viewerMedia.appendChild(placeholder);
+            placeholder.style.opacity = "1"; // ensure visible
+            galleryImg.replaceWith(placeholder);
         };
-    
+
+        // Update counter
         viewerCounter.textContent =
             `${currentImage + 1} of ${currentGallery.length}`;
-    
+
+        // Preload neighbors
         preloadGallery();
+
+        // Rebuild dots
         viewerDots.innerHTML = "";
-    
-        currentGallery.forEach((image,index)=>{
+        currentGallery.forEach((image, index) => {
             const dot = document.createElement("button");
             dot.type = "button";
             dot.className =
-                index===currentImage
-                ? "viewerDot active"
-                : "viewerDot";
-    
-            dot.onclick=()=>{
-                currentImage=index;
+                index === currentImage
+                    ? "viewerDot active"
+                    : "viewerDot";
+
+            dot.onclick = () => {
+                currentImage = index;
                 updateViewerGallery();
             };
-    
+
             viewerDots.appendChild(dot);
         });
-    
-    },120);
 
+        // Fade back in
+        galleryImg.style.opacity = "1";
+    }, 120);
 }
+
 
 function preloadGallery(){
 
