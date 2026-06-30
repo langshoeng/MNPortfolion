@@ -245,8 +245,8 @@ body{
   position: absolute;
   left: 50%;               /* center horizontally */
   transform: translateX(-50%);
-  bottom: -2px;            /* place inside the bar */
-  font-size: 12px;
+  bottom: 20px;            /* place above the bar */
+  font-size: 14px;
   font-weight: 600;
   color: #fff;             /* white for visibility */
   opacity: 0;
