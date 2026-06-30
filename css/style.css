@@ -258,10 +258,6 @@ body{
   opacity: 1;
 }
 
-.skill-badge:hover .skill-fill {
-
-}
-
 .skill-badge:hover .skill-percent {
   opacity: 1;
 }
