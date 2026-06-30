@@ -122,12 +122,20 @@ document.querySelectorAll(".fade-up, .project-card").forEach(el => {
     observer.observe(el);
 });
 
+// ===============================
+// Skill Badge Animation
+// ===============================
+
 document.querySelectorAll('.skill-badge').forEach(badge => {
   const fill = badge.querySelector('.skill-fill');
   const percentText = badge.querySelector('.skill-percent');
   const target = parseInt(badge.getAttribute('data-skill'), 10);
 
+  let animated = false; // track if already animated
+
   badge.addEventListener('mouseenter', () => {
+    if (animated) return; // prevent re-running
+
     // Animate bar
     fill.style.width = target + '%';
 
@@ -141,12 +149,8 @@ document.querySelectorAll('.skill-badge').forEach(badge => {
         clearInterval(interval);
       }
       percentText.textContent = current + '%';
-    }, 30); // update every 30ms
-  });
+    }, 30);
 
-  badge.addEventListener('mouseleave', () => {
-    // Reset bar and text
-    fill.style.width = '0%';
-    percentText.textContent = '0%';
+    animated = true; // mark as done
   });
 });
