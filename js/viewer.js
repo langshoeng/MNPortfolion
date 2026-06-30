@@ -30,6 +30,8 @@ let pinchZoomLevel = 1;
 let currentProject = null;
 let currentGallery = [];
 let currentImage = 0;
+let allProjects = []; // fill this with your project card data
+let currentProjectIndex = 0;
 
 // ===========================================
 // Missing Image Placeholder
@@ -667,6 +669,17 @@ function closeProject(){
 
 }
 
+function nextProject() {
+    if (!allProjects.length) return;
+    currentProjectIndex = (currentProjectIndex + 1) % allProjects.length;
+    openProject(allProjects[currentProjectIndex]); // reuse your existing openProject
+}
+
+function previousProject() {
+    if (!allProjects.length) return;
+    currentProjectIndex = (currentProjectIndex - 1 + allProjects.length) % allProjects.length;
+    openProject(allProjects[currentProjectIndex]);
+}
 
 // ===========================================
 // BUTTON EVENTS
