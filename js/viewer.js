@@ -61,6 +61,7 @@ let zoomLevel = 1;
 let offsetX = 0, offsetY = 0;
 
 function applyZoom(img) {
+    clampOffsets(img);
     img.style.transform = `scale(${zoomLevel}) translate(${offsetX}px, ${offsetY}px)`;
     updateArrowState();
 }
@@ -220,6 +221,29 @@ document.addEventListener("touchend", e => {
     }
     isSwipeCandidate = false;
 }, { passive:true });
+
+function clampOffsets(img) {
+    if (!img) return;
+
+    const rect = img.getBoundingClientRect();
+    const container = viewerWindow.getBoundingClientRect();
+
+    // Half dimensions of scaled image
+    const halfWidth = (rect.width * zoomLevel) / 2;
+    const halfHeight = (rect.height * zoomLevel) / 2;
+
+    // Half dimensions of container
+    const halfContainerWidth = container.width / 2;
+    const halfContainerHeight = container.height / 2;
+
+    // Max allowed offsets so image edge stays visible
+    const maxOffsetX = Math.max(0, halfWidth - halfContainerWidth);
+    const maxOffsetY = Math.max(0, halfHeight - halfContainerHeight);
+
+    // Clamp offsets
+    offsetX = Math.min(maxOffsetX, Math.max(-maxOffsetX, offsetX));
+    offsetY = Math.min(maxOffsetY, Math.max(-maxOffsetY, offsetY));
+}
 
 function enableFullscreenGestures() {
     document.addEventListener("touchstart", pinchStart, { passive:false });
