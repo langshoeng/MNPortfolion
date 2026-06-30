@@ -180,21 +180,31 @@ body{
    SKILLS
 =========================================== */
 
-#skills{
-    padding:100px 0;
-    background:#151515;
+#skills {
+    padding: 100px 0;
+    background: #151515;
 }
 
-#skills h3{
-    padding:40px;
-    background:#222;
-    border-radius:15px;
-    transition:.35s;
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 40px;
 }
 
-#skills h3:hover{
-    transform:translateY(-10px);
-    background:#333;
+.skill-badge {
+    background: #292929;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 999px; /* pill shape */
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.25s ease;
+}
+
+.skill-badge:hover {
+    background: #444;
 }
 
 
