@@ -29,6 +29,15 @@ let currentGallery = [];
 
 let currentImage = 0;
 
+// ===========================================
+// Missing Image Placeholder
+// ===========================================
+function createMissingPlaceholder() {
+    const div = document.createElement("div");
+    div.className = "missing-media";
+    div.textContent = "Preview not available";
+    return div;
+}
 
 // ===========================================
 // YOUTUBE
@@ -170,13 +179,12 @@ function openProject(project){
         viewerWindow.classList.add("video-mode");
 
         viewerMedia.innerHTML = `
-
             <iframe
                 src="${getYoutubeEmbed(project.video.url)}"
                 allow="autoplay; fullscreen; encrypted-media"
                 allowfullscreen
+                onerror="this.replaceWith(createMissingPlaceholder())"
             ></iframe>
-
         `;
 
         return;
@@ -196,16 +204,9 @@ function openProject(project){
         viewerWindow.classList.add("video-mode");
 
         viewerMedia.innerHTML = `
-
-            <video controls autoplay>
-
-                <source
-                    src="${project.video.url}"
-                    type="video/mp4"
-                >
-
+            <video controls autoplay onerror="this.replaceWith(createMissingPlaceholder())">
+                <source src="${project.video.url}" type="video/mp4">
             </video>
-
         `;
 
         return;
@@ -233,14 +234,18 @@ function openProject(project){
         viewerNext.style.display = "";
 
         viewerMedia.innerHTML = `
-
             <img
                 id="viewerGalleryImage"
                 src="${currentGallery[0]}"
                 alt="Gallery Image"
             >
-
         `;
+        
+        const img = document.getElementById("viewerGalleryImage");
+        img.onerror = () => {
+            const placeholder = createMissingPlaceholder();
+            img.replaceWith(placeholder);
+        };
 
         buildViewerGallery();
 
@@ -279,9 +284,14 @@ function updateViewerGallery(){
     img.style.opacity = "0";
 
     setTimeout(()=>{
-
         img.src = currentGallery[currentImage];
-
+    
+        // Fallback if image fails
+        img.onerror = () => {
+            const placeholder = createMissingPlaceholder();
+            img.replaceWith(placeholder);
+        };
+    
         viewerCounter.textContent =
             `${currentImage + 1} of ${currentGallery.length}`;
 
