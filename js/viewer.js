@@ -93,10 +93,8 @@ function getDistance(touches) {
     return Math.sqrt(dx*dx + dy*dy);
 }
 
-// ===========================================
 // Pinch Gesture Handlers (fullscreen only)
-// ===========================================
-let pinchActive = false; // <-- add this at the top
+let pinchActive = false;
 
 function pinchStart(e) {
     if (e.touches.length === 2) {
@@ -117,7 +115,10 @@ function pinchMove(e) {
 }
 
 function pinchEnd(e) {
-    pinchActive = false; // reset flag when pinch ends
+    // Only reset when ALL fingers are lifted
+    if (e.touches.length === 0) {
+        pinchActive = false;
+    }
 }
 
 // ===========================================
@@ -182,26 +183,30 @@ function touchDragEnd(e) {
     isTouchDragging = false;
 }
 
-// Swipe detection variables
+// ===========================================
+// Swipe Navigation (fullscreen only, safe threshold)
+// ===========================================
 let swipeStartX = 0, swipeStartY = 0;
 let isSwipeCandidate = false;
 
 document.addEventListener("touchstart", e => {
     if (!viewerWindow.classList.contains("fullscreen-mode")) return;
+
+    // Only allow swipe if one finger AND not zoomed
     if (e.touches.length === 1 && zoomLevel === 1) {
-        // Only allow swipe if not zoomed
         swipeStartX = e.touches[0].clientX;
         swipeStartY = e.touches[0].clientY;
         isSwipeCandidate = true;
     } else {
-        isSwipeCandidate = false; // disable swipe if zoomed or multi-touch
+        isSwipeCandidate = false;
     }
 }, { passive:true });
 
 document.addEventListener("touchend", e => {
     if (!viewerWindow.classList.contains("fullscreen-mode")) return;
     if (!isSwipeCandidate) return;
-    if (pinchActive) return; // <-- block swipe if pinch was active
+    if (pinchActive) return; // block swipe if pinch was active
+    if (zoomLevel > 1) return; // block swipe if zoomed in
 
     const dx = e.changedTouches[0].clientX - swipeStartX;
     const dy = e.changedTouches[0].clientY - swipeStartY;
@@ -494,7 +499,6 @@ function buildViewerGallery(){
 function updateViewerGallery() {
     let galleryImg = document.getElementById("viewerGalleryImage");
 
-    // If placeholder was showing, rebuild <img>
     if (!galleryImg) {
         viewerMedia.innerHTML = `<img id="viewerGalleryImage" alt="Gallery Image" class="zoomable">`;
         galleryImg = document.getElementById("viewerGalleryImage");
@@ -504,22 +508,24 @@ function updateViewerGallery() {
     const preload = new Image();
     preload.src = nextSrc;
 
-    // Show spinner while loading
     showLoadingSpinner();
 
     preload.onload = () => {
-        // Swap immediately while spinner is still visible
         galleryImg.src = nextSrc;
         galleryImg.style.opacity = "0";
 
-        // Remove spinner only after new image is set
         hideLoadingSpinner();
 
-        // Fade in the new image
         requestAnimationFrame(() => {
             galleryImg.style.transition = "opacity 0.3s ease";
             galleryImg.style.opacity = "1";
         });
+
+        // 🔑 Reset zoom when switching images
+        zoomLevel = 1;
+        offsetX = 0;
+        offsetY = 0;
+        applyZoom(galleryImg);
     };
 
     preload.onerror = () => {
@@ -529,7 +535,6 @@ function updateViewerGallery() {
         galleryImg.replaceWith(placeholder);
     };
 
-    // Update counter and dots
     viewerCounter.textContent = `${currentImage + 1} of ${currentGallery.length}`;
     preloadGallery();
 
