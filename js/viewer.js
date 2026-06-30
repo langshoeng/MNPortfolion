@@ -274,62 +274,54 @@ function buildViewerGallery(){
 // ===========================================
 
 function updateViewerGallery() {
-    // Try to get the current image element
-    const img = document.getElementById("viewerGalleryImage");
-
-    // If no image element exists, rebuild it
-    if (!img) {
+    // Ensure we always have an <img> element
+    let galleryImg = document.getElementById("viewerGalleryImage");
+    if (!galleryImg) {
         viewerMedia.innerHTML = `
-            <img
-                id="viewerGalleryImage"
-                alt="Gallery Image"
-            >
+            <img id="viewerGalleryImage" alt="Gallery Image">
         `;
+        galleryImg = document.getElementById("viewerGalleryImage");
     }
 
-    const galleryImg = document.getElementById("viewerGalleryImage");
+    // Preload the next image before swapping
+    const nextSrc = currentGallery[currentImage];
+    const preload = new Image();
+    preload.src = nextSrc;
 
-    // Fade out before switching
-    galleryImg.style.opacity = "0";
+    // When preload finishes, swap immediately
+    preload.onload = () => {
+        galleryImg.style.transition = "opacity 0.3s ease";
+        galleryImg.style.opacity = "0";
 
-    setTimeout(() => {
-        galleryImg.src = currentGallery[currentImage];
+        // After fade‑out, change src and fade back in
+        setTimeout(() => {
+            galleryImg.src = nextSrc;
+            galleryImg.style.opacity = "1";
+        }, 150);
+    };
 
-        // Fallback if image fails
-        galleryImg.onerror = () => {
-            const placeholder = createMissingPlaceholder();
-            placeholder.style.opacity = "1"; // ensure visible
-            galleryImg.replaceWith(placeholder);
+    // Fallback if image fails
+    preload.onerror = () => {
+        const placeholder = createMissingPlaceholder();
+        placeholder.style.opacity = "1";
+        galleryImg.replaceWith(placeholder);
+    };
+
+    // Update counter and dots
+    viewerCounter.textContent = `${currentImage + 1} of ${currentGallery.length}`;
+    preloadGallery();
+
+    viewerDots.innerHTML = "";
+    currentGallery.forEach((image, index) => {
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = index === currentImage ? "viewerDot active" : "viewerDot";
+        dot.onclick = () => {
+            currentImage = index;
+            updateViewerGallery();
         };
-
-        // Update counter
-        viewerCounter.textContent =
-            `${currentImage + 1} of ${currentGallery.length}`;
-
-        // Preload neighbors
-        preloadGallery();
-
-        // Rebuild dots
-        viewerDots.innerHTML = "";
-        currentGallery.forEach((image, index) => {
-            const dot = document.createElement("button");
-            dot.type = "button";
-            dot.className =
-                index === currentImage
-                    ? "viewerDot active"
-                    : "viewerDot";
-
-            dot.onclick = () => {
-                currentImage = index;
-                updateViewerGallery();
-            };
-
-            viewerDots.appendChild(dot);
-        });
-
-        // Fade back in
-        galleryImg.style.opacity = "1";
-    }, 120);
+        viewerDots.appendChild(dot);
+    });
 }
 
 
