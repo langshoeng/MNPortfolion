@@ -186,25 +186,25 @@ body{
 }
 
 .skills-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 40px;
 }
 
 .skill-badge {
-    background: #292929;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 999px; /* pill shape */
-    font-size: 16px;
-    font-weight: 500;
-    transition: background 0.25s ease;
+  background: #292929;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 200px; /* pill shape */
+  font-size: 16px;
+  font-weight: 500;
+  transition: background 0.25s ease;
 }
 
 .skill-badge:hover {
-    background: #444;
+  background: #444;
 }
 
 
