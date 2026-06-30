@@ -243,8 +243,9 @@ function openProject(project){
         
         const img = document.getElementById("viewerGalleryImage");
         img.onerror = () => {
+            viewerMedia.innerHTML = "";
             const placeholder = createMissingPlaceholder();
-            img.replaceWith(placeholder);
+            viewerMedia.appendChild(placeholder);
         };
 
         buildViewerGallery();
@@ -288,40 +289,36 @@ function updateViewerGallery(){
     
         // Fallback if image fails
         img.onerror = () => {
+            // Clear out the media wrapper
+            viewerMedia.innerHTML = "";
+    
+            // Insert placeholder instead of image
             const placeholder = createMissingPlaceholder();
-            img.replaceWith(placeholder);
+            viewerMedia.appendChild(placeholder);
         };
     
         viewerCounter.textContent =
             `${currentImage + 1} of ${currentGallery.length}`;
-
+    
         preloadGallery();
         viewerDots.innerHTML = "";
-
+    
         currentGallery.forEach((image,index)=>{
-
-            const dot =
-                document.createElement("button");
-
+            const dot = document.createElement("button");
             dot.type = "button";
-
             dot.className =
                 index===currentImage
                 ? "viewerDot active"
                 : "viewerDot";
-
+    
             dot.onclick=()=>{
-
                 currentImage=index;
-
                 updateViewerGallery();
-
             };
-
+    
             viewerDots.appendChild(dot);
-
         });
-
+    
     },120);
 
 }
