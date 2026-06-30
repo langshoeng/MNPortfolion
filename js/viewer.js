@@ -260,10 +260,20 @@ function handleCloseButton() {
         // Case 2: fullscreen + default transform
         toggleFullscreen(); // exit fullscreen back to metadata mode
         return;
-    }
+    } else {
+        // Metadata mode
+        if (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0) {
+            // Reset transform if zoomed/panned
+            zoomLevel = 1;
+            offsetX = 0;
+            offsetY = 0;
+            if (img) applyZoom(img);
+            return; // stop here, don't close viewer yet
+        }
 
-    // Case 3: metadata mode + default transform
-    closeViewer(); // your existing function to exit viewer
+        // Case 3: metadata mode + default transform
+        closeProject(); // exit viewer entirely
+    }
 }
 
 // ===========================================
