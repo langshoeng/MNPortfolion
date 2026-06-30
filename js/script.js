@@ -143,7 +143,7 @@ document.querySelectorAll('.skill-badge').forEach(badge => {
 
     // Animate number count-up
     let current = 0;
-    const step = Math.ceil(target / 30); // adjust speed
+    const step = Math.ceil(target / 30);
     const interval = setInterval(() => {
       current += step;
       if (current >= target) {
@@ -160,3 +160,4 @@ document.querySelectorAll('.skill-badge').forEach(badge => {
     percentText.textContent = '0%';
   });
 });
+
