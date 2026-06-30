@@ -247,32 +247,34 @@ function disableFullscreenGestures() {
 function handleCloseButton() {
     const img = document.getElementById("viewerGalleryImage");
 
+    // If image exists, check transform state
+    const isTransformed = (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0);
+
     if (viewerWindow.classList.contains("fullscreen-mode")) {
-        // Case 1: fullscreen + zoomed/panned
-        if (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0) {
+        if (isTransformed) {
+            // Case 1: fullscreen + zoomed/panned
             zoomLevel = 1;
             offsetX = 0;
             offsetY = 0;
             if (img) applyZoom(img);
-            return; // stop here, don't exit fullscreen
+            return;
+        } else {
+            // Case 2: fullscreen + default transform
+            toggleFullscreen(); // exit fullscreen back to metadata mode
+            return;
         }
-
-        // Case 2: fullscreen + default transform
-        toggleFullscreen(); // exit fullscreen back to metadata mode
-        return;
     } else {
-        // Metadata mode
-        if (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0) {
-            // Reset transform if zoomed/panned
+        if (isTransformed) {
+            // Case 3: metadata mode + zoomed/panned
             zoomLevel = 1;
             offsetX = 0;
             offsetY = 0;
             if (img) applyZoom(img);
-            return; // stop here, don't close viewer yet
+            return;
+        } else {
+            // Case 4: metadata mode + default transform
+            closeProject(); // exit viewer entirely
         }
-
-        // Case 3: metadata mode + default transform
-        closeProject(); // exit viewer entirely
     }
 }
 
