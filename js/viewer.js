@@ -197,203 +197,68 @@ function openProject(project){
 
     currentProject = project;
 
-    currentGallery = [];
-
-    currentImage = 0;
-
     viewer.classList.add("show");
 
-    viewerWindow.classList.remove(
-        "gallery-mode",
-        "video-mode"
-    );
+    resetViewer();
 
-    hidePlaceholder();
+    viewerTitle.textContent = project.title || "";
+    viewerDescription.textContent = project.description || "";
 
-    viewerPrev.style.display = "none";
-    viewerNext.style.display = "none";
+    buildMeta(project);
+    buildSoftware(project);
 
-    viewerMedia.innerHTML = "";
+    // YouTube
+    if(project.video && project.video.type === "youtube"){
 
-    viewerDots.innerHTML = "";
-
-    viewerCounter.textContent = "";
-
-
-    // ======================================
-    // TITLE
-    // ======================================
-
-    viewerTitle.textContent =
-        project.title || "";
-
-
-    // ======================================
-    // META
-    // ======================================
-
-    viewerMeta.innerHTML = `
-
-        <div>
-
-            <strong>Client</strong><br>
-
-            ${project.client || "-"}
-
-        </div>
-
-        <div style="margin-top:12px;">
-
-            <strong>Year</strong><br>
-
-            ${project.year || "-"}
-
-        </div>
-
-    `;
-
-
-    // ======================================
-    // DESCRIPTION
-    // ======================================
-
-    viewerDescription.textContent =
-        project.description || "";
-
-
-    // ======================================
-    // SOFTWARE
-    // ======================================
-
-    viewerSoftware.innerHTML = "";
-
-    if(project.software){
-
-        project.software.forEach(app=>{
-
-            const badge =
-                document.createElement("span");
-
-            badge.className =
-                "viewerBadge";
-
-            badge.textContent =
-                app;
-
-            viewerSoftware.appendChild(badge);
-
-        });
-
-    }
-
-
-    // ======================================
-    // YOUTUBE
-    // ======================================
-
-    if(
-        project.video &&
-        project.video.type === "youtube"
-    ){
-
-        viewerWindow.classList.add(
-            "video-mode"
-        );
+        viewerWindow.classList.add("video-mode");
 
         viewerMedia.innerHTML = `
-
             <iframe
                 src="${getYoutubeEmbed(project.video.url)}"
                 allow="autoplay; fullscreen; encrypted-media"
                 allowfullscreen
             ></iframe>
-
         `;
 
         return;
-
     }
 
+    // MP4
+    if(project.video && project.video.type === "mp4"){
 
-    // ======================================
-    // LOCAL MP4
-    // ======================================
-
-    if(
-        project.video &&
-        project.video.type === "mp4"
-    ){
-
-        viewerWindow.classList.add(
-            "video-mode"
-        );
+        viewerWindow.classList.add("video-mode");
 
         viewerMedia.innerHTML = `
-
             <video controls autoplay>
-
-                <source
-                    src="${project.video.url}"
-                    type="video/mp4"
-                >
-
+                <source src="${project.video.url}" type="video/mp4">
             </video>
-
         `;
 
         return;
-
     }
 
+    // Gallery
+    if(project.gallery && project.gallery.length){
 
-    // ======================================
-    // IMAGE GALLERY
-    // ======================================
+        viewerWindow.classList.add("gallery-mode");
 
-    if(
-        project.gallery &&
-        project.gallery.length
-    ){
-
-        viewerWindow.classList.add(
-            "gallery-mode"
-        );
-
-        currentGallery =
-            project.gallery;
-
+        currentGallery = project.gallery;
         currentImage = 0;
 
         viewerPrev.style.display = "";
-
         viewerNext.style.display = "";
 
         viewerMedia.innerHTML = `
-
-            <img
-                id="viewerGalleryImage"
-                alt="Gallery Image"
-            >
-
+            <img id="viewerGalleryImage" alt="Gallery Image">
         `;
 
         buildViewerGallery();
 
         return;
-
     }
 
-
-    // ======================================
-    // NO MEDIA
-    // ======================================
-
-    showPlaceholder(
-        "🖼️",
-        "Preview Coming Soon",
-        "This project doesn't have preview images or videos yet."
-    );
-
+    // Placeholder
+    showPlaceholder();
 }
 
 // ===========================================
@@ -561,35 +426,6 @@ function previousViewerImage(){
 
 
 // ===========================================
-// PLACEHOLDER
-// ===========================================
-
-function showPlaceholder(icon,title,text){
-
-    viewerMedia.innerHTML = `
-
-        <div class="viewerPlaceholder">
-
-            <div class="viewerPlaceholderIcon">
-                ${icon}
-            </div>
-
-            <h3>
-                ${title}
-            </h3>
-
-            <p>
-                ${text}
-            </p>
-
-        </div>
-
-    `;
-
-}
-
-
-// ===========================================
 // CLOSE
 // ===========================================
 
@@ -597,23 +433,7 @@ function closeProject(){
 
     viewer.classList.remove("show");
 
-    viewerWindow.classList.remove(
-        "gallery-mode",
-        "video-mode"
-    );
-
-    viewerMedia.innerHTML = "";
-
-    viewerDots.innerHTML = "";
-
-    viewerCounter.textContent = "";
-
-    viewerPrev.style.display = "none";
-    viewerNext.style.display = "none";
-
-    currentGallery = [];
-
-    currentImage = 0;
+    resetViewer();
 
     currentProject = null;
 
@@ -678,20 +498,6 @@ document.addEventListener("keydown",(e)=>{
 
 });
 
-
-// ===========================================
-// IMAGE FADE-IN
-// ===========================================
-
-document.addEventListener("load",(e)=>{
-
-    if(e.target.id === "viewerGalleryImage"){
-
-        e.target.style.opacity = "1";
-
-    }
-
-},true);
 
 
 // ===========================================
