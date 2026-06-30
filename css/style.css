@@ -900,6 +900,72 @@ footer{
 }
 
 /* ==========================================
+   Viewer Placeholder
+========================================== */
+
+#viewerPlaceholder{
+
+    position:absolute;
+    inset:0;
+
+    display:none;
+
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    gap:18px;
+
+    text-align:center;
+
+    background:
+        radial-gradient(circle at center,
+        #2d2d2d,
+        #111);
+
+    color:white;
+
+    padding:40px;
+
+}
+
+#viewerPlaceholder.show{
+
+    display:flex;
+
+}
+
+.viewerPlaceholderIcon{
+
+    font-size:72px;
+
+    opacity:.85;
+
+}
+
+#viewerPlaceholderTitle{
+
+    margin:0;
+
+    font-size:30px;
+
+    font-weight:700;
+
+}
+
+#viewerPlaceholderText{
+
+    max-width:420px;
+
+    color:#a8a8a8;
+
+    line-height:1.8;
+
+    margin:0;
+
+}
+
+/* ==========================================
    Navigation Arrows
 ========================================== */
 
