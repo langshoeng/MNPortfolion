@@ -160,4 +160,3 @@ document.querySelectorAll('.skill-badge').forEach(badge => {
     percentText.textContent = '0%';
   });
 });
-
