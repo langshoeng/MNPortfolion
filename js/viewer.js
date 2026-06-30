@@ -521,11 +521,6 @@ function updateViewerGallery() {
             galleryImg.style.opacity = "1";
         });
 
-        // 🔑 Reset zoom when switching images
-        zoomLevel = 1;
-        offsetX = 0;
-        offsetY = 0;
-        applyZoom(galleryImg);
     };
 
     preload.onerror = () => {
