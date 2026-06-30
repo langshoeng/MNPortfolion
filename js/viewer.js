@@ -95,6 +95,7 @@ function getDistance(touches) {
 
 // Pinch Gesture Handlers (fullscreen only)
 let pinchActive = false;
+let pinchJustEnded = false;
 
 function pinchStart(e) {
     if (e.touches.length === 2) {
@@ -115,9 +116,10 @@ function pinchMove(e) {
 }
 
 function pinchEnd(e) {
-    // Only reset when ALL fingers are lifted
     if (e.touches.length === 0) {
         pinchActive = false;
+        pinchJustEnded = true;
+        setTimeout(() => { pinchJustEnded = false; }, 100); // short guard window
     }
 }
 
@@ -205,19 +207,16 @@ document.addEventListener("touchstart", e => {
 document.addEventListener("touchend", e => {
     if (!viewerWindow.classList.contains("fullscreen-mode")) return;
     if (!isSwipeCandidate) return;
-    if (pinchActive) return; // block swipe if pinch was active
-    if (zoomLevel > 1) return; // block swipe if zoomed in
+    if (pinchActive) return;
+    if (pinchJustEnded) return;   // <-- new guard
+    if (zoomLevel > 1) return;
 
     const dx = e.changedTouches[0].clientX - swipeStartX;
     const dy = e.changedTouches[0].clientY - swipeStartY;
 
-    // Require strong horizontal movement
     if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
-        if (dx > 0) {
-            previousViewerImage();
-        } else {
-            nextViewerImage();
-        }
+        if (dx > 0) previousViewerImage();
+        else nextViewerImage();
     }
     isSwipeCandidate = false;
 }, { passive:true });
