@@ -294,6 +294,8 @@ function buildViewerGallery(){
 
 function updateViewerGallery() {
     let galleryImg = document.getElementById("viewerGalleryImage");
+
+    // If placeholder was showing, rebuild <img>
     if (!galleryImg) {
         viewerMedia.innerHTML = `<img id="viewerGalleryImage" alt="Gallery Image">`;
         galleryImg = document.getElementById("viewerGalleryImage");
@@ -307,14 +309,18 @@ function updateViewerGallery() {
     showLoadingSpinner();
 
     preload.onload = () => {
+        // Swap immediately to the new image
+        galleryImg.src = nextSrc;
+
+        // Start with opacity 0, then fade in
         galleryImg.style.transition = "opacity 0.3s ease";
         galleryImg.style.opacity = "0";
 
-        setTimeout(() => {
-            galleryImg.src = nextSrc;
+        requestAnimationFrame(() => {
             galleryImg.style.opacity = "1";
-            hideLoadingSpinner(); // remove spinner once loaded
-        }, 150);
+        });
+
+        hideLoadingSpinner();
     };
 
     preload.onerror = () => {
@@ -339,6 +345,24 @@ function updateViewerGallery() {
         };
         viewerDots.appendChild(dot);
     });
+}
+
+// ===========================================
+// NEXT IMAGE
+// ===========================================
+function nextViewerImage() {
+    if (!currentGallery.length) return;
+    currentImage = (currentImage + 1) % currentGallery.length;
+    updateViewerGallery();
+}
+
+// ===========================================
+// PREVIOUS IMAGE
+// ===========================================
+function previousViewerImage() {
+    if (!currentGallery.length) return;
+    currentImage = (currentImage - 1 + currentGallery.length) % currentGallery.length;
+    updateViewerGallery();
 }
 
 
@@ -378,34 +402,6 @@ document.addEventListener("load",(e)=>{
     }
 
 },true);
-
-// ===========================================
-// NEXT IMAGE
-// ===========================================
-function nextViewerImage() {
-    if (!currentGallery.length) return;
-
-    currentImage++;
-    if (currentImage >= currentGallery.length) {
-        currentImage = 0;
-    }
-
-    updateViewerGallery(); // preload-based transition
-}
-
-// ===========================================
-// PREVIOUS IMAGE
-// ===========================================
-function previousViewerImage() {
-    if (!currentGallery.length) return;
-
-    currentImage--;
-    if (currentImage < 0) {
-        currentImage = currentGallery.length - 1;
-    }
-
-    updateViewerGallery(); // preload-based transition
-}
 
 
 // ===========================================
