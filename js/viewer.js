@@ -225,22 +225,21 @@ document.addEventListener("touchend", e => {
 function clampOffsets(img) {
     if (!img) return;
 
-    // Get the rendered size of the image (before zoom)
-    const baseWidth = img.offsetWidth;
-    const baseHeight = img.offsetHeight;
-
-    // Container size
     const container = viewerWindow.getBoundingClientRect();
     const containerWidth = container.width;
     const containerHeight = container.height;
 
-    // Scaled dimensions
+    // Base size of the image as rendered (before zoom)
+    const baseWidth = img.offsetWidth;
+    const baseHeight = img.offsetHeight;
+
+    // Scaled size
     const scaledWidth = baseWidth * zoomLevel;
     const scaledHeight = baseHeight * zoomLevel;
 
-    // Max allowed offsets so edges stay visible
-    const maxOffsetX = Math.max(0, (scaledWidth - containerWidth) / 2);
-    const maxOffsetY = Math.max(0, (scaledHeight - containerHeight) / 2);
+    // How far the image can move before an edge disappears
+    const maxOffsetX = Math.max(0, (scaledWidth - containerWidth) / (2 * zoomLevel));
+    const maxOffsetY = Math.max(0, (scaledHeight - containerHeight) / (2 * zoomLevel));
 
     // Clamp offsets
     offsetX = Math.min(maxOffsetX, Math.max(-maxOffsetX, offsetX));
