@@ -259,7 +259,7 @@ body{
 }
 
 .skill-badge:hover .skill-fill {
-  width: inherit; /* animate to inline style width */
+
 }
 
 .skill-badge:hover .skill-percent {
