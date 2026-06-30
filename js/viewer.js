@@ -403,7 +403,6 @@ function openProject(project){
 function buildViewerGallery(){
 
     viewerPrev.onclick = previousViewerImage;
-
     viewerNext.onclick = nextViewerImage;
 
     updateViewerGallery();
@@ -417,12 +416,9 @@ function buildViewerGallery(){
 
 function updateViewerGallery(){
 
-    const img =
-        document.getElementById("viewerGalleryImage");
+    const img = document.getElementById("viewerGalleryImage");
 
     if(!img) return;
-
-    // Fade Out
 
     img.style.opacity = "0";
 
@@ -433,73 +429,94 @@ function updateViewerGallery(){
         viewerCounter.textContent =
             `${currentImage + 1} of ${currentGallery.length}`;
 
+        buildViewerDots();
+
         preloadGallery();
-        viewerDots.innerHTML = "";
-
-        currentGallery.forEach((image,index)=>{
-
-            const dot =
-                document.createElement("button");
-
-            dot.type = "button";
-
-            dot.className =
-                index===currentImage
-                ? "viewerDot active"
-                : "viewerDot";
-
-            dot.onclick=()=>{
-
-                currentImage=index;
-
-                updateViewerGallery();
-
-            };
-
-            viewerDots.appendChild(dot);
-
-        });
 
     },120);
 
 }
 
+
+// ===========================================
+// BUILD DOTS
+// ===========================================
+
+function buildViewerDots(){
+
+    viewerDots.innerHTML = "";
+
+    currentGallery.forEach((image,index)=>{
+
+        const dot = document.createElement("button");
+
+        dot.type = "button";
+
+        dot.className =
+            index === currentImage
+            ? "viewerDot active"
+            : "viewerDot";
+
+        dot.onclick = ()=>{
+
+            if(index === currentImage)
+                return;
+
+            currentImage = index;
+
+            updateViewerGallery();
+
+        };
+
+        viewerDots.appendChild(dot);
+
+    });
+
+}
+
+
+// ===========================================
+// PRELOAD
+// ===========================================
+
 function preloadGallery(){
 
-    if(currentGallery.length<2)
+    if(currentGallery.length < 2)
         return;
 
-    const next =
-        new Image();
+    const next = new Image();
 
     next.src =
         currentGallery[
-            (currentImage+1)
-            %
+            (currentImage + 1) %
             currentGallery.length
         ];
 
-    const prev =
-        new Image();
+    const prev = new Image();
 
     prev.src =
         currentGallery[
-            (currentImage-1+currentGallery.length)
-            %
+            (currentImage - 1 + currentGallery.length) %
             currentGallery.length
         ];
 
 }
 
+
+// ===========================================
+// IMAGE LOADED
+// ===========================================
+
 document.addEventListener("load",(e)=>{
 
-    if(e.target.id==="viewerGalleryImage"){
+    if(e.target.id === "viewerGalleryImage"){
 
-        e.target.style.opacity="1";
+        e.target.style.opacity = "1";
 
     }
 
 },true);
+
 
 // ===========================================
 // NEXT IMAGE
@@ -536,8 +553,7 @@ function previousViewerImage(){
 
     if(currentImage < 0){
 
-        currentImage =
-            currentGallery.length - 1;
+        currentImage = currentGallery.length - 1;
 
     }
 
