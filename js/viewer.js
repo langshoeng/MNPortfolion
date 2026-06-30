@@ -186,24 +186,22 @@ function touchDragEnd(e) {
 let swipeStartX = 0, swipeStartY = 0;
 let isSwipeCandidate = false;
 
-document.addEventListener("touchend", e => {
+document.addEventListener("touchstart", e => {
     if (!viewerWindow.classList.contains("fullscreen-mode")) return;
-    if (!isSwipeCandidate) return;
-    if (pinchActive) return; // <-- block swipe if pinch was active
-
-    const dx = e.changedTouches[0].clientX - swipeStartX;
-    const dy = e.changedTouches[0].clientY - swipeStartY;
-
-    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
-        if (dx > 0) previousViewerImage();
-        else nextViewerImage();
+    if (e.touches.length === 1 && zoomLevel === 1) {
+        // Only allow swipe if not zoomed
+        swipeStartX = e.touches[0].clientX;
+        swipeStartY = e.touches[0].clientY;
+        isSwipeCandidate = true;
+    } else {
+        isSwipeCandidate = false; // disable swipe if zoomed or multi-touch
     }
-    isSwipeCandidate = false;
 }, { passive:true });
 
 document.addEventListener("touchend", e => {
     if (!viewerWindow.classList.contains("fullscreen-mode")) return;
-    if (!isSwipeCandidate) return; // skip if pinch/drag was active
+    if (!isSwipeCandidate) return;
+    if (pinchActive) return; // <-- block swipe if pinch was active
 
     const dx = e.changedTouches[0].clientX - swipeStartX;
     const dy = e.changedTouches[0].clientY - swipeStartY;
