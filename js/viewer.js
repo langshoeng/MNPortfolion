@@ -241,6 +241,30 @@ function disableFullscreenGestures() {
     document.removeEventListener("touchend", touchDragEnd);
 }
 
+// ===========================================
+// Close Button Behavior
+// ===========================================
+function handleCloseButton() {
+    const img = document.getElementById("viewerGalleryImage");
+
+    if (viewerWindow.classList.contains("fullscreen-mode")) {
+        // Case 1: fullscreen + zoomed/panned
+        if (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0) {
+            zoomLevel = 1;
+            offsetX = 0;
+            offsetY = 0;
+            if (img) applyZoom(img);
+            return; // stop here, don't exit fullscreen
+        }
+
+        // Case 2: fullscreen + default transform
+        toggleFullscreen(); // exit fullscreen back to metadata mode
+        return;
+    }
+
+    // Case 3: metadata mode + default transform
+    closeViewer(); // your existing function to exit viewer
+}
 
 // ===========================================
 // Spinner between each transition
@@ -722,6 +746,11 @@ document.addEventListener("mousemove", e => {
     const img = document.getElementById("viewerGalleryImage");
     if (img) applyZoom(img);
 });
+
+// ===========================================
+// GLOBAL EVENT LISTENERS
+// ===========================================
+document.getElementById("viewerClose").addEventListener("click", handleCloseButton);
 
 // ===========================================
 // GLOBAL
