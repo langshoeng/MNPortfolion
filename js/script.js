@@ -132,16 +132,13 @@ document.querySelectorAll('.skill-badge').forEach(badge => {
   const target = parseInt(badge.getAttribute('data-skill'), 10);
 
   badge.addEventListener('mouseenter', () => {
-    // Reset before animating
     fill.style.width = '0%';
     percentText.textContent = '0%';
 
-    // Animate bar
     setTimeout(() => {
       fill.style.width = target + '%';
     }, 50);
 
-    // Animate number count-up
     let current = 0;
     const step = Math.ceil(target / 30);
     const interval = setInterval(() => {
@@ -155,7 +152,6 @@ document.querySelectorAll('.skill-badge').forEach(badge => {
   });
 
   badge.addEventListener('mouseleave', () => {
-    // Reset bar and number when leaving
     fill.style.width = '0%';
     percentText.textContent = '0%';
   });
