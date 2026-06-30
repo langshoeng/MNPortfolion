@@ -131,17 +131,13 @@ document.querySelectorAll('.skill-badge').forEach(badge => {
   const target = parseInt(badge.getAttribute('data-skill'), 10);
 
   badge.addEventListener('mouseenter', () => {
-    // Reset before animating
     fill.style.width = '0%';
-
-    // Animate bar to target
     setTimeout(() => {
       fill.style.width = target + '%';
     }, 50);
   });
 
   badge.addEventListener('mouseleave', () => {
-    // Reset bar when leaving
     fill.style.width = '0%';
   });
 });
