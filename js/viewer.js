@@ -40,6 +40,25 @@ function createMissingPlaceholder() {
 }
 
 // ===========================================
+// Spinner between each transition
+// ===========================================
+function showLoadingSpinner() {
+    const overlay = document.createElement("div");
+    overlay.className = "viewer-loading";
+
+    const spinner = document.createElement("div");
+    spinner.className = "viewer-spinner";
+
+    overlay.appendChild(spinner);
+    viewerMedia.appendChild(overlay);
+}
+
+function hideLoadingSpinner() {
+    const overlay = viewerMedia.querySelector(".viewer-loading");
+    if (overlay) overlay.remove();
+}
+
+// ===========================================
 // YOUTUBE
 // ===========================================
 
@@ -274,34 +293,32 @@ function buildViewerGallery(){
 // ===========================================
 
 function updateViewerGallery() {
-    // Ensure we always have an <img> element
     let galleryImg = document.getElementById("viewerGalleryImage");
     if (!galleryImg) {
-        viewerMedia.innerHTML = `
-            <img id="viewerGalleryImage" alt="Gallery Image">
-        `;
+        viewerMedia.innerHTML = `<img id="viewerGalleryImage" alt="Gallery Image">`;
         galleryImg = document.getElementById("viewerGalleryImage");
     }
 
-    // Preload the next image before swapping
     const nextSrc = currentGallery[currentImage];
     const preload = new Image();
     preload.src = nextSrc;
 
-    // When preload finishes, swap immediately
+    // Show spinner while loading
+    showLoadingSpinner();
+
     preload.onload = () => {
         galleryImg.style.transition = "opacity 0.3s ease";
         galleryImg.style.opacity = "0";
 
-        // After fade‑out, change src and fade back in
         setTimeout(() => {
             galleryImg.src = nextSrc;
             galleryImg.style.opacity = "1";
+            hideLoadingSpinner(); // remove spinner once loaded
         }, 150);
     };
 
-    // Fallback if image fails
     preload.onerror = () => {
+        hideLoadingSpinner();
         const placeholder = createMissingPlaceholder();
         placeholder.style.opacity = "1";
         galleryImg.replaceWith(placeholder);
