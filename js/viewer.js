@@ -322,7 +322,7 @@ function updateViewerGallery() {
 
     // If placeholder was showing, rebuild <img>
     if (!galleryImg) {
-        viewerMedia.innerHTML = `<img id="viewerGalleryImage" alt="Gallery Image">`;
+        viewerMedia.innerHTML = `<img id="viewerGalleryImage" alt="Gallery Image" class="zoomable">`;
         galleryImg = document.getElementById("viewerGalleryImage");
     }
 
@@ -334,18 +334,18 @@ function updateViewerGallery() {
     showLoadingSpinner();
 
     preload.onload = () => {
-        // Swap immediately to the new image
+        // Swap immediately while spinner is still visible
         galleryImg.src = nextSrc;
-
-        // Start with opacity 0, then fade in
-        galleryImg.style.transition = "opacity 0.3s ease";
         galleryImg.style.opacity = "0";
 
+        // Remove spinner only after new image is set
+        hideLoadingSpinner();
+
+        // Fade in the new image
         requestAnimationFrame(() => {
+            galleryImg.style.transition = "opacity 0.3s ease";
             galleryImg.style.opacity = "1";
         });
-
-        hideLoadingSpinner();
     };
 
     preload.onerror = () => {
