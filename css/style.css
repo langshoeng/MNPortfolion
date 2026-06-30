@@ -243,15 +243,14 @@ body{
 
 .skill-percent {
   position: absolute;
-  left: 50%;               /* center horizontally */
+  left: 50%;
   transform: translateX(-50%);
-  bottom: 20px;            /* place above the bar */
+  top: -24px;              /* above the badge */
   font-size: 14px;
   font-weight: 600;
-  color: #fff;             /* white for visibility */
+  color: #4cafef;          /* accent color */
   opacity: 0;
   transition: opacity 0.25s ease;
-  pointer-events: none;
 }
 
 .skill-badge:hover .skill-percent {
