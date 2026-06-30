@@ -30,8 +30,6 @@ let pinchZoomLevel = 1;
 let currentProject = null;
 let currentGallery = [];
 let currentImage = 0;
-let allProjects = []; // fill this with your project card data
-let currentProjectIndex = 0;
 
 // ===========================================
 // Missing Image Placeholder
@@ -336,72 +334,108 @@ function getYoutubeEmbed(url){
 // OPEN PROJECT
 // ===========================================
 
-function openProject(project) {
+function openProject(project){
+
     currentProject = project;
 
-    // Track index for project navigation
-    if (allProjects && allProjects.length) {
-        currentProjectIndex = allProjects.indexOf(project);
-    }
-
     currentGallery = [];
+
     currentImage = 0;
 
     viewer.classList.add("show");
 
     // Reset viewer mode
-    viewerWindow.classList.remove("gallery-mode", "video-mode");
+    viewerWindow.classList.remove(
+        "gallery-mode",
+        "video-mode"
+    );
 
     // Hide gallery controls by default
     viewerPrev.style.display = "none";
     viewerNext.style.display = "none";
 
     viewerMedia.innerHTML = "";
+
     viewerDots.innerHTML = "";
+
     viewerCounter.textContent = "";
+
 
     // ======================================
     // TITLE
     // ======================================
+
     viewerTitle.textContent = project.title || "";
+
 
     // ======================================
     // META
     // ======================================
+
     viewerMeta.innerHTML = `
+
         <div>
+
             <strong>Client</strong><br>
+
             ${project.client || "-"}
+
         </div>
+
         <div style="margin-top:12px;">
+
             <strong>Year</strong><br>
+
             ${project.year || "-"}
+
         </div>
+
     `;
+
 
     // ======================================
     // DESCRIPTION
     // ======================================
-    viewerDescription.textContent = project.description || "";
+
+    viewerDescription.textContent =
+        project.description || "";
+
 
     // ======================================
     // SOFTWARE
     // ======================================
+
     viewerSoftware.innerHTML = "";
-    if (project.software) {
-        project.software.forEach(app => {
-            const badge = document.createElement("span");
+
+    if(project.software){
+
+        project.software.forEach(app=>{
+
+            const badge =
+                document.createElement("span");
+
             badge.className = "viewerBadge";
+
             badge.textContent = app;
+
             viewerSoftware.appendChild(badge);
+
         });
+
     }
+
 
     // ======================================
     // YOUTUBE
     // ======================================
-    if (project.video && project.video.type === "youtube") {
+
+    if(
+        project.video &&
+        project.video.type === "youtube"
+    ){
+
         viewerWindow.classList.add("video-mode");
+
         viewerMedia.innerHTML = `
             <iframe
                 src="${getYoutubeEmbed(project.video.url)}"
@@ -410,28 +444,47 @@ function openProject(project) {
                 onerror="this.replaceWith(createMissingPlaceholder())"
             ></iframe>
         `;
+
         return;
+
     }
+
 
     // ======================================
     // LOCAL VIDEO
     // ======================================
-    if (project.video && project.video.type === "mp4") {
+
+    if(
+        project.video &&
+        project.video.type === "mp4"
+    ){
+
         viewerWindow.classList.add("video-mode");
+
         viewerMedia.innerHTML = `
             <video controls autoplay onerror="this.replaceWith(createMissingPlaceholder())">
                 <source src="${project.video.url}" type="video/mp4">
             </video>
         `;
+
         return;
+
     }
+
 
     // ======================================
     // IMAGE GALLERY
     // ======================================
-    if (project.gallery && project.gallery.length) {
+
+    if(
+        project.gallery &&
+        project.gallery.length
+    ){
+
         viewerWindow.classList.add("gallery-mode");
+
         currentGallery = project.gallery;
+
         currentImage = 0;
 
         // Show gallery arrows
@@ -454,7 +507,9 @@ function openProject(project) {
         };
 
         buildViewerGallery();
+
     }
+
 }
 
 // ===========================================
@@ -612,17 +667,6 @@ function closeProject(){
 
 }
 
-function nextProject() {
-    if (!allProjects.length) return;
-    currentProjectIndex = (currentProjectIndex + 1) % allProjects.length;
-    openProject(allProjects[currentProjectIndex]); // reuse your existing openProject
-}
-
-function previousProject() {
-    if (!allProjects.length) return;
-    currentProjectIndex = (currentProjectIndex - 1 + allProjects.length) % allProjects.length;
-    openProject(allProjects[currentProjectIndex]);
-}
 
 // ===========================================
 // BUTTON EVENTS
@@ -633,9 +677,6 @@ document.getElementById("viewerClose").addEventListener("click", handleCloseButt
 
 // Overlay click always closes viewer
 document.querySelector(".viewer-overlay").addEventListener("click", closeProject);
-
-document.getElementById("viewerPrevProject").addEventListener("click", previousProject);
-document.getElementById("viewerNextProject").addEventListener("click", nextProject);
 
 // ===========================================
 // KEYBOARD
@@ -718,10 +759,4 @@ document.addEventListener("mousemove", e => {
 // GLOBAL
 // ===========================================
 
-// Initialize allProjects once DOM is ready
-document.addEventListener("DOMContentLoaded", () => {
-    allProjects = Array.from(document.querySelectorAll(".project-card"));
-});
-
 window.openProject = openProject;
-
