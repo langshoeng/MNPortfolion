@@ -233,15 +233,14 @@ function clampOffsets(img) {
     const baseWidth = img.offsetWidth;
     const baseHeight = img.offsetHeight;
 
-    // Scaled size
+    // Scaled size (after zoom)
     const scaledWidth = baseWidth * zoomLevel;
     const scaledHeight = baseHeight * zoomLevel;
 
-    // How far the image can move before an edge disappears
+    // Calculate max pan in translate space
     const maxOffsetX = Math.max(0, (scaledWidth - containerWidth) / (2 * zoomLevel));
     const maxOffsetY = Math.max(0, (scaledHeight - containerHeight) / (2 * zoomLevel));
 
-    // Clamp offsets
     offsetX = Math.min(maxOffsetX, Math.max(-maxOffsetX, offsetX));
     offsetY = Math.min(maxOffsetY, Math.max(-maxOffsetY, offsetY));
 }
@@ -266,14 +265,17 @@ function disableFullscreenGestures() {
     document.removeEventListener("touchend", touchDragEnd);
 }
 
+// ===========================================
+// RESIZE / ORIENTATION HANDLERS
+// ===========================================
 window.addEventListener("resize", () => {
     const img = document.getElementById("viewerGalleryImage");
-    if (img) applyZoom(img); // re‑clamp offsets after resize
+    if (img) applyZoom(img); // re‑clamp after resize
 });
 
 window.addEventListener("orientationchange", () => {
     const img = document.getElementById("viewerGalleryImage");
-    if (img) applyZoom(img); // re‑clamp offsets after phone rotation
+    if (img) applyZoom(img); // re‑clamp after rotation
 });
 
 // ===========================================
