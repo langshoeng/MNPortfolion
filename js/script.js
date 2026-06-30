@@ -153,11 +153,4 @@ document.querySelectorAll('.skill-badge').forEach(badge => {
       percentText.textContent = current + '%';
     }, 30);
   });
-
-  badge.addEventListener('mouseleave', () => {
-    // Optional: reset when leaving
-    fill.style.width = '0%';
-    percentText.textContent = '0%';
-  });
 });
-
