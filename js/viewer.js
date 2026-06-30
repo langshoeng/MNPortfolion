@@ -649,13 +649,6 @@ document
 // ===========================================
 // KEYBOARD
 // ===========================================
-document.addEventListener("touchstart", e => {
-    if (e.target.id === "viewerGalleryImage" && e.touches.length === 1) {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-    }
-}, { passive:true });
-
 document.addEventListener("keydown",(e)=>{
 
     if(!viewer.classList.contains("show"))
