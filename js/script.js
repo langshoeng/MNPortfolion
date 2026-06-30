@@ -123,25 +123,40 @@ document.querySelectorAll(".fade-up, .project-card").forEach(el => {
 });
 
 // ===============================
-// Skill Badge Animation (reset + replay)
+// Skill Badge Animation (reset + replay with numbers)
 // ===============================
 
 document.querySelectorAll('.skill-badge').forEach(badge => {
   const fill = badge.querySelector('.skill-fill');
+  const percentText = badge.querySelector('.skill-percent');
   const target = parseInt(badge.getAttribute('data-skill'), 10);
 
   badge.addEventListener('mouseenter', () => {
     // Reset before animating
     fill.style.width = '0%';
+    percentText.textContent = '0%';
 
-    // Animate bar to target
+    // Animate bar
     setTimeout(() => {
       fill.style.width = target + '%';
     }, 50);
+
+    // Animate number count-up
+    let current = 0;
+    const step = Math.ceil(target / 30); // adjust speed
+    const interval = setInterval(() => {
+      current += step;
+      if (current >= target) {
+        current = target;
+        clearInterval(interval);
+      }
+      percentText.textContent = current + '%';
+    }, 30);
   });
 
   badge.addEventListener('mouseleave', () => {
-    // Reset bar when leaving
+    // Reset bar and number when leaving
     fill.style.width = '0%';
+    percentText.textContent = '0%';
   });
 });
