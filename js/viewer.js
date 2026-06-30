@@ -1,9 +1,6 @@
 // ===========================================
-// PROJECT VIEWER V3
-// Part 1 - Variables + Helpers
+// PROJECT VIEWER V2
 // ===========================================
-
-// ---------- Main Elements ----------
 
 const viewer = document.getElementById("projectViewer");
 const viewerWindow = document.querySelector(".viewer-window");
@@ -23,7 +20,7 @@ const viewerCounter = document.getElementById("viewerCounter");
 
 
 // ===========================================
-// STATE
+// CURRENT STATE
 // ===========================================
 
 let currentProject = null;
@@ -34,7 +31,7 @@ let currentImage = 0;
 
 
 // ===========================================
-// YOUTUBE EMBED
+// YOUTUBE
 // ===========================================
 
 function getYoutubeEmbed(url){
@@ -67,129 +64,6 @@ function getYoutubeEmbed(url){
 
 
 // ===========================================
-// RESET VIEWER
-// ===========================================
-
-function resetViewer(){
-
-    viewerWindow.classList.remove(
-        "gallery-mode",
-        "video-mode"
-    );
-
-    viewerMedia.innerHTML = "";
-
-    viewerDots.innerHTML = "";
-
-    viewerCounter.textContent = "";
-
-    viewerPrev.style.display = "none";
-    viewerNext.style.display = "none";
-
-    currentGallery = [];
-
-    currentImage = 0;
-
-}
-
-
-// ===========================================
-// PLACEHOLDER
-// ===========================================
-
-function showPlaceholder(
-
-    icon = "🖼️",
-
-    title = "Preview Coming Soon",
-
-    text = "This project doesn't have any preview images or videos yet."
-
-){
-
-    viewerMedia.innerHTML = `
-
-        <div class="viewerPlaceholder">
-
-            <div class="viewerPlaceholderIcon">
-
-                ${icon}
-
-            </div>
-
-            <h3>
-
-                ${title}
-
-            </h3>
-
-            <p>
-
-                ${text}
-
-            </p>
-
-        </div>
-
-    `;
-
-}
-
-
-// ===========================================
-// BUILD SOFTWARE BADGES
-// ===========================================
-
-function buildSoftware(project){
-
-    viewerSoftware.innerHTML = "";
-
-    if(!project.software) return;
-
-    project.software.forEach(app=>{
-
-        const badge = document.createElement("span");
-
-        badge.className = "viewerBadge";
-
-        badge.textContent = app;
-
-        viewerSoftware.appendChild(badge);
-
-    });
-
-}
-
-
-// ===========================================
-// BUILD META
-// ===========================================
-
-function buildMeta(project){
-
-    viewerMeta.innerHTML = `
-
-        <div>
-
-            <strong>Client</strong><br>
-
-            ${project.client || "-"}
-
-        </div>
-
-        <div style="margin-top:12px;">
-
-            <strong>Year</strong><br>
-
-            ${project.year || "-"}
-
-        </div>
-
-    `;
-
-}
-
-// ===========================================
 // OPEN PROJECT
 // ===========================================
 
@@ -203,13 +77,13 @@ function openProject(project){
 
     viewer.classList.add("show");
 
+    // Reset viewer mode
     viewerWindow.classList.remove(
         "gallery-mode",
         "video-mode"
     );
 
-    hidePlaceholder();
-
+    // Hide gallery controls by default
     viewerPrev.style.display = "none";
     viewerNext.style.display = "none";
 
@@ -224,8 +98,7 @@ function openProject(project){
     // TITLE
     // ======================================
 
-    viewerTitle.textContent =
-        project.title || "";
+    viewerTitle.textContent = project.title || "";
 
 
     // ======================================
@@ -274,11 +147,9 @@ function openProject(project){
             const badge =
                 document.createElement("span");
 
-            badge.className =
-                "viewerBadge";
+            badge.className = "viewerBadge";
 
-            badge.textContent =
-                app;
+            badge.textContent = app;
 
             viewerSoftware.appendChild(badge);
 
@@ -296,9 +167,7 @@ function openProject(project){
         project.video.type === "youtube"
     ){
 
-        viewerWindow.classList.add(
-            "video-mode"
-        );
+        viewerWindow.classList.add("video-mode");
 
         viewerMedia.innerHTML = `
 
@@ -316,7 +185,7 @@ function openProject(project){
 
 
     // ======================================
-    // LOCAL MP4
+    // LOCAL VIDEO
     // ======================================
 
     if(
@@ -324,9 +193,7 @@ function openProject(project){
         project.video.type === "mp4"
     ){
 
-        viewerWindow.classList.add(
-            "video-mode"
-        );
+        viewerWindow.classList.add("video-mode");
 
         viewerMedia.innerHTML = `
 
@@ -355,23 +222,21 @@ function openProject(project){
         project.gallery.length
     ){
 
-        viewerWindow.classList.add(
-            "gallery-mode"
-        );
+        viewerWindow.classList.add("gallery-mode");
 
-        currentGallery =
-            project.gallery;
+        currentGallery = project.gallery;
 
         currentImage = 0;
 
+        // Show gallery arrows
         viewerPrev.style.display = "";
-
         viewerNext.style.display = "";
 
         viewerMedia.innerHTML = `
 
             <img
                 id="viewerGalleryImage"
+                src="${currentGallery[0]}"
                 alt="Gallery Image"
             >
 
@@ -379,20 +244,7 @@ function openProject(project){
 
         buildViewerGallery();
 
-        return;
-
     }
-
-
-    // ======================================
-    // NO MEDIA
-    // ======================================
-
-    showPlaceholder(
-        "🖼️",
-        "Preview Coming Soon",
-        "This project doesn't have preview images or videos yet."
-    );
 
 }
 
@@ -403,6 +255,7 @@ function openProject(project){
 function buildViewerGallery(){
 
     viewerPrev.onclick = previousViewerImage;
+
     viewerNext.onclick = nextViewerImage;
 
     updateViewerGallery();
@@ -416,9 +269,12 @@ function buildViewerGallery(){
 
 function updateViewerGallery(){
 
-    const img = document.getElementById("viewerGalleryImage");
+    const img =
+        document.getElementById("viewerGalleryImage");
 
     if(!img) return;
+
+    // Fade Out
 
     img.style.opacity = "0";
 
@@ -429,94 +285,73 @@ function updateViewerGallery(){
         viewerCounter.textContent =
             `${currentImage + 1} of ${currentGallery.length}`;
 
-        buildViewerDots();
-
         preloadGallery();
+        viewerDots.innerHTML = "";
+
+        currentGallery.forEach((image,index)=>{
+
+            const dot =
+                document.createElement("button");
+
+            dot.type = "button";
+
+            dot.className =
+                index===currentImage
+                ? "viewerDot active"
+                : "viewerDot";
+
+            dot.onclick=()=>{
+
+                currentImage=index;
+
+                updateViewerGallery();
+
+            };
+
+            viewerDots.appendChild(dot);
+
+        });
 
     },120);
 
 }
 
-
-// ===========================================
-// BUILD DOTS
-// ===========================================
-
-function buildViewerDots(){
-
-    viewerDots.innerHTML = "";
-
-    currentGallery.forEach((image,index)=>{
-
-        const dot = document.createElement("button");
-
-        dot.type = "button";
-
-        dot.className =
-            index === currentImage
-            ? "viewerDot active"
-            : "viewerDot";
-
-        dot.onclick = ()=>{
-
-            if(index === currentImage)
-                return;
-
-            currentImage = index;
-
-            updateViewerGallery();
-
-        };
-
-        viewerDots.appendChild(dot);
-
-    });
-
-}
-
-
-// ===========================================
-// PRELOAD
-// ===========================================
-
 function preloadGallery(){
 
-    if(currentGallery.length < 2)
+    if(currentGallery.length<2)
         return;
 
-    const next = new Image();
+    const next =
+        new Image();
 
     next.src =
         currentGallery[
-            (currentImage + 1) %
+            (currentImage+1)
+            %
             currentGallery.length
         ];
 
-    const prev = new Image();
+    const prev =
+        new Image();
 
     prev.src =
         currentGallery[
-            (currentImage - 1 + currentGallery.length) %
+            (currentImage-1+currentGallery.length)
+            %
             currentGallery.length
         ];
 
 }
 
-
-// ===========================================
-// IMAGE LOADED
-// ===========================================
-
 document.addEventListener("load",(e)=>{
 
-    if(e.target.id === "viewerGalleryImage"){
+    if(e.target.id==="viewerGalleryImage"){
 
-        e.target.style.opacity = "1";
+        e.target.style.opacity="1";
 
     }
 
 },true);
-
 
 // ===========================================
 // NEXT IMAGE
@@ -553,7 +388,8 @@ function previousViewerImage(){
 
     if(currentImage < 0){
 
-        currentImage = currentGallery.length - 1;
+        currentImage =
+            currentGallery.length - 1;
 
     }
 
