@@ -243,19 +243,23 @@ body{
 
 .skill-percent {
   position: absolute;
-  right: 8px;
-  top: -28px;   /* high enough to be seen */
-  font-size: 12px;
-  color: #4cafef; /* match bar color */
+  left: 50%;              /* center horizontally */
+  transform: translateX(-50%);
+  bottom: 100%;           /* place above the badge */
+  margin-bottom: 6px;     /* small gap above badge */
+  font-size: 13px;
+  font-weight: 600;
+  color: #4cafef;         /* match bar color */
   opacity: 0;
   transition: opacity 0.25s ease;
-}
-
-.skill-badge:hover .skill-progress {
-  opacity: 1;
+  pointer-events: none;   /* avoid blocking hover */
 }
 
 .skill-badge:hover .skill-percent {
+  opacity: 1;
+}
+
+.skill-badge:hover .skill-progress {
   opacity: 1;
 }
 
