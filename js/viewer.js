@@ -18,6 +18,11 @@ const viewerNext = document.getElementById("viewerNextMedia");
 const viewerDots = document.getElementById("viewerDots");
 const viewerCounter = document.getElementById("viewerCounter");
 
+// Touch gesture state
+let touchStartX = 0, touchStartY = 0;
+let initialDistance = 0;
+let pinchZoomLevel = 1;
+
 
 // ===========================================
 // CURRENT STATE
@@ -63,6 +68,28 @@ function zoomOut() {
     const img = document.getElementById("viewerGalleryImage");
     if (img) applyZoom(img);
 }
+
+function getDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx*dx + dy*dy);
+}
+
+document.addEventListener("touchstart", e => {
+    if (e.target.id === "viewerGalleryImage" && e.touches.length === 2) {
+        initialDistance = getDistance(e.touches);
+        pinchZoomLevel = zoomLevel; // use your existing zoomLevel
+    }
+}, { passive:true });
+
+document.addEventListener("touchmove", e => {
+    if (e.target.id === "viewerGalleryImage" && e.touches.length === 2) {
+        const newDistance = getDistance(e.touches);
+        const scaleChange = newDistance / initialDistance;
+        zoomLevel = Math.min(4, Math.max(1, pinchZoomLevel * scaleChange)); // clamp between 1x–4x
+        applyZoom(document.getElementById("viewerGalleryImage"));
+    }
+}, { passive:true });
 
 // ===========================================
 // Spinner between each transition
@@ -474,6 +501,29 @@ document
 // ===========================================
 // KEYBOARD
 // ===========================================
+document.addEventListener("touchstart", e => {
+    if (e.target.id === "viewerGalleryImage" && e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }
+}, { passive:true });
+
+document.addEventListener("touchend", e => {
+    if (e.target.id === "viewerGalleryImage") {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+
+        // Only trigger if horizontal swipe is dominant
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+            if (dx > 0) {
+                previousViewerImage(); // swipe right → previous
+            } else {
+                nextViewerImage(); // swipe left → next
+            }
+        }
+    }
+}, { passive:true });
+
 
 document.addEventListener("keydown",(e)=>{
 
