@@ -660,15 +660,11 @@ function closeProject(){
 // BUTTON EVENTS
 // ===========================================
 
-document
-.getElementById("viewerClose")
-.onclick = closeProject;
+// Close button (X) with layered behavior
+document.getElementById("viewerClose").addEventListener("click", handleCloseButton);
 
-
-document
-.querySelector(".viewer-overlay")
-.onclick = closeProject;
-
+// Overlay click always closes viewer
+document.querySelector(".viewer-overlay").addEventListener("click", closeProject);
 
 // ===========================================
 // KEYBOARD
@@ -746,11 +742,6 @@ document.addEventListener("mousemove", e => {
     const img = document.getElementById("viewerGalleryImage");
     if (img) applyZoom(img);
 });
-
-// ===========================================
-// GLOBAL EVENT LISTENERS
-// ===========================================
-document.getElementById("viewerClose").addEventListener("click", handleCloseButton);
 
 // ===========================================
 // GLOBAL
