@@ -131,17 +131,19 @@ document.querySelectorAll('.skill-badge').forEach(badge => {
   const percentText = badge.querySelector('.skill-percent');
   const target = parseInt(badge.getAttribute('data-skill'), 10);
 
-  let animated = false; // track if already animated
-
   badge.addEventListener('mouseenter', () => {
-    if (animated) return; // prevent re-running
+    // Reset before animating
+    fill.style.width = '0%';
+    percentText.textContent = '0%';
 
     // Animate bar
-    fill.style.width = target + '%';
+    setTimeout(() => {
+      fill.style.width = target + '%';
+    }, 50);
 
     // Animate number count-up
     let current = 0;
-    const step = Math.ceil(target / 30); // adjust speed
+    const step = Math.ceil(target / 30);
     const interval = setInterval(() => {
       current += step;
       if (current >= target) {
@@ -150,7 +152,12 @@ document.querySelectorAll('.skill-badge').forEach(badge => {
       }
       percentText.textContent = current + '%';
     }, 30);
+  });
 
-    animated = true; // mark as done
+  badge.addEventListener('mouseleave', () => {
+    // Optional: reset when leaving
+    fill.style.width = '0%';
+    percentText.textContent = '0%';
   });
 });
+
