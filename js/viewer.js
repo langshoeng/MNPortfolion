@@ -51,6 +51,7 @@ function toggleFullscreen() {
         zoomLevel = 1; offsetX = 0; offsetY = 0;
         const img = document.getElementById("viewerGalleryImage");
         if (img) applyZoom(img);
+        updateArrowState();
     }
 }
 
@@ -60,6 +61,17 @@ let offsetX = 0, offsetY = 0;
 
 function applyZoom(img) {
     img.style.transform = `scale(${zoomLevel}) translate(${offsetX}px, ${offsetY}px)`;
+    updateArrowState();
+}
+
+function updateArrowState() {
+    if (zoomLevel > 1) {
+        viewerPrev.classList.add("disabled");
+        viewerNext.classList.add("disabled");
+    } else {
+        viewerPrev.classList.remove("disabled");
+        viewerNext.classList.remove("disabled");
+    }
 }
 
 function zoomIn() {
@@ -165,6 +177,40 @@ function touchDragMove(e) {
 function touchDragEnd(e) {
     isTouchDragging = false;
 }
+
+// Swipe detection variables
+let swipeStartX = 0, swipeStartY = 0;
+let isSwipeCandidate = false;
+
+document.addEventListener("touchstart", e => {
+    if (!viewerWindow.classList.contains("fullscreen-mode")) return;
+    if (e.touches.length === 1 && zoomLevel === 1) {
+        // Only allow swipe if not zoomed
+        swipeStartX = e.touches[0].clientX;
+        swipeStartY = e.touches[0].clientY;
+        isSwipeCandidate = true;
+    } else {
+        isSwipeCandidate = false; // disable swipe if zoomed or multi-touch
+    }
+}, { passive:true });
+
+document.addEventListener("touchend", e => {
+    if (!viewerWindow.classList.contains("fullscreen-mode")) return;
+    if (!isSwipeCandidate) return; // skip if pinch/drag was active
+
+    const dx = e.changedTouches[0].clientX - swipeStartX;
+    const dy = e.changedTouches[0].clientY - swipeStartY;
+
+    // Require strong horizontal movement
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0) {
+            previousViewerImage();
+        } else {
+            nextViewerImage();
+        }
+    }
+    isSwipeCandidate = false;
+}, { passive:true });
 
 function enableFullscreenGestures() {
     document.addEventListener("touchstart", pinchStart, { passive:false });
