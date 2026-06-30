@@ -235,14 +235,14 @@ body{
   position: absolute;
   left: 50%;                  /* center horizontally */
   transform: translateX(-50%);
-  top: -40px;                 /* clearly above the badge */
-  font-size: 16px;
+  top: -28px;                 /* above the badge, not inside bar */
+  font-size: 14px;
   font-weight: 700;
   color: #4cafef;             /* accent color */
   opacity: 0;
   transition: opacity 0.25s ease;
   pointer-events: none;
-  z-index: 10;                /* force it above everything */
+  z-index: 999;               /* force it above the bar fill */
 }
 
 .skill-badge:hover .skill-progress {
