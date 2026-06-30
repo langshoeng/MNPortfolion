@@ -243,12 +243,12 @@ body{
 
 .skill-percent {
   position: absolute;
-  left: 50%;               /* center horizontally */
+  left: 50%;                  /* center horizontally */
   transform: translateX(-50%);
-  top: -32px;              /* clearly above the badge text */
+  top: -8px;                  /* just above the skill text */
   font-size: 14px;
   font-weight: 700;
-  color: #4cafef;          /* accent color */
+  color: #4cafef;             /* accent color */
   opacity: 0;
   transition: opacity 0.25s ease;
   pointer-events: none;
