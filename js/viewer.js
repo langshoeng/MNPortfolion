@@ -61,7 +61,6 @@ let zoomLevel = 1;
 let offsetX = 0, offsetY = 0;
 
 function applyZoom(img) {
-    clampOffsets(img);
     img.style.transform = `scale(${zoomLevel}) translate(${offsetX}px, ${offsetY}px)`;
     updateArrowState();
 }
@@ -222,41 +221,6 @@ document.addEventListener("touchend", e => {
     isSwipeCandidate = false;
 }, { passive:true });
 
-function clampOffsets(img) {
-    if (!img) return;
-
-    const container = viewerWindow.getBoundingClientRect();
-    const containerWidth = container.width;
-    const containerHeight = container.height;
-
-    // Natural image ratio
-    const imgRatio = img.naturalWidth / img.naturalHeight;
-    const containerRatio = containerWidth / containerHeight;
-
-    // Base size of image as displayed with object-fit:contain
-    let baseWidth, baseHeight;
-    if (imgRatio > containerRatio) {
-        // Image is wider than container
-        baseWidth = containerWidth;
-        baseHeight = containerWidth / imgRatio;
-    } else {
-        // Image is taller than container
-        baseHeight = containerHeight;
-        baseWidth = containerHeight * imgRatio;
-    }
-
-    // Scaled size after zoom
-    const scaledWidth = baseWidth * zoomLevel;
-    const scaledHeight = baseHeight * zoomLevel;
-
-    // Max allowed offsets in translate space
-    const maxOffsetX = Math.max(0, (scaledWidth - containerWidth) / (2 * zoomLevel));
-    const maxOffsetY = Math.max(0, (scaledHeight - containerHeight) / (2 * zoomLevel));
-
-    offsetX = Math.min(maxOffsetX, Math.max(-maxOffsetX, offsetX));
-    offsetY = Math.min(maxOffsetY, Math.max(-maxOffsetY, offsetY));
-}
-
 function enableFullscreenGestures() {
     document.addEventListener("touchstart", pinchStart, { passive:false });
     document.addEventListener("touchmove", pinchMove, { passive:false });
@@ -277,18 +241,6 @@ function disableFullscreenGestures() {
     document.removeEventListener("touchend", touchDragEnd);
 }
 
-// ===========================================
-// RESIZE / ORIENTATION HANDLERS
-// ===========================================
-window.addEventListener("resize", () => {
-    const img = document.getElementById("viewerGalleryImage");
-    if (img) applyZoom(img); // re‑clamp after resize
-});
-
-window.addEventListener("orientationchange", () => {
-    const img = document.getElementById("viewerGalleryImage");
-    if (img) applyZoom(img); // re‑clamp after rotation
-});
 
 // ===========================================
 // Spinner between each transition
