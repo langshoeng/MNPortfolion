@@ -718,4 +718,10 @@ document.addEventListener("mousemove", e => {
 // GLOBAL
 // ===========================================
 
+// Initialize allProjects once DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+    allProjects = Array.from(document.querySelectorAll(".project-card"));
+});
+
 window.openProject = openProject;
+
