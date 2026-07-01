@@ -230,13 +230,14 @@ body{
   font-weight: 600;
   color: #4cafef;
   opacity: 0;
-  transition: opacity 0.25s ease;
-  min-width: 40px;   /* reserve space so badge doesn’t wiggle */
-  text-align: right; /* keep numbers aligned neatly */
+  width: 0;                /* no space when idle */
+  overflow: hidden;        /* hide text until expanded */
+  transition: opacity 0.25s ease, width 0.25s ease;
 }
 
 .skill-badge:hover .skill-percent {
   opacity: 1;
+  width: 40px;             /* expands just enough for "100%" */
 }
 
 /* Progress Bar below badge */
