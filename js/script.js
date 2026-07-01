@@ -128,16 +128,31 @@ document.querySelectorAll(".fade-up, .project-card").forEach(el => {
 
 document.querySelectorAll('.skill-badge').forEach(badge => {
   const fill = badge.querySelector('.skill-fill');
+  const percentText = badge.querySelector('.skill-percent');
   const target = parseInt(badge.getAttribute('data-skill'), 10);
 
   badge.addEventListener('mouseenter', () => {
     fill.style.width = '0%';
+    percentText.textContent = '0%';
+
     setTimeout(() => {
       fill.style.width = target + '%';
     }, 50);
+
+    let current = 0;
+    const step = Math.ceil(target / 30);
+    const interval = setInterval(() => {
+      current += step;
+      if (current >= target) {
+        current = target;
+        clearInterval(interval);
+      }
+      percentText.textContent = current + '%';
+    }, 30);
   });
 
   badge.addEventListener('mouseleave', () => {
     fill.style.width = '0%';
+    percentText.textContent = '0%';
   });
 });
