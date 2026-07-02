@@ -126,12 +126,13 @@ document.querySelectorAll(".fade-up, .project-card").forEach(el => {
 // Skill Badge Animation (reset + replay)
 // ===============================
 
-document.querySelectorAll('.skill-badge').forEach(badge => {
-  const fill = badge.querySelector('.skill-fill');
-  const percentText = badge.querySelector('.skill-percent');
+document.querySelectorAll('.skill-wrapper').forEach(wrapper => {
+  const badge = wrapper.querySelector('.skill-badge');
+  const fill = wrapper.querySelector('.skill-fill');
+  const percentText = wrapper.querySelector('.skill-percent');
   const target = parseInt(badge.getAttribute('data-skill'), 10);
 
-  badge.addEventListener('mouseenter', () => {
+  wrapper.addEventListener('mouseenter', () => {
     fill.style.width = '0%';
     percentText.textContent = '0%';
 
@@ -151,7 +152,7 @@ document.querySelectorAll('.skill-badge').forEach(badge => {
     }, 30);
   });
 
-  badge.addEventListener('mouseleave', () => {
+  wrapper.addEventListener('mouseleave', () => {
     fill.style.width = '0%';
     percentText.textContent = '0%';
   });
