@@ -25,6 +25,8 @@ let touchStartX = 0, touchStartY = 0;
 let initialDistance = 0;
 let pinchZoomLevel = 1;
 
+let savedScrollY = 0;
+
 // ===========================================
 // CURRENT STATE
 // ===========================================
@@ -358,11 +360,14 @@ function openProject(project){
 
     viewer.classList.add("show");
     
+    // Save current homepage scroll position
+    savedScrollY = window.scrollY;
+    
     // Reset fullscreen state
     viewerWindow.classList.remove("fullscreen-mode");
     zoomLevel = 1; offsetX = 0; offsetY = 0;
     
-    // ✅ Attach scroll blocking to the viewer window
+    // Block homepage scroll while viewer is open
     viewerWindow.addEventListener("wheel", blockPageScroll, { passive:false });
     viewerWindow.addEventListener("touchmove", blockPageScroll, { passive:false });
 
@@ -674,7 +679,10 @@ function blockPageScroll(e) {
 // ===========================================
 
 function closeProject() {
-    // ✅ Remove scroll blocking
+    // Restore homepage scroll position
+    window.scrollTo(0, savedScrollY);
+    
+    // Remove scroll blocking
     viewerWindow.removeEventListener("wheel", blockPageScroll);
     viewerWindow.removeEventListener("touchmove", blockPageScroll);
     
