@@ -357,6 +357,12 @@ function openProject(project){
     currentImage = 0;
 
     viewer.classList.add("show");
+
+    // ✅ Always reset to default metadata mode
+    viewerWindow.classList.remove("fullscreen-mode");
+    zoomLevel = 1; offsetX = 0; offsetY = 0;
+    const img = document.getElementById("viewerGalleryImage");
+    if (img) applyZoom(img);
    
     // ✅ Block homepage scroll while viewer is open
     document.addEventListener("wheel", blockPageScroll, { passive:false });
