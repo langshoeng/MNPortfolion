@@ -678,31 +678,21 @@ function blockPageScroll(e) {
 // CLOSE
 // ===========================================
 
-function closeProject(){
-
-    viewer.classList.remove("show");
-
+function closeProject() {
     // ✅ Restore homepage scroll
     document.removeEventListener("wheel", blockPageScroll);
     document.removeEventListener("touchmove", blockPageScroll);
 
-    viewerWindow.classList.remove(
-        "gallery-mode",
-        "video-mode"
-    );
+    viewer.classList.remove("show");
+    viewerWindow.classList.remove("gallery-mode", "video-mode");
 
     viewerMedia.innerHTML = "";
-
     viewerDots.innerHTML = "";
-
     viewerCounter.textContent = "";
 
     currentGallery = [];
-
     currentImage = 0;
-
     currentProject = null;
-
 }
 
 
