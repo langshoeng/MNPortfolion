@@ -371,6 +371,9 @@ function openProject(project){
     viewerWindow.addEventListener("wheel", blockPageScroll, { passive:false });
     viewerWindow.addEventListener("touchmove", blockPageScroll, { passive:false });
 
+    // Listen for Escape key
+    document.addEventListener("keydown", handleEscapeKey);
+
     // Reset viewer mode
     viewerWindow.classList.remove(
         "gallery-mode",
@@ -683,12 +686,35 @@ function blockPageScroll(e) {
     e.stopPropagation();
 }
 
+// ===========================================
+// ESCAPE KEY HANDLER
+// ===========================================
+function handleEscapeKey(e) {
+  if (e.key === "Escape") {
+    if (viewer.classList.contains("show")) {
+      if (viewerWindow.classList.contains("fullscreen-mode")) {
+        // Exit fullscreen only
+        viewerWindow.classList.remove("fullscreen-mode");
+        zoomLevel = 1; offsetX = 0; offsetY = 0;
+        const img = document.getElementById("viewerGalleryImage");
+        if (img) applyZoom(img);
+      } else {
+        // Already in metadata mode → close viewer
+        closeProject();
+      }
+    }
+  }
+}
+
 
 // ===========================================
 // CLOSE
 // ===========================================
 
 function closeProject() {
+    // Remove Escape key listener
+    document.removeEventListener("keydown", handleEscapeKey);
+    
     // Restore homepage scroll position
     window.scrollTo(0, savedScrollY);
     
@@ -718,6 +744,8 @@ document.getElementById("viewerClose").addEventListener("click", handleCloseButt
 
 // Overlay click always closes viewer
 document.querySelector(".viewer-overlay").addEventListener("click", closeProject);
+
+document.addEventListener("keydown", handleEscapeKey);
 
 // ===========================================
 // KEYBOARD
