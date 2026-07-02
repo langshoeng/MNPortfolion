@@ -47,20 +47,11 @@ function createMissingPlaceholder() {
 // Fullscreen toggle
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
-    // Enter fullscreen
     viewerWindow.requestFullscreen().then(() => {
       viewerWindow.classList.add("fullscreen-mode");
-    }).catch(err => {
-      console.error("Fullscreen error:", err);
-    });
+    }).catch(err => console.error("Fullscreen error:", err));
   } else {
-    // Exit fullscreen
-    document.exitFullscreen().then(() => {
-      viewerWindow.classList.remove("fullscreen-mode");
-      zoomLevel = 1; offsetX = 0; offsetY = 0;
-      const img = document.getElementById("viewerGalleryImage");
-      if (img) applyZoom(img);
-    });
+    document.exitFullscreen();
   }
 }
 
@@ -696,11 +687,11 @@ function blockPageScroll(e) {
 // ===========================================
 function handleEscapeKey(e) {
   if (e.key === "Escape" && viewer.classList.contains("show")) {
-    if (viewerWindow.classList.contains("fullscreen-mode")) {
-      // Exit fullscreen only
+    if (document.fullscreenElement) {
+      // Let browser exit fullscreen
       document.exitFullscreen();
     } else {
-      // Already in metadata mode → close viewer
+      // Not in fullscreen → close viewer
       closeProject();
     }
   }
@@ -709,7 +700,6 @@ function handleEscapeKey(e) {
 // ===========================================
 // CLOSE
 // ===========================================
-
 function closeProject() {
     // Restore homepage scroll position
     window.scrollTo(0, savedScrollY);
@@ -733,57 +723,36 @@ function closeProject() {
     currentProject = null;
 }
 
-
 // ===========================================
 // BUTTON EVENTS
 // ===========================================
 
 // Close button (X) with layered behavior
-document.getElementById("viewerClose").addEventListener("click", handleCloseButton);
+document.getElementById("viewerClose").addEventListener("click", closeProject);
 
 // Overlay click always closes viewer
 document.querySelector(".viewer-overlay").addEventListener("click", closeProject);
-
-document.addEventListener("keydown", handleEscapeKey);
 
 // ===========================================
 // KEYBOARD
 // ===========================================
 document.addEventListener("keydown",(e)=>{
-
     if(!viewer.classList.contains("show"))
         return;
 
     switch(e.key){
-
-        case "Escape":
-
-            closeProject();
-
-            break;
-
         case "ArrowLeft":
-
             if(currentGallery.length){
-
                 previousViewerImage();
-
             }
-
             break;
 
         case "ArrowRight":
-
             if(currentGallery.length){
-
                 nextViewerImage();
-
             }
-
             break;
-
     }
-
 });
 
 // Double-click image to toggle fullscreen
@@ -793,9 +762,9 @@ document.addEventListener("dblclick", e => {
     }
 });
 
+// Fullscreen change listener
 document.addEventListener("fullscreenchange", () => {
   if (!document.fullscreenElement && viewerWindow.classList.contains("fullscreen-mode")) {
-    // Browser exited fullscreen (e.g. Escape key)
     viewerWindow.classList.remove("fullscreen-mode");
     zoomLevel = 1; offsetX = 0; offsetY = 0;
     const img = document.getElementById("viewerGalleryImage");
@@ -836,5 +805,4 @@ document.addEventListener("mousemove", e => {
 // ===========================================
 // GLOBAL
 // ===========================================
-
 window.openProject = openProject;
