@@ -19,6 +19,9 @@ body{
     overflow-x:hidden;
 }
 
+body.viewer-open {
+  overflow: hidden;   /* disable page scroll */
+}
 
 /* ===========================================
    NAVBAR
