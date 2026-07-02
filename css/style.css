@@ -193,15 +193,32 @@ body{
 }
 
 .skill-badge {
-  flex: 0 0 auto;
-  min-width: 180px;   /* enough for icon + text */
-  max-width: 220px;   /* enough for icon + text + number */
+  position: relative;
+  background: #292929;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  display: inline-flex;
+  flex-direction: column;   /* stack top and bottom */
+  gap: 6px;
+  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  cursor: pointer;
+  min-width: 200px;         /* keeps rectangular look */
 }
 
 .skill-badge:hover {
   background: #444;
   transform: translateY(-12px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.35);
+}
+
+.skill-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .skill-icon {
@@ -213,35 +230,30 @@ body{
   font-weight: 600;
 }
 
-/* Percentage slot collapses when idle */
+.skill-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.skill-badge:hover .skill-bottom {
+  opacity: 1;
+}
+
 .skill-percent {
   font-size: 14px;
   font-weight: 600;
   color: #4cafef;
-  opacity: 0;
-  width: 0;                /* collapsed by default */
-  overflow: hidden;        /* hide text until expanded */
-  transition: opacity 0.25s ease, width 0.25s ease;
-  text-align: right;
 }
 
-.skill-badge:hover .skill-percent {
-  opacity: 1;
-  width: 40px;             /* expands only on hover */
-}
-
-/* Progress Bar below badge */
 .skill-progress {
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 100%;
+  flex: 1;                  /* bar stretches */
   height: 6px;
   background: #111;
   border-radius: 4px;
   overflow: hidden;
-  opacity: 0;
-  transition: opacity 0.25s ease;
 }
 
 .skill-fill {
@@ -249,10 +261,6 @@ body{
   width: 0%;
   background: #4cafef;
   transition: width 1s ease;
-}
-
-.skill-badge:hover .skill-progress {
-  opacity: 1;
 }
 
 /* ===========================================
