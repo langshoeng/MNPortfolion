@@ -15,7 +15,6 @@ const viewerSoftware = document.getElementById("viewerSoftware");
 const viewerPrev = document.getElementById("viewerPrevMedia");
 const viewerNext = document.getElementById("viewerNextMedia");
 
-// ✅ Only declare fullscreenBtn once here
 const fullscreenBtn = document.getElementById("viewerFullscreenToggle");
 
 const viewerDots = document.getElementById("viewerDots");
