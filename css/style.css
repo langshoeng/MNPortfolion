@@ -197,7 +197,7 @@ body{
   position: relative;
   background: #292929;
   color: #fff;
-  padding: 8px 14px; /* no extra right padding now */
+  padding: 8px 14px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 500;
@@ -224,22 +224,23 @@ body{
   font-weight: 600;
 }
 
-/* Percentage floats over badge, only visible on hover */
+/* Percentage floats just outside the text flow */
 .skill-percent {
   position: absolute;
-  right: 12px;
+  right: 12px;               /* fixed slot at right edge */
   top: 50%;
-  transform: translateY(-50%) translateX(20px); /* start slightly off to the right */
+  transform: translateY(-50%) scale(0.8); /* start small */
   font-size: 14px;
   font-weight: 600;
   color: #4cafef;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .skill-badge:hover .skill-percent {
   opacity: 1;
-  transform: translateY(-50%) translateX(0); /* slide into place */
+  transform: translateY(-50%) scale(1); /* grow into place */
 }
 
 /* Progress Bar below badge */
