@@ -722,41 +722,27 @@ document.querySelector(".viewer-overlay").addEventListener("click", closeProject
 // ===========================================
 // KEYBOARD
 // ===========================================
-document.addEventListener("keydown",(e)=>{
+document.addEventListener("keydown", (e) => {
+    if (!viewer.classList.contains("show")) return;
 
-    if(!viewer.classList.contains("show"))
-        return;
-
-    switch(e.key){
-
+    switch (e.key) {
         case "Escape":
-
-            closeProject();
-
+            // ✅ Use the same layered logic as the (X) button
+            handleCloseButton();
             break;
 
         case "ArrowLeft":
-
-            if(currentGallery.length){
-
+            if (currentGallery.length) {
                 previousViewerImage();
-
             }
-
             break;
 
         case "ArrowRight":
-
-            if(currentGallery.length){
-
+            if (currentGallery.length) {
                 nextViewerImage();
-
             }
-
             break;
-
     }
-
 });
 
 // Double-click image to toggle fullscreen
