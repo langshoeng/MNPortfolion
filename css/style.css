@@ -197,7 +197,7 @@ body{
   position: relative;
   background: #292929;
   color: #fff;
-  padding: 8px 14px;
+  padding: 8px 40px 8px 14px; /* extra right padding for number slot */
   border-radius: 8px;
   font-size: 16px;
   font-weight: 500;
@@ -226,7 +226,7 @@ body{
 
 .skill-percent {
   position: absolute;
-  right: 12px;               /* lock to right edge */
+  right: 12px;               /* fixed slot at right edge */
   top: 50%;
   transform: translateY(-50%);
   font-size: 14px;
