@@ -15,6 +15,8 @@ const viewerSoftware = document.getElementById("viewerSoftware");
 const viewerPrev = document.getElementById("viewerPrevMedia");
 const viewerNext = document.getElementById("viewerNextMedia");
 
+const fullscreenBtn = document.getElementById("viewerFullscreenToggle");
+
 const viewerDots = document.getElementById("viewerDots");
 const viewerCounter = document.getElementById("viewerCounter");
 
@@ -54,6 +56,17 @@ function toggleFullscreen() {
         if (img) applyZoom(img);
         updateArrowState();
     }
+}
+
+// Fullscreen button click
+if (fullscreenBtn) {
+  fullscreenBtn.addEventListener("click", toggleFullscreen);
+}
+
+// Optional: double-click on image wrapper also triggers fullscreen
+const viewerMediaWrapper = document.getElementById("viewerMediaWrapper");
+if (viewerMediaWrapper) {
+  viewerMediaWrapper.addEventListener("dblclick", toggleFullscreen);
 }
 
 // Zoom controls
