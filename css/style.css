@@ -200,12 +200,12 @@ body{
 .skill-badge {
   background: #292929;
   color: #fff;
-  padding: 10px 14px;
+  padding: 8px 14px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 500;
-  display: flex;
-  align-items: center;
+  display: inline-flex;
+  align-items: center;   /* icon + text side by side */
   gap: 8px;
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
@@ -218,6 +218,16 @@ body{
   box-shadow: 0 6px 12px rgba(0,0,0,0.35);
 }
 
+.skill-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.skill-name {
+  font-weight: 600;
+}
+
+/* Stats line below badge */
 .skill-stats {
   display: flex;
   align-items: center;
@@ -243,7 +253,7 @@ body{
 
 .skill-progress {
   flex: 1;
-  min-width: 80px;   /* prevents wrapping */
+  min-width: 80px;
   height: 6px;
   background: #111;
   border-radius: 4px;
