@@ -136,23 +136,36 @@ document.querySelectorAll('.skill-wrapper').forEach(wrapper => {
     fill.style.width = '0%';
     percentText.textContent = '0%';
 
-    setTimeout(() => {
-      fill.style.width = target + '%';
-    }, 150); // bar starts filling quickly
+    const duration = 800; // total animation time (ms)
+    const startTime = performance.now();
 
-    let current = 0;
-    const step = Math.ceil(target / 15); // bigger step = faster climb
-    const interval = setInterval(() => {
-      current += step;
-      if (current >= target) {
-        current = target;
-        clearInterval(interval);
+    // Animate bar with same duration
+    setTimeout(() => {
+      fill.style.transition = `width ${duration}ms ease`;
+      fill.style.width = target + '%';
+    }, 50);
+
+    function easeOutQuad(t) {
+      return t * (2 - t); // easing curve
+    }
+
+    function animateNumber(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1); // 0 → 1
+      const eased = easeOutQuad(progress);
+      const value = Math.round(eased * target);
+      percentText.textContent = value + '%';
+
+      if (progress < 1) {
+        requestAnimationFrame(animateNumber);
       }
-      percentText.textContent = current + '%';
-    }, 20); // updates every 20ms (faster than 30ms)
+    }
+
+    requestAnimationFrame(animateNumber);
   });
 
   wrapper.addEventListener('mouseleave', () => {
+    fill.style.transition = 'width 300ms ease';
     fill.style.width = '0%';
     percentText.textContent = '0%';
   });
