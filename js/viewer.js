@@ -44,17 +44,6 @@ function createMissingPlaceholder() {
     return div;
 }
 
-// Fullscreen toggle
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    viewerWindow.requestFullscreen().then(() => {
-      viewerWindow.classList.add("fullscreen-mode");
-    }).catch(err => console.error("Fullscreen error:", err));
-  } else {
-    document.exitFullscreen();
-  }
-}
-
 // Fullscreen button click
 if (fullscreenBtn) {
   fullscreenBtn.addEventListener("click", toggleFullscreen);
@@ -345,24 +334,20 @@ function getYoutubeEmbed(url){
 // ===========================================
 // OPEN PROJECT
 // ===========================================
-
-function openProject(project){
-
+function openProject(project) {
     currentProject = project;
-
     currentGallery = [];
-
     currentImage = 0;
 
     viewer.classList.add("show");
-    
+
     // Save current homepage scroll position
     savedScrollY = window.scrollY;
-    
+
     // Reset fullscreen state
     viewerWindow.classList.remove("fullscreen-mode");
     zoomLevel = 1; offsetX = 0; offsetY = 0;
-    
+
     // Block homepage scroll while viewer is open
     viewerWindow.addEventListener("wheel", blockPageScroll, { passive:false });
     viewerWindow.addEventListener("touchmove", blockPageScroll, { passive:false });
@@ -371,96 +356,48 @@ function openProject(project){
     document.addEventListener("keydown", handleEscapeKey);
 
     // Reset viewer mode
-    viewerWindow.classList.remove(
-        "gallery-mode",
-        "video-mode"
-    );
+    viewerWindow.classList.remove("gallery-mode", "video-mode");
 
     // Hide gallery controls by default
     viewerPrev.style.display = "none";
     viewerNext.style.display = "none";
 
     viewerMedia.innerHTML = "";
-
     viewerDots.innerHTML = "";
-
     viewerCounter.textContent = "";
 
-
-    // ======================================
-    // TITLE
-    // ======================================
-
+    // Title
     viewerTitle.textContent = project.title || "";
 
-
-    // ======================================
-    // META
-    // ======================================
-
+    // Meta
     viewerMeta.innerHTML = `
-
         <div>
-
             <strong>Client</strong><br>
-
             ${project.client || "-"}
-
         </div>
-
         <div style="margin-top:12px;">
-
             <strong>Year</strong><br>
-
             ${project.year || "-"}
-
         </div>
-
     `;
 
+    // Description
+    viewerDescription.textContent = project.description || "";
 
-    // ======================================
-    // DESCRIPTION
-    // ======================================
-
-    viewerDescription.textContent =
-        project.description || "";
-
-
-    // ======================================
-    // SOFTWARE
-    // ======================================
-
+    // Software badges
     viewerSoftware.innerHTML = "";
-
-    if(project.software){
-
-        project.software.forEach(app=>{
-
-            const badge =
-                document.createElement("span");
-
+    if (project.software) {
+        project.software.forEach(app => {
+            const badge = document.createElement("span");
             badge.className = "viewerBadge";
-
             badge.textContent = app;
-
             viewerSoftware.appendChild(badge);
-
         });
-
     }
 
-
-    // ======================================
-    // YOUTUBE
-    // ======================================
-    
-    if (
-        project.video &&
-        project.video.type === "youtube"
-    ) {
+    // Video (YouTube or local)
+    if (project.video && project.video.type === "youtube") {
         viewerWindow.classList.add("video-mode");
-    
         viewerMedia.innerHTML = `
             <iframe
                 src="${getYoutubeEmbed(project.video.url)}"
@@ -469,46 +406,27 @@ function openProject(project){
                 onerror="this.replaceWith(createMissingPlaceholder())"
             ></iframe>
         `;
-    
         return;
     }
-
-    // ======================================
-    // LOCAL VIDEO
-    // ======================================
-
-    if(
-        project.video &&
-        project.video.type === "mp4"
-    ){
-
+    if (project.video && project.video.type === "mp4") {
         viewerWindow.classList.add("video-mode");
-
         viewerMedia.innerHTML = `
             <video controls autoplay onerror="this.replaceWith(createMissingPlaceholder())">
                 <source src="${project.video.url}" type="video/mp4">
             </video>
         `;
-
         return;
-
     }
 
-
-    // ======================================
-    // IMAGE GALLERY
-    // ======================================
+    // Gallery
     if (project.gallery && project.gallery.length) {
         viewerWindow.classList.add("gallery-mode");
-    
         currentGallery = project.gallery;
         currentImage = 0;
-    
-        // Show gallery arrows
+
         viewerPrev.style.display = "";
         viewerNext.style.display = "";
-    
-        // Inject the first image
+
         viewerMedia.innerHTML = `
             <img
                 id="viewerGalleryImage"
@@ -516,22 +434,19 @@ function openProject(project){
                 alt="Gallery Image"
             >
         `;
-    
         const img = document.getElementById("viewerGalleryImage");
-    
-        // Handle missing image
+
         img.onerror = () => {
             viewerMedia.innerHTML = "";
             const placeholder = createMissingPlaceholder();
             viewerMedia.appendChild(placeholder);
         };
-    
-        // ✅ Bind double‑click directly to the image
+
+        // Double‑click toggles fullscreen
         img.addEventListener("dblclick", toggleFullscreen);
-    
+
         buildViewerGallery();
     }
-
 }
 
 // ===========================================
@@ -686,14 +601,22 @@ function blockPageScroll(e) {
 // ESCAPE KEY HANDLER
 // ===========================================
 function handleEscapeKey(e) {
-  if (e.key === "Escape" && viewer.classList.contains("show")) {
+  if (!viewer.classList.contains("show")) return;
+
+  if (e.key === "Escape") {
     if (document.fullscreenElement) {
-      // Let browser exit fullscreen
+      // Exit fullscreen only
       document.exitFullscreen();
     } else {
       // Not in fullscreen → close viewer
       closeProject();
     }
+  }
+  if (e.key === "ArrowLeft" && currentGallery.length) {
+    previousViewerImage();
+  }
+  if (e.key === "ArrowRight" && currentGallery.length) {
+    nextViewerImage();
   }
 }
 
@@ -701,16 +624,13 @@ function handleEscapeKey(e) {
 // CLOSE
 // ===========================================
 function closeProject() {
-    // Restore homepage scroll position
     window.scrollTo(0, savedScrollY);
-    
-    // Remove scroll blocking
+
     viewerWindow.removeEventListener("wheel", blockPageScroll);
     viewerWindow.removeEventListener("touchmove", blockPageScroll);
-    
-    // Remove Escape key listener
+
     document.removeEventListener("keydown", handleEscapeKey);
-    
+
     viewer.classList.remove("show");
     viewerWindow.classList.remove("gallery-mode", "video-mode");
 
@@ -722,6 +642,31 @@ function closeProject() {
     currentImage = 0;
     currentProject = null;
 }
+
+// ===========================================
+// FULLSCREEN TOGGLE
+// ===========================================
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    viewerWindow.requestFullscreen().then(() => {
+      viewerWindow.classList.add("fullscreen-mode");
+    }).catch(err => console.error("Fullscreen error:", err));
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+// ===========================================
+// FULLSCREEN CHANGE LISTENER
+// ===========================================
+document.addEventListener("fullscreenchange", () => {
+  if (!document.fullscreenElement && viewerWindow.classList.contains("fullscreen-mode")) {
+    viewerWindow.classList.remove("fullscreen-mode");
+    zoomLevel = 1; offsetX = 0; offsetY = 0;
+    const img = document.getElementById("viewerGalleryImage");
+    if (img) applyZoom(img);
+  }
+});
 
 // ===========================================
 // BUTTON EVENTS
@@ -760,16 +705,6 @@ document.addEventListener("dblclick", e => {
     if (e.target.id === "viewerGalleryImage") {
         toggleFullscreen();
     }
-});
-
-// Fullscreen change listener
-document.addEventListener("fullscreenchange", () => {
-  if (!document.fullscreenElement && viewerWindow.classList.contains("fullscreen-mode")) {
-    viewerWindow.classList.remove("fullscreen-mode");
-    zoomLevel = 1; offsetX = 0; offsetY = 0;
-    const img = document.getElementById("viewerGalleryImage");
-    if (img) applyZoom(img);
-  }
 });
 
 // Mouse wheel zoom
