@@ -186,41 +186,43 @@ body{
 }
 
 .skills-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, auto));
-  gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px; /* tighter vertical spacing */
+  justify-content: center;
 }
 
 .skill-wrapper {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: flex-start;
 }
 
 .skill-badge {
   background: #292929;
   color: #fff;
-  padding: 8px 14px;
+  padding: 8px 12px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 500;
-  display: inline-flex;
-  align-items: center;   /* icon + text side by side */
+  display: inline-flex;       /* auto-fit width */
+  align-items: center;        /* icon + text side by side */
   gap: 8px;
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   cursor: pointer;
+  white-space: nowrap;        /* prevents wrapping inside badge */
 }
 
 .skill-badge:hover {
   background: #444;
-  transform: translateY(-12px);
+  transform: translateY(-10px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.35);
 }
 
 .skill-icon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
 }
 
 .skill-name {
@@ -236,7 +238,7 @@ body{
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease, opacity 0.25s ease;
-  margin-top: 6px;
+  margin-top: 4px; /* reduced vertical gap */
 }
 
 .skill-wrapper:hover .skill-stats {
@@ -253,7 +255,7 @@ body{
 
 .skill-progress {
   flex: 1;
-  min-width: 80px;
+  min-width: 60px;   /* smaller minimum to fit narrow badges */
   height: 6px;
   background: #111;
   border-radius: 4px;
