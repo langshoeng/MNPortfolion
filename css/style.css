@@ -203,8 +203,7 @@ body{
   font-weight: 500;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* left side vs right side */
-  min-width: 200px;               /* keeps layout stable */
+  gap: 6px;
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   cursor: pointer;
@@ -216,12 +215,6 @@ body{
   box-shadow: 0 6px 12px rgba(0,0,0,0.35);
 }
 
-.skill-left {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
 .skill-icon {
   width: 28px;
   height: 28px;
@@ -231,16 +224,21 @@ body{
   font-weight: 600;
 }
 
+/* Percentage slot collapses when idle */
 .skill-percent {
   font-size: 14px;
   font-weight: 600;
   color: #4cafef;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  width: 0;                /* collapsed by default */
+  overflow: hidden;        /* hide text until expanded */
+  transition: opacity 0.25s ease, width 0.25s ease;
+  text-align: right;
 }
 
 .skill-badge:hover .skill-percent {
   opacity: 1;
+  width: 40px;             /* expands only on hover */
 }
 
 /* Progress Bar below badge */
