@@ -216,7 +216,7 @@ body{
   display: flex;
   align-items: center;
   gap: 8px;
-  justify-content: flex-start; /* keeps icon+name aligned left */
+  justify-content: flex-start;
 }
 
 .skill-icon {
@@ -254,7 +254,7 @@ body{
 
 .skill-progress {
   flex: 1;                  /* bar fills remaining space */
-  min-width: 80px;          /* prevents wrapping on narrow badges */
+  min-width: 80px;          /* prevents wrapping */
   height: 6px;
   background: #111;
   border-radius: 4px;
