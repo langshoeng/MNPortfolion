@@ -672,9 +672,10 @@ document.addEventListener("load",(e)=>{
 function blockPageScroll(e) {
     if (!viewer.classList.contains("show")) return;
 
-    // If the event is inside the viewer media (image/video), allow it
+    // If the event is inside the viewer media (image/video), let zoom/pan handlers run
     if (viewerMedia.contains(e.target)) {
-        return; // ✅ zoom/pan logic still works
+        // Do NOT preventDefault here — allow your zoom/pan logic to consume it
+        return;
     }
 
     // Otherwise block homepage scroll
