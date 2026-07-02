@@ -138,10 +138,10 @@ document.querySelectorAll('.skill-wrapper').forEach(wrapper => {
 
     setTimeout(() => {
       fill.style.width = target + '%';
-    }, 200);
+    }, 150); // bar starts filling quickly
 
     let current = 0;
-    const step = Math.ceil(target / 30);
+    const step = Math.ceil(target / 15); // bigger step = faster climb
     const interval = setInterval(() => {
       current += step;
       if (current >= target) {
@@ -149,7 +149,7 @@ document.querySelectorAll('.skill-wrapper').forEach(wrapper => {
         clearInterval(interval);
       }
       percentText.textContent = current + '%';
-    }, 30);
+    }, 20); // updates every 20ms (faster than 30ms)
   });
 
   wrapper.addEventListener('mouseleave', () => {
