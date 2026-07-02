@@ -357,9 +357,10 @@ function openProject(project){
     currentImage = 0;
 
     viewer.classList.add("show");
-
-    // ✅ Freeze homepage scroll
-    document.body.classList.add("viewer-open");
+   
+    // ✅ Block homepage scroll while viewer is open
+    document.addEventListener("wheel", blockPageScroll, { passive:false });
+    document.addEventListener("touchmove", blockPageScroll, { passive:false });
 
     // Reset viewer mode
     viewerWindow.classList.remove(
@@ -658,16 +659,26 @@ document.addEventListener("load",(e)=>{
 
 },true);
 
+function blockPageScroll(e) {
+    if (!viewer.classList.contains("show")) return;
+
+    // Allow scroll inside viewer only
+    if (viewerWindow.contains(e.target)) return;
+
+    e.preventDefault(); // block homepage scroll
+}
 
 // ===========================================
 // CLOSE
 // ===========================================
 
 function closeProject(){
-    // ✅ Restore homepage scroll
-    document.body.classList.remove("viewer-open");
 
     viewer.classList.remove("show");
+
+    // ✅ Restore homepage scroll
+    document.removeEventListener("wheel", blockPageScroll);
+    document.removeEventListener("touchmove", blockPageScroll);
 
     viewerWindow.classList.remove(
         "gallery-mode",
