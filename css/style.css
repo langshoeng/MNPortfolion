@@ -1409,8 +1409,8 @@ footer{
 
 .viewerIcon {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  bottom: 8px;   /* bottom corner */
+  right: 8px;    /* right side */
   background: rgba(0,0,0,0.6);
   color: #fff;
   border: none;
