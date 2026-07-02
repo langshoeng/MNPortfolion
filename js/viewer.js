@@ -518,25 +518,29 @@ function blockPageScroll(e) {
 }
 
 // ===========================================
-// ESCAPE KEY HANDLER
+// KEYDOWN HANDLER (Escape + Arrows)
 // ===========================================
-function handleEscapeKey(e) {
+function handleKeydown(e) {
   if (!viewer.classList.contains("show")) return;
 
-  if (e.key === "Escape") {
-    if (document.fullscreenElement) {
-      // Exit fullscreen only
-      document.exitFullscreen();
-    } else {
-      // Not in fullscreen → close viewer
-      closeProject();
-    }
-  }
-  if (e.key === "ArrowLeft" && currentGallery.length) {
-    previousViewerImage();
-  }
-  if (e.key === "ArrowRight" && currentGallery.length) {
-    nextViewerImage();
+  switch (e.key) {
+    case "Escape":
+      if (document.fullscreenElement) {
+        // Exit fullscreen only
+        document.exitFullscreen();
+      } else {
+        // Not in fullscreen → close viewer
+        closeProject();
+      }
+      break;
+
+    case "ArrowLeft":
+      if (currentGallery.length) previousViewerImage();
+      break;
+
+    case "ArrowRight":
+      if (currentGallery.length) nextViewerImage();
+      break;
   }
 }
 
@@ -549,7 +553,7 @@ function closeProject() {
     viewerWindow.removeEventListener("wheel", blockPageScroll);
     viewerWindow.removeEventListener("touchmove", blockPageScroll);
 
-    document.removeEventListener("keydown", handleEscapeKey);
+    document.removeEventListener("keydown", handleKeydown);
 
     viewer.classList.remove("show");
     viewerWindow.classList.remove("gallery-mode", "video-mode");
@@ -603,7 +607,7 @@ document.getElementById("viewerClose").addEventListener("click", handleCloseButt
 document.querySelector(".viewer-overlay").addEventListener("click", closeProject);
 
 // ===========================================
-// KEYBOARD + MOUSE
+// MOUSE INTERACTIONS
 // ===========================================
 
 // Mouse wheel zoom
