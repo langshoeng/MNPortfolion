@@ -138,7 +138,7 @@ document.querySelectorAll('.skill-wrapper').forEach(wrapper => {
 
     setTimeout(() => {
       fill.style.width = target + '%';
-    }, 200); // sync with stats reveal
+    }, 200);
 
     let current = 0;
     const step = Math.ceil(target / 30);
