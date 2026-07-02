@@ -1406,3 +1406,21 @@ footer{
   gap: 6px;                 /* space between duration and icon */
   width: auto;              /* prevents stretching full width */
 }
+
+.viewerIcon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 10;
+}
+
+.viewerIcon:hover {
+  background: rgba(0,0,0,0.8);
+}
