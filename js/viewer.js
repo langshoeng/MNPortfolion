@@ -300,8 +300,8 @@ function openProject(project) {
     viewerWindow.addEventListener("wheel", blockPageScroll, { passive:false });
     viewerWindow.addEventListener("touchmove", blockPageScroll, { passive:false });
 
-    // Listen for Escape key
-    document.addEventListener("keydown", handleEscapeKey);
+    // ✅ Attach unified keydown handler
+    document.addEventListener("keydown", handleKeydown);
 
     // Reset viewer mode
     viewerWindow.classList.remove("gallery-mode", "video-mode");
@@ -553,6 +553,7 @@ function closeProject() {
     viewerWindow.removeEventListener("wheel", blockPageScroll);
     viewerWindow.removeEventListener("touchmove", blockPageScroll);
 
+    // ✅ Remove unified keydown handler
     document.removeEventListener("keydown", handleKeydown);
 
     viewer.classList.remove("show");
