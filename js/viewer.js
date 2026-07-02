@@ -20,6 +20,7 @@ const fullscreenBtn = document.getElementById("viewerFullscreenToggle");
 const viewerDots = document.getElementById("viewerDots");
 const viewerCounter = document.getElementById("viewerCounter");
 
+
 // Touch gesture state
 let touchStartX = 0, touchStartY = 0;
 let initialDistance = 0;
@@ -63,7 +64,7 @@ if (fullscreenBtn) {
   fullscreenBtn.addEventListener("click", toggleFullscreen);
 }
 
-// Optional: double-click on image wrapper also triggers fullscreen
+// Double-click on image wrapper also triggers fullscreen
 const viewerMediaWrapper = document.getElementById("viewerMediaWrapper");
 if (viewerMediaWrapper) {
   viewerMediaWrapper.addEventListener("dblclick", toggleFullscreen);
