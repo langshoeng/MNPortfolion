@@ -15,11 +15,11 @@ const viewerSoftware = document.getElementById("viewerSoftware");
 const viewerPrev = document.getElementById("viewerPrevMedia");
 const viewerNext = document.getElementById("viewerNextMedia");
 
+// ✅ Only declare fullscreenBtn once here
 const fullscreenBtn = document.getElementById("viewerFullscreenToggle");
 
 const viewerDots = document.getElementById("viewerDots");
 const viewerCounter = document.getElementById("viewerCounter");
-
 
 // Touch gesture state
 let touchStartX = 0, touchStartY = 0;
@@ -29,7 +29,6 @@ let pinchZoomLevel = 1;
 // ===========================================
 // CURRENT STATE
 // ===========================================
-
 let currentProject = null;
 let currentGallery = [];
 let currentImage = 0;
@@ -49,7 +48,7 @@ function toggleFullscreen() {
     viewerWindow.classList.toggle("fullscreen-mode");
     if (viewerWindow.classList.contains("fullscreen-mode")) {
         enableFullscreenGestures();
-        updateArrowState(); // <-- add here
+        updateArrowState();
     } else {
         disableFullscreenGestures();
         zoomLevel = 1; offsetX = 0; offsetY = 0;
@@ -59,12 +58,11 @@ function toggleFullscreen() {
     }
 }
 
-// Fullscreen button click
+// ✅ Hook button and double-click to the same function
 if (fullscreenBtn) {
   fullscreenBtn.addEventListener("click", toggleFullscreen);
 }
 
-// Double-click on image wrapper also triggers fullscreen
 const viewerMediaWrapper = document.getElementById("viewerMediaWrapper");
 if (viewerMediaWrapper) {
   viewerMediaWrapper.addEventListener("dblclick", toggleFullscreen);
