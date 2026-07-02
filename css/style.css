@@ -187,20 +187,20 @@ body{
 
 .skills-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, auto));
   gap: 15px;
 }
 
 .skill-badge {
   background: #292929;
   color: #fff;
-  padding: 10px 16px;
+  padding: 10px 14px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 500;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;   /* ensures bottom line spans full width */
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   cursor: pointer;
@@ -213,9 +213,10 @@ body{
 }
 
 .skill-top {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
+  justify-content: flex-start; /* keeps icon+name aligned left */
 }
 
 .skill-icon {
@@ -236,7 +237,6 @@ body{
   overflow: hidden;
   opacity: 0;
   transition: max-height 0.3s ease, opacity 0.25s ease;
-  width: 100%;
   margin-top: 6px;
 }
 
@@ -253,7 +253,8 @@ body{
 }
 
 .skill-progress {
-  flex: 1;
+  flex: 1;                  /* bar fills remaining space */
+  min-width: 80px;          /* prevents wrapping on narrow badges */
   height: 6px;
   background: #111;
   border-radius: 4px;
