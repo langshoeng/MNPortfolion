@@ -706,21 +706,20 @@ function handleEscapeKey(e) {
   }
 }
 
-
 // ===========================================
 // CLOSE
 // ===========================================
 
 function closeProject() {
-    // Remove Escape key listener
-    document.removeEventListener("keydown", handleEscapeKey);
-    
     // Restore homepage scroll position
     window.scrollTo(0, savedScrollY);
     
     // Remove scroll blocking
     viewerWindow.removeEventListener("wheel", blockPageScroll);
     viewerWindow.removeEventListener("touchmove", blockPageScroll);
+    
+    // Remove Escape key listener
+    document.removeEventListener("keydown", handleEscapeKey);
     
     viewer.classList.remove("show");
     viewerWindow.classList.remove("gallery-mode", "video-mode");
