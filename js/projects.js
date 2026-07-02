@@ -63,43 +63,23 @@ function renderProjects(filter = "All") {
         //-----------------------------------
         // Badge
         //-----------------------------------
-
+        
         let mediaBadge = "";
-
-        if (
-            project.video &&
-            project.video.type !== "none"
-        ) {
-
-            mediaBadge = `
-
-                <span class="project-badge video">
-
-                    ▶ ${project.duration || ""}
-
-                </span>
-
-            `;
-
+        
+        if (project.video && project.video.type !== "none") {
+          mediaBadge = `
+            <span class="project-badge video">
+              ${project.video.duration ? project.video.duration + " | " : ""}
+              ▶
+            </span>
+          `;
         }
-
-        else if (
-
-            project.gallery &&
-            project.gallery.length
-
-        ) {
-
-            mediaBadge = `
-
-                <span class="project-badge image">
-
-                    🖼 ${project.gallery.length} Images
-
-                </span>
-
-            `;
-
+        else if (project.gallery && project.gallery.length) {
+          mediaBadge = `
+            <span class="project-badge image">
+              🖼 ${project.gallery.length} Images
+            </span>
+          `;
         }
 
 
