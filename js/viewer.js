@@ -358,12 +358,13 @@ function openProject(project){
 
     viewer.classList.add("show");
     
-    // ✅ Always reset to default metadata mode
+    // Reset fullscreen state
     viewerWindow.classList.remove("fullscreen-mode");
+    zoomLevel = 1; offsetX = 0; offsetY = 0;
     
-    // ✅ Block homepage scroll while viewer is open
-    document.addEventListener("wheel", blockPageScroll, { passive:false });
-    document.addEventListener("touchmove", blockPageScroll, { passive:false });
+    // ✅ Attach scroll blocking to the viewer window
+    viewerWindow.addEventListener("wheel", blockPageScroll, { passive:false });
+    viewerWindow.addEventListener("touchmove", blockPageScroll, { passive:false });
 
     // Reset viewer mode
     viewerWindow.classList.remove(
@@ -663,14 +664,7 @@ document.addEventListener("load",(e)=>{
 },true);
 
 function blockPageScroll(e) {
-    if (!viewer.classList.contains("show")) return;
-
-    // If the event target is inside the viewer window, allow it
-    if (viewerWindow.contains(e.target)) {
-        return;
-    }
-
-    // Otherwise block homepage scroll
+    // Prevent scroll from reaching the homepage
     e.preventDefault();
     e.stopPropagation();
 }
@@ -680,10 +674,10 @@ function blockPageScroll(e) {
 // ===========================================
 
 function closeProject() {
-    // ✅ Restore homepage scroll
-    document.removeEventListener("wheel", blockPageScroll);
-    document.removeEventListener("touchmove", blockPageScroll);
-
+    // ✅ Remove scroll blocking
+    viewerWindow.removeEventListener("wheel", blockPageScroll);
+    viewerWindow.removeEventListener("touchmove", blockPageScroll);
+    
     viewer.classList.remove("show");
     viewerWindow.classList.remove("gallery-mode", "video-mode");
 
