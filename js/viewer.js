@@ -358,6 +358,9 @@ function openProject(project){
 
     viewer.classList.add("show");
 
+    // ✅ Freeze homepage scroll
+    document.body.classList.add("viewer-open");
+
     // Reset viewer mode
     viewerWindow.classList.remove(
         "gallery-mode",
@@ -661,6 +664,8 @@ document.addEventListener("load",(e)=>{
 // ===========================================
 
 function closeProject(){
+    // ✅ Restore homepage scroll
+    document.body.classList.remove("viewer-open");
 
     viewer.classList.remove("show");
 
