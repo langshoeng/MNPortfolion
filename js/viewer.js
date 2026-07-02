@@ -428,27 +428,24 @@ function openProject(project){
     // ======================================
     // YOUTUBE
     // ======================================
-
-    if(
+    
+    if (
         project.video &&
         project.video.type === "youtube"
-    ){
-
+    ) {
         viewerWindow.classList.add("video-mode");
-
+    
         viewerMedia.innerHTML = `
             <iframe
                 src="${getYoutubeEmbed(project.video.url)}"
+                frameborder="0"
                 allow="autoplay; fullscreen; encrypted-media"
-                allowfullscreen
                 onerror="this.replaceWith(createMissingPlaceholder())"
             ></iframe>
         `;
-
+    
         return;
-
     }
-
 
     // ======================================
     // LOCAL VIDEO
