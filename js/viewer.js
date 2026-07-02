@@ -360,9 +360,6 @@ function openProject(project){
     
     // ✅ Always reset to default metadata mode
     viewerWindow.classList.remove("fullscreen-mode");
-    zoomLevel = 1;
-    offsetX = 0;
-    offsetY = 0;
     
     // ✅ Block homepage scroll while viewer is open
     document.addEventListener("wheel", blockPageScroll, { passive:false });
@@ -668,10 +665,14 @@ document.addEventListener("load",(e)=>{
 function blockPageScroll(e) {
     if (!viewer.classList.contains("show")) return;
 
-    // Allow scroll inside viewer only
-    if (viewerWindow.contains(e.target)) return;
+    // If the event target is inside the viewer window, allow it
+    if (viewerWindow.contains(e.target)) {
+        return;
+    }
 
-    e.preventDefault(); // block homepage scroll
+    // Otherwise block homepage scroll
+    e.preventDefault();
+    e.stopPropagation();
 }
 
 // ===========================================
