@@ -690,18 +690,17 @@ function blockPageScroll(e) {
 // ESCAPE KEY HANDLER
 // ===========================================
 function handleEscapeKey(e) {
-  if (e.key === "Escape") {
-    if (viewer.classList.contains("show")) {
-      if (viewerWindow.classList.contains("fullscreen-mode")) {
-        // Exit fullscreen only
-        viewerWindow.classList.remove("fullscreen-mode");
-        zoomLevel = 1; offsetX = 0; offsetY = 0;
-        const img = document.getElementById("viewerGalleryImage");
-        if (img) applyZoom(img);
-      } else {
-        // Already in metadata mode → close viewer
-        closeProject();
-      }
+  if (e.key === "Escape" && viewer.classList.contains("show")) {
+    if (viewerWindow.classList.contains("fullscreen-mode")) {
+      // Exit fullscreen only
+      viewerWindow.classList.remove("fullscreen-mode");
+      zoomLevel = 1; offsetX = 0; offsetY = 0;
+      const img = document.getElementById("viewerGalleryImage");
+      if (img) applyZoom(img);
+      // ✅ Do NOT call closeProject() here
+    } else {
+      // Already in metadata mode → close viewer
+      closeProject();
     }
   }
 }
@@ -791,6 +790,16 @@ document.addEventListener("dblclick", e => {
     if (e.target.id === "viewerGalleryImage") {
         toggleFullscreen();
     }
+});
+
+document.addEventListener("fullscreenchange", () => {
+  if (!document.fullscreenElement && viewerWindow.classList.contains("fullscreen-mode")) {
+    // Browser exited fullscreen (e.g. Escape key)
+    viewerWindow.classList.remove("fullscreen-mode");
+    zoomLevel = 1; offsetX = 0; offsetY = 0;
+    const img = document.getElementById("viewerGalleryImage");
+    if (img) applyZoom(img);
+  }
 });
 
 // Mouse wheel zoom
