@@ -668,11 +668,20 @@ document.addEventListener("load",(e)=>{
 
 },true);
 
+
 function blockPageScroll(e) {
-    // Prevent scroll from reaching the homepage
+    if (!viewer.classList.contains("show")) return;
+
+    // If the event is inside the viewer media (image/video), allow it
+    if (viewerMedia.contains(e.target)) {
+        return; // ✅ zoom/pan logic still works
+    }
+
+    // Otherwise block homepage scroll
     e.preventDefault();
     e.stopPropagation();
 }
+
 
 // ===========================================
 // CLOSE
