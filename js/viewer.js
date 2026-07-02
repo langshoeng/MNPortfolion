@@ -351,188 +351,89 @@ function getYoutubeEmbed(url){
 // ===========================================
 
 function openProject(project){
-
     currentProject = project;
-
     currentGallery = [];
-
     currentImage = 0;
 
     viewer.classList.add("show");
-    
-    // Save current homepage scroll position
     savedScrollY = window.scrollY;
-    
-    // Reset fullscreen state
+
     viewerWindow.classList.remove("fullscreen-mode");
     zoomLevel = 1; offsetX = 0; offsetY = 0;
-    
-    // Block homepage scroll while viewer is open
+
     viewerWindow.addEventListener("wheel", blockPageScroll, { passive:false });
     viewerWindow.addEventListener("touchmove", blockPageScroll, { passive:false });
 
-    // Reset viewer mode
-    viewerWindow.classList.remove(
-        "gallery-mode",
-        "video-mode"
-    );
-
-    // Hide gallery controls by default
+    viewerWindow.classList.remove("gallery-mode","video-mode");
     viewerPrev.style.display = "none";
     viewerNext.style.display = "none";
 
     viewerMedia.innerHTML = "";
-
     viewerDots.innerHTML = "";
-
     viewerCounter.textContent = "";
 
-
-    // ======================================
-    // TITLE
-    // ======================================
-
     viewerTitle.textContent = project.title || "";
-
-
-    // ======================================
-    // META
-    // ======================================
-
     viewerMeta.innerHTML = `
-
-        <div>
-
-            <strong>Client</strong><br>
-
-            ${project.client || "-"}
-
-        </div>
-
-        <div style="margin-top:12px;">
-
-            <strong>Year</strong><br>
-
-            ${project.year || "-"}
-
-        </div>
-
+        <div><strong>Client</strong><br>${project.client || "-"}</div>
+        <div style="margin-top:12px;"><strong>Year</strong><br>${project.year || "-"}</div>
     `;
-
-
-    // ======================================
-    // DESCRIPTION
-    // ======================================
-
-    viewerDescription.textContent =
-        project.description || "";
-
-
-    // ======================================
-    // SOFTWARE
-    // ======================================
+    viewerDescription.textContent = project.description || "";
 
     viewerSoftware.innerHTML = "";
-
     if(project.software){
-
         project.software.forEach(app=>{
-
-            const badge =
-                document.createElement("span");
-
+            const badge = document.createElement("span");
             badge.className = "viewerBadge";
-
             badge.textContent = app;
-
             viewerSoftware.appendChild(badge);
-
         });
-
     }
 
-
-    // ======================================
-    // YOUTUBE
-    // ======================================
-    
-    if (
-        project.video &&
-        project.video.type === "youtube"
-    ) {
+    if (project.video && project.video.type === "youtube") {
         viewerWindow.classList.add("video-mode");
-    
         viewerMedia.innerHTML = `
-            <iframe
-                src="${getYoutubeEmbed(project.video.url)}"
+            <iframe src="${getYoutubeEmbed(project.video.url)}"
                 frameborder="0"
                 allow="autoplay; fullscreen; encrypted-media"
-                onerror="this.replaceWith(createMissingPlaceholder())"
-            ></iframe>
+                onerror="this.replaceWith(createMissingPlaceholder())"></iframe>
         `;
-    
         return;
     }
 
-    // ======================================
-    // LOCAL VIDEO
-    // ======================================
-
-    if(
-        project.video &&
-        project.video.type === "mp4"
-    ){
-
+    if (project.video && project.video.type === "mp4") {
         viewerWindow.classList.add("video-mode");
-
         viewerMedia.innerHTML = `
             <video controls autoplay onerror="this.replaceWith(createMissingPlaceholder())">
                 <source src="${project.video.url}" type="video/mp4">
             </video>
         `;
-
         return;
-
     }
 
-
-    // ======================================
-    // IMAGE GALLERY
-    // ======================================
     if (project.gallery && project.gallery.length) {
         viewerWindow.classList.add("gallery-mode");
-    
         currentGallery = project.gallery;
         currentImage = 0;
-    
-        // Show gallery arrows
+
         viewerPrev.style.display = "";
         viewerNext.style.display = "";
-    
-        // Inject the first image
+
         viewerMedia.innerHTML = `
-            <img
-                id="viewerGalleryImage"
-                src="${currentGallery[0]}"
-                alt="Gallery Image"
-            >
+            <img id="viewerGalleryImage"
+                 src="${currentGallery[0]}"
+                 alt="Gallery Image">
         `;
-    
         const img = document.getElementById("viewerGalleryImage");
-    
-        // Handle missing image
+
         img.onerror = () => {
             viewerMedia.innerHTML = "";
             const placeholder = createMissingPlaceholder();
             viewerMedia.appendChild(placeholder);
         };
-    
-        // ✅ Bind double‑click directly to the image
-        img.addEventListener("dblclick", toggleFullscreen);
-    
+
+        // ❌ Removed per-image dblclick binding here
         buildViewerGallery();
     }
-
 }
 
 // ===========================================
@@ -557,7 +458,6 @@ function buildViewerGallery(){
 function updateViewerGallery() {
     let galleryImg = document.getElementById("viewerGalleryImage");
 
-    // If placeholder was showing, rebuild <img>
     if (!galleryImg) {
         viewerMedia.innerHTML = `<img id="viewerGalleryImage" alt="Gallery Image" class="zoomable">`;
         galleryImg = document.getElementById("viewerGalleryImage");
@@ -567,15 +467,12 @@ function updateViewerGallery() {
     const preload = new Image();
     preload.src = nextSrc;
 
-    // Show spinner while loading
     showLoadingSpinner();
 
     preload.onload = () => {
         galleryImg.src = nextSrc;
         galleryImg.style.opacity = "0";
-
         hideLoadingSpinner();
-
         requestAnimationFrame(() => {
             galleryImg.style.transition = "opacity 0.3s ease";
             galleryImg.style.opacity = "1";
@@ -589,14 +486,11 @@ function updateViewerGallery() {
         galleryImg.replaceWith(placeholder);
     };
 
-    // ✅ Bind double‑click directly to the current image
-    galleryImg.addEventListener("dblclick", toggleFullscreen);
+    // ❌ Removed per-image dblclick binding here
 
-    // Update counter and preload neighbors
     viewerCounter.textContent = `${currentImage + 1} of ${currentGallery.length}`;
     preloadGallery();
 
-    // Update dots
     viewerDots.innerHTML = "";
     currentGallery.forEach((image, index) => {
         const dot = document.createElement("button");
@@ -745,32 +639,45 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
+// ===========================================
 // Double-click image to toggle fullscreen
+// (Global listener only — per-image bindings removed)
 document.addEventListener("dblclick", e => {
+    if (!viewer.classList.contains("show")) return;
     if (e.target.id === "viewerGalleryImage") {
         toggleFullscreen();
     }
 });
 
-// Mouse wheel zoom
+// ===========================================
+// Mouse wheel zoom (scoped to viewer open)
+// ===========================================
 document.addEventListener("wheel", e => {
+    if (!viewer.classList.contains("show")) return;
     const img = document.getElementById("viewerGalleryImage");
     if (!img) return;
     if (e.deltaY < 0) zoomIn();
     else zoomOut();
 });
 
-// Drag to pan when zoomed
+// ===========================================
+// Drag to pan when zoomed (scoped to viewer open)
+// ===========================================
 let isDragging = false, startX, startY;
+
 document.addEventListener("mousedown", e => {
+    if (!viewer.classList.contains("show")) return;
     const img = document.getElementById("viewerGalleryImage");
     if (!img) return;
     isDragging = true;
     startX = e.clientX;
     startY = e.clientY;
 });
+
 document.addEventListener("mouseup", () => { isDragging = false; });
+
 document.addEventListener("mousemove", e => {
+    if (!viewer.classList.contains("show")) return;
     if (!isDragging) return;
     const dx = e.clientX - startX;
     const dy = e.clientY - startY;
@@ -785,5 +692,4 @@ document.addEventListener("mousemove", e => {
 // ===========================================
 // GLOBAL
 // ===========================================
-
 window.openProject = openProject;
