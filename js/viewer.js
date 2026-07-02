@@ -57,15 +57,18 @@ function toggleFullscreen() {
     }
 }
 
-// ✅ Hook button and double-click to the same function
+// Fullscreen button click
 if (fullscreenBtn) {
   fullscreenBtn.addEventListener("click", toggleFullscreen);
 }
 
-const viewerMediaWrapper = document.getElementById("viewerMediaWrapper");
-if (viewerMediaWrapper) {
-  viewerMediaWrapper.addEventListener("dblclick", toggleFullscreen);
-}
+// ✅ Preserve original double-click fullscreen on the image itself
+document.addEventListener("dblclick", e => {
+  const img = document.getElementById("viewerGalleryImage");
+  if (img && e.target === img) {
+    toggleFullscreen();
+  }
+});
 
 // Zoom controls
 let zoomLevel = 1;
