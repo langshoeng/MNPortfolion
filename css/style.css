@@ -225,19 +225,19 @@ body{
 }
 
 .skill-percent {
-  margin-left: 6px;
+  position: absolute;
+  right: 12px;               /* lock to right edge */
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 14px;
   font-weight: 600;
   color: #4cafef;
   opacity: 0;
-  width: 0;                /* no space when idle */
-  overflow: hidden;        /* hide text until expanded */
-  transition: opacity 0.25s ease, width 0.25s ease;
+  transition: opacity 0.25s ease;
 }
 
 .skill-badge:hover .skill-percent {
   opacity: 1;
-  width: 40px;             /* expands just enough for "100%" */
 }
 
 /* Progress Bar below badge */
