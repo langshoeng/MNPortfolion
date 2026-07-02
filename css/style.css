@@ -202,11 +202,10 @@ body{
   font-weight: 500;
   display: inline-flex;
   flex-direction: column;   /* stack top and bottom */
-  gap: 6px;
+  align-items: flex-start;  /* keep icon+text aligned left */
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   cursor: pointer;
-  min-width: 200px;         /* keeps rectangular look */
 }
 
 .skill-badge:hover {
@@ -230,18 +229,20 @@ body{
   font-weight: 600;
 }
 
+/* Bottom line collapses until hover */
 .skill-bottom {
   display: flex;
   align-items: center;
   gap: 8px;
-  max-height: 0;            /* collapsed by default */
-  overflow: hidden;         /* hide content until expanded */
+  max-height: 0;
+  overflow: hidden;
   opacity: 0;
   transition: max-height 0.3s ease, opacity 0.25s ease;
+  width: 100%;              /* bar stretches to badge width */
 }
 
 .skill-badge:hover .skill-bottom {
-  max-height: 20px;         /* expands just enough for the line */
+  max-height: 20px;
   opacity: 1;
 }
 
@@ -249,10 +250,11 @@ body{
   font-size: 14px;
   font-weight: 600;
   color: #4cafef;
+  flex-shrink: 0;           /* number stays fixed */
 }
 
 .skill-progress {
-  flex: 1;                  /* bar stretches */
+  flex: 1;                  /* bar fills remaining space */
   height: 6px;
   background: #111;
   border-radius: 4px;
