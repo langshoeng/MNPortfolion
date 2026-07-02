@@ -243,7 +243,7 @@ body{
 
 .skill-progress {
   flex: 1;
-  min-width: 80px;
+  min-width: 80px;   /* prevents wrapping */
   height: 6px;
   background: #111;
   border-radius: 4px;
