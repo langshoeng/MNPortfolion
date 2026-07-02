@@ -125,7 +125,6 @@ document.querySelectorAll(".fade-up, .project-card").forEach(el => {
 // ===============================
 // Skill Badge Animation (reset + replay)
 // ===============================
-
 document.querySelectorAll('.skill-badge').forEach(badge => {
   const fill = badge.querySelector('.skill-fill');
   const percentText = badge.querySelector('.skill-percent');
@@ -137,7 +136,7 @@ document.querySelectorAll('.skill-badge').forEach(badge => {
 
     setTimeout(() => {
       fill.style.width = target + '%';
-    }, 50);
+    }, 200); // sync with expand animation
 
     let current = 0;
     const step = Math.ceil(target / 30);
