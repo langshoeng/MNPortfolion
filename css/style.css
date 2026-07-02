@@ -188,7 +188,7 @@ body{
 .skills-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 18px; /* tighter vertical spacing */
+  gap: 10px 16px; /* tighter vertical + horizontal spacing */
   justify-content: center;
 }
 
@@ -201,13 +201,13 @@ body{
 .skill-badge {
   background: #292929;
   color: #fff;
-  padding: 8px 12px;
+  padding: 6px 12px;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   display: inline-flex;       /* auto-fit width */
   align-items: center;        /* icon + text side by side */
-  gap: 8px;
+  gap: 6px;
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   cursor: pointer;
@@ -216,7 +216,7 @@ body{
 
 .skill-badge:hover {
   background: #444;
-  transform: translateY(-10px);
+  transform: translateY(-8px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.35);
 }
 
@@ -238,7 +238,7 @@ body{
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease, opacity 0.25s ease;
-  margin-top: 4px; /* reduced vertical gap */
+  margin-top: 3px; /* reduced vertical gap */
 }
 
 .skill-wrapper:hover .skill-stats {
@@ -247,7 +247,7 @@ body{
 }
 
 .skill-percent {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: #4cafef;
   flex-shrink: 0;
