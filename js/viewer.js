@@ -486,22 +486,17 @@ function openProject(project){
     // ======================================
     // IMAGE GALLERY
     // ======================================
-
-    if(
-        project.gallery &&
-        project.gallery.length
-    ){
-
+    if (project.gallery && project.gallery.length) {
         viewerWindow.classList.add("gallery-mode");
-
+    
         currentGallery = project.gallery;
-
         currentImage = 0;
-
+    
         // Show gallery arrows
         viewerPrev.style.display = "";
         viewerNext.style.display = "";
-
+    
+        // Inject the first image
         viewerMedia.innerHTML = `
             <img
                 id="viewerGalleryImage"
@@ -509,16 +504,20 @@ function openProject(project){
                 alt="Gallery Image"
             >
         `;
-        
+    
         const img = document.getElementById("viewerGalleryImage");
+    
+        // Handle missing image
         img.onerror = () => {
             viewerMedia.innerHTML = "";
             const placeholder = createMissingPlaceholder();
             viewerMedia.appendChild(placeholder);
         };
-
+    
+        // ✅ Bind double‑click directly to the image
+        img.addEventListener("dblclick", toggleFullscreen);
+    
         buildViewerGallery();
-
     }
 
 }
@@ -545,6 +544,7 @@ function buildViewerGallery(){
 function updateViewerGallery() {
     let galleryImg = document.getElementById("viewerGalleryImage");
 
+    // If placeholder was showing, rebuild <img>
     if (!galleryImg) {
         viewerMedia.innerHTML = `<img id="viewerGalleryImage" alt="Gallery Image" class="zoomable">`;
         galleryImg = document.getElementById("viewerGalleryImage");
@@ -554,6 +554,7 @@ function updateViewerGallery() {
     const preload = new Image();
     preload.src = nextSrc;
 
+    // Show spinner while loading
     showLoadingSpinner();
 
     preload.onload = () => {
@@ -566,7 +567,6 @@ function updateViewerGallery() {
             galleryImg.style.transition = "opacity 0.3s ease";
             galleryImg.style.opacity = "1";
         });
-
     };
 
     preload.onerror = () => {
@@ -576,9 +576,14 @@ function updateViewerGallery() {
         galleryImg.replaceWith(placeholder);
     };
 
+    // ✅ Bind double‑click directly to the current image
+    galleryImg.addEventListener("dblclick", toggleFullscreen);
+
+    // Update counter and preload neighbors
     viewerCounter.textContent = `${currentImage + 1} of ${currentGallery.length}`;
     preloadGallery();
 
+    // Update dots
     viewerDots.innerHTML = "";
     currentGallery.forEach((image, index) => {
         const dot = document.createElement("button");
