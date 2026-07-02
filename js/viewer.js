@@ -49,7 +49,7 @@ if (fullscreenBtn) {
   fullscreenBtn.addEventListener("click", toggleFullscreen);
 }
 
-// ✅ Preserve original double-click fullscreen on the image itself
+// ✅ Global double-click fullscreen binding
 document.addEventListener("dblclick", e => {
   const img = document.getElementById("viewerGalleryImage");
   if (img && e.target === img) {
@@ -94,7 +94,7 @@ function getDistance(touches) {
     return Math.sqrt(dx*dx + dy*dy);
 }
 
-// Pinch Gesture Handlers (fullscreen only)
+// Pinch Gesture Handlers
 let pinchActive = false;
 let pinchJustEnded = false;
 
@@ -102,13 +102,13 @@ function pinchStart(e) {
     if (e.touches.length === 2) {
         initialDistance = getDistance(e.touches);
         pinchZoomLevel = zoomLevel;
-        pinchActive = true; // mark pinch as active
+        pinchActive = true;
     }
 }
 
 function pinchMove(e) {
     if (e.touches.length === 2) {
-        e.preventDefault(); // block browser zoom
+        e.preventDefault();
         const newDistance = getDistance(e.touches);
         const scaleChange = newDistance / initialDistance;
         zoomLevel = Math.min(4, Math.max(1, pinchZoomLevel * scaleChange));
@@ -120,15 +120,12 @@ function pinchEnd(e) {
     if (e.touches.length === 0) {
         pinchActive = false;
         pinchJustEnded = true;
-        setTimeout(() => { pinchJustEnded = false; }, 100); // short guard window
+        setTimeout(() => { pinchJustEnded = false; }, 100);
     }
 }
 
-// ===========================================
-// Double‑tap to Zoom (fullscreen only)
-// ===========================================
+// Double‑tap to Zoom
 let lastTapTime = 0;
-
 function handleDoubleTap(e) {
     if (!viewerWindow.classList.contains("fullscreen-mode")) return;
     if (e.target.id !== "viewerGalleryImage") return;
@@ -137,24 +134,18 @@ function handleDoubleTap(e) {
     const tapLength = currentTime - lastTapTime;
 
     if (tapLength < 300 && tapLength > 0) {
-        // Double‑tap detected
         if (zoomLevel === 1) {
-            zoomLevel = 2; // zoom in
+            zoomLevel = 2;
         } else {
-            zoomLevel = 1; offsetX = 0; offsetY = 0; // reset zoom
+            zoomLevel = 1; offsetX = 0; offsetY = 0;
         }
         applyZoom(document.getElementById("viewerGalleryImage"));
     }
-
     lastTapTime = currentTime;
 }
-
 document.addEventListener("touchend", handleDoubleTap, { passive:true });
 
-
-// ===========================================
-// Touch Drag to Pan (fullscreen only)
-// ===========================================
+// Touch Drag to Pan
 let isTouchDragging = false;
 let lastTouchX = 0, lastTouchY = 0;
 
@@ -166,11 +157,10 @@ function touchDragStart(e) {
         lastTouchY = e.touches[0].clientY;
     }
 }
-
 function touchDragMove(e) {
     if (!isTouchDragging) return;
     if (e.touches.length === 1) {
-        e.preventDefault(); // prevent page scroll
+        e.preventDefault();
         const dx = e.touches[0].clientX - lastTouchX;
         const dy = e.touches[0].clientY - lastTouchY;
         lastTouchX = e.touches[0].clientX;
@@ -181,21 +171,14 @@ function touchDragMove(e) {
         if (img) applyZoom(img);
     }
 }
+function touchDragEnd(e) { isTouchDragging = false; }
 
-function touchDragEnd(e) {
-    isTouchDragging = false;
-}
-
-// ===========================================
-// Swipe Navigation (fullscreen only, safe threshold)
-// ===========================================
+// Swipe Navigation
 let swipeStartX = 0, swipeStartY = 0;
 let isSwipeCandidate = false;
 
 document.addEventListener("touchstart", e => {
     if (!viewerWindow.classList.contains("fullscreen-mode")) return;
-
-    // Only allow swipe if one finger AND not zoomed
     if (e.touches.length === 1 && zoomLevel === 1) {
         swipeStartX = e.touches[0].clientX;
         swipeStartY = e.touches[0].clientY;
@@ -208,9 +191,7 @@ document.addEventListener("touchstart", e => {
 document.addEventListener("touchend", e => {
     if (!viewerWindow.classList.contains("fullscreen-mode")) return;
     if (!isSwipeCandidate) return;
-    if (pinchActive) return;
-    if (pinchJustEnded) return;   // <-- new guard
-    if (zoomLevel > 1) return;
+    if (pinchActive || pinchJustEnded || zoomLevel > 1) return;
 
     const dx = e.changedTouches[0].clientX - swipeStartX;
     const dy = e.changedTouches[0].clientY - swipeStartY;
@@ -231,7 +212,6 @@ function enableFullscreenGestures() {
     document.addEventListener("touchmove", touchDragMove, { passive:false });
     document.addEventListener("touchend", touchDragEnd, { passive:false });
 }
-
 function disableFullscreenGestures() {
     document.removeEventListener("touchstart", pinchStart);
     document.removeEventListener("touchmove", pinchMove);
@@ -242,57 +222,40 @@ function disableFullscreenGestures() {
     document.removeEventListener("touchend", touchDragEnd);
 }
 
-// ===========================================
 // Close Button Behavior
-// ===========================================
 function handleCloseButton() {
     const img = document.getElementById("viewerGalleryImage");
-
-    // If image exists, check transform state
     const isTransformed = (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0);
 
     if (viewerWindow.classList.contains("fullscreen-mode")) {
         if (isTransformed) {
-            // Case 1: fullscreen + zoomed/panned
-            zoomLevel = 1;
-            offsetX = 0;
-            offsetY = 0;
+            zoomLevel = 1; offsetX = 0; offsetY = 0;
             if (img) applyZoom(img);
             return;
         } else {
-            // Case 2: fullscreen + default transform
-            toggleFullscreen(); // exit fullscreen back to metadata mode
+            toggleFullscreen();
             return;
         }
     } else {
         if (isTransformed) {
-            // Case 3: metadata mode + zoomed/panned
-            zoomLevel = 1;
-            offsetX = 0;
-            offsetY = 0;
+            zoomLevel = 1; offsetX = 0; offsetY = 0;
             if (img) applyZoom(img);
             return;
         } else {
-            // Case 4: metadata mode + default transform
-            closeProject(); // exit viewer entirely
+            closeProject();
         }
     }
 }
 
-// ===========================================
-// Spinner between each transition
-// ===========================================
+// Spinner
 function showLoadingSpinner() {
     const overlay = document.createElement("div");
     overlay.className = "viewer-loading";
-
     const spinner = document.createElement("div");
     spinner.className = "viewer-spinner";
-
     overlay.appendChild(spinner);
     viewerMedia.appendChild(overlay);
 }
-
 function hideLoadingSpinner() {
     const overlay = viewerMedia.querySelector(".viewer-loading");
     if (overlay) overlay.remove();
@@ -301,35 +264,20 @@ function hideLoadingSpinner() {
 // ===========================================
 // YOUTUBE
 // ===========================================
-
 function getYoutubeEmbed(url){
-
     let id = "";
-
-    try{
-
+    try {
         const u = new URL(url);
-
-        if(u.hostname.includes("youtu.be")){
-
+        if (u.hostname.includes("youtu.be")) {
             id = u.pathname.substring(1);
-
-        }else{
-
+        } else {
             id = u.searchParams.get("v");
-
         }
-
-    }catch(e){
-
+    } catch(e) {
         return "";
-
     }
-
     return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
-
 }
-
 
 // ===========================================
 // OPEN PROJECT
@@ -442,9 +390,6 @@ function openProject(project) {
             viewerMedia.appendChild(placeholder);
         };
 
-        // Double‑click toggles fullscreen
-        img.addEventListener("dblclick", toggleFullscreen);
-
         buildViewerGallery();
     }
 }
@@ -452,22 +397,15 @@ function openProject(project) {
 // ===========================================
 // BUILD GALLERY
 // ===========================================
-
 function buildViewerGallery(){
-
     viewerPrev.onclick = previousViewerImage;
-
     viewerNext.onclick = nextViewerImage;
-
     updateViewerGallery();
-
 }
-
 
 // ===========================================
 // UPDATE GALLERY
 // ===========================================
-
 function updateViewerGallery() {
     let galleryImg = document.getElementById("viewerGalleryImage");
 
@@ -502,9 +440,6 @@ function updateViewerGallery() {
         placeholder.style.opacity = "1";
         galleryImg.replaceWith(placeholder);
     };
-
-    // ✅ Bind double‑click directly to the current image
-    galleryImg.addEventListener("dblclick", toggleFullscreen);
 
     // Update counter and preload neighbors
     viewerCounter.textContent = `${currentImage + 1} of ${currentGallery.length}`;
@@ -544,52 +479,37 @@ function previousViewerImage() {
     updateViewerGallery();
 }
 
-
+// ===========================================
+// PRELOAD NEIGHBORS
+// ===========================================
 function preloadGallery(){
+    if(currentGallery.length < 2) return;
 
-    if(currentGallery.length<2)
-        return;
+    const next = new Image();
+    next.src = currentGallery[(currentImage+1) % currentGallery.length];
 
-    const next =
-        new Image();
-
-    next.src =
-        currentGallery[
-            (currentImage+1)
-            %
-            currentGallery.length
-        ];
-
-    const prev =
-        new Image();
-
-    prev.src =
-        currentGallery[
-            (currentImage-1+currentGallery.length)
-            %
-            currentGallery.length
-        ];
-
+    const prev = new Image();
+    prev.src = currentGallery[(currentImage-1+currentGallery.length) % currentGallery.length];
 }
 
+// ===========================================
+// IMAGE LOAD FADE-IN
+// ===========================================
 document.addEventListener("load",(e)=>{
-
     if(e.target.id==="viewerGalleryImage"){
-
         e.target.style.opacity="1";
-
     }
+}, true);
 
-},true);
-
-
+// ===========================================
+// BLOCK PAGE SCROLL
+// ===========================================
 function blockPageScroll(e) {
     if (!viewer.classList.contains("show")) return;
 
     // If the event is inside the viewer media (image/video), let zoom/pan handlers run
     if (viewerMedia.contains(e.target)) {
-        // Do NOT preventDefault here — allow your zoom/pan logic to consume it
-        return;
+        return; // allow zoom/pan
     }
 
     // Otherwise block homepage scroll
@@ -650,9 +570,12 @@ function toggleFullscreen() {
   if (!document.fullscreenElement) {
     viewerWindow.requestFullscreen().then(() => {
       viewerWindow.classList.add("fullscreen-mode");
+      enableFullscreenGestures();
     }).catch(err => console.error("Fullscreen error:", err));
   } else {
-    document.exitFullscreen();
+    document.exitFullscreen().then(() => {
+      disableFullscreenGestures();
+    });
   }
 }
 
@@ -665,6 +588,7 @@ document.addEventListener("fullscreenchange", () => {
     zoomLevel = 1; offsetX = 0; offsetY = 0;
     const img = document.getElementById("viewerGalleryImage");
     if (img) applyZoom(img);
+    disableFullscreenGestures();
   }
 });
 
@@ -673,39 +597,14 @@ document.addEventListener("fullscreenchange", () => {
 // ===========================================
 
 // Close button (X) with layered behavior
-document.getElementById("viewerClose").addEventListener("click", closeProject);
+document.getElementById("viewerClose").addEventListener("click", handleCloseButton);
 
 // Overlay click always closes viewer
 document.querySelector(".viewer-overlay").addEventListener("click", closeProject);
 
 // ===========================================
-// KEYBOARD
+// KEYBOARD + MOUSE
 // ===========================================
-document.addEventListener("keydown",(e)=>{
-    if(!viewer.classList.contains("show"))
-        return;
-
-    switch(e.key){
-        case "ArrowLeft":
-            if(currentGallery.length){
-                previousViewerImage();
-            }
-            break;
-
-        case "ArrowRight":
-            if(currentGallery.length){
-                nextViewerImage();
-            }
-            break;
-    }
-});
-
-// Double-click image to toggle fullscreen
-document.addEventListener("dblclick", e => {
-    if (e.target.id === "viewerGalleryImage") {
-        toggleFullscreen();
-    }
-});
 
 // Mouse wheel zoom
 document.addEventListener("wheel", e => {
