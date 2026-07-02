@@ -234,11 +234,14 @@ body{
   display: flex;
   align-items: center;
   gap: 8px;
+  max-height: 0;            /* collapsed by default */
+  overflow: hidden;         /* hide content until expanded */
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: max-height 0.3s ease, opacity 0.25s ease;
 }
 
 .skill-badge:hover .skill-bottom {
+  max-height: 20px;         /* expands just enough for the line */
   opacity: 1;
 }
 
