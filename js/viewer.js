@@ -46,17 +46,22 @@ function createMissingPlaceholder() {
 
 // Fullscreen toggle
 function toggleFullscreen() {
-    viewerWindow.classList.toggle("fullscreen-mode");
-    if (viewerWindow.classList.contains("fullscreen-mode")) {
-        enableFullscreenGestures();
-        updateArrowState();
-    } else {
-        disableFullscreenGestures();
-        zoomLevel = 1; offsetX = 0; offsetY = 0;
-        const img = document.getElementById("viewerGalleryImage");
-        if (img) applyZoom(img);
-        updateArrowState();
-    }
+  if (!document.fullscreenElement) {
+    // Enter fullscreen
+    viewerWindow.requestFullscreen().then(() => {
+      viewerWindow.classList.add("fullscreen-mode");
+    }).catch(err => {
+      console.error("Fullscreen error:", err);
+    });
+  } else {
+    // Exit fullscreen
+    document.exitFullscreen().then(() => {
+      viewerWindow.classList.remove("fullscreen-mode");
+      zoomLevel = 1; offsetX = 0; offsetY = 0;
+      const img = document.getElementById("viewerGalleryImage");
+      if (img) applyZoom(img);
+    });
+  }
 }
 
 // Fullscreen button click
@@ -693,11 +698,7 @@ function handleEscapeKey(e) {
   if (e.key === "Escape" && viewer.classList.contains("show")) {
     if (viewerWindow.classList.contains("fullscreen-mode")) {
       // Exit fullscreen only
-      viewerWindow.classList.remove("fullscreen-mode");
-      zoomLevel = 1; offsetX = 0; offsetY = 0;
-      const img = document.getElementById("viewerGalleryImage");
-      if (img) applyZoom(img);
-      // ✅ Do NOT call closeProject() here
+      document.exitFullscreen();
     } else {
       // Already in metadata mode → close viewer
       closeProject();
