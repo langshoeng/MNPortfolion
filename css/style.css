@@ -1387,17 +1387,22 @@ footer{
     to { transform:rotate(360deg); }
 }
 
+.project-thumb {
+  position: relative; /* make sure the badge can be positioned inside */
+}
+
 .project-badge.video {
   position: absolute;
   bottom: 8px;
-  left: 8px;
+  right: 8px;              /* move to bottom-right */
   background: rgba(0,0,0,0.6);
   color: #fff;
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 600;
-  display: flex;
+  display: inline-flex;     /* keeps it tight around content */
   align-items: center;
-  gap: 6px; /* space between duration and icon */
+  gap: 6px;                 /* space between duration and icon */
+  width: auto;              /* prevents stretching full width */
 }
