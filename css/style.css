@@ -192,6 +192,13 @@ body{
   justify-content: center;
 }
 
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px; /* balanced spacing */
+  justify-content: center;
+}
+
 .skill-wrapper {
   display: inline-flex;
   flex-direction: column;
@@ -201,31 +208,32 @@ body{
 .skill-badge {
   background: #292929;
   color: #fff;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 500;
-  display: inline-flex;       /* auto-fit width */
-  align-items: center;        /* icon + text side by side */
-  gap: 6px;
+  padding: 14px 20px;       /* bigger padding */
+  border-radius: 10px;      /* slightly larger corners */
+  font-size: 18px;          /* larger text */
+  font-weight: 600;
+  display: inline-flex;     
+  align-items: center;      
+  gap: 10px;                /* more space between icon + text */
   transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
   cursor: pointer;
-  white-space: nowrap;        /* prevents wrapping inside badge */
+  white-space: nowrap;
 }
 
 .skill-badge:hover {
   background: #444;
-  transform: translateY(-8px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.35);
+  transform: translateY(-10px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
 }
 
 .skill-icon {
-  width: 20px;
-  height: 20px;
+  width: 28px;              /* bigger icon */
+  height: 28px;
 }
 
 .skill-name {
+  font-size: 17px;          /* larger skill name */
   font-weight: 600;
 }
 
@@ -233,21 +241,21 @@ body{
 .skill-stats {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   opacity: 0;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease, opacity 0.25s ease;
-  margin-top: 3px; /* reduced vertical gap */
+  margin-top: 5px;
 }
 
 .skill-wrapper:hover .skill-stats {
   opacity: 1;
-  max-height: 24px;
+  max-height: 28px;
 }
 
 .skill-percent {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   color: #4cafef;
   flex-shrink: 0;
@@ -255,10 +263,10 @@ body{
 
 .skill-progress {
   flex: 1;
-  min-width: 60px;   /* smaller minimum to fit narrow badges */
-  height: 6px;
+  min-width: 80px;
+  height: 8px;              /* slightly thicker bar */
   background: #111;
-  border-radius: 4px;
+  border-radius: 5px;
   overflow: hidden;
 }
 
