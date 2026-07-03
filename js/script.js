@@ -266,9 +266,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// ===============================
-// Close Hamburger Menu icon
-// ===============================
 document.addEventListener("DOMContentLoaded", () => {
   const navbarCollapse = document.getElementById("menu");
   const bsCollapse = new bootstrap.Collapse(navbarCollapse, { toggle: false });
