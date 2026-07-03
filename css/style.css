@@ -1444,11 +1444,11 @@ footer{
 .timeline li::before {
   content: "";
   position: absolute;
-  left: -9px; /* adjust to center with border */
-  top: 0.4em; /* aligns with text baseline */
-  width: 12px;  /* smaller dot */
-  height: 12px;
-  background: #ff5722; /* accent color */
+  left: -12px;       /* centers with border */
+  top: 0.25em;       /* aligns with text baseline */
+  width: 10px;       /* smaller dot */
+  height: 10px;
+  background: #ff5722;
   border-radius: 50%;
   border: 2px solid #fff;
 }
@@ -1464,16 +1464,30 @@ footer{
   line-height: 1.4;
 }
 
+#about .row {
+  flex-wrap: wrap;
+}
+
+
+/* Force stacking on tablet widths */
 @media (max-width: 1024px) {
-  #about .row .col-md-8 {
-    margin-top: 20px; /* push text below image */
+  #about .row {
+    flex-wrap: wrap; /* allow wrapping */
+  }
+  #about .col-md-8 {
+    flex: 0 0 100%;   /* text takes full width */
+    max-width: 100%;
+    margin-top: 24px; /* spacing below image */
   }
   #about img {
-    max-width: 220px; /* shrink portrait on tablets */
-    margin-bottom: 15px;
+    max-width: 200px; /* shrink portrait */
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto; /* center image */
   }
 }
 
-#about .row {
-  flex-wrap: wrap;
+#about .col-md-8 {
+  max-width: 700px;
 }
