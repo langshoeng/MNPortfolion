@@ -296,25 +296,8 @@ document.addEventListener("DOMContentLoaded", () => {
         : "Hide Details";
     }
   
-    // ✅ Auto-apply collapsed state only on mobile landscape
-    function setInitialState() {
-      const isMobileLandscape =
-        window.innerWidth <= 768 &&
-        window.matchMedia("(orientation: landscape)").matches;
-  
-      if (isMobileLandscape) {
-        metadata.classList.add("collapsed");
-      } else {
-        metadata.classList.remove("collapsed");
-      }
-      updateToggleText();
-    }
-  
-    // Run once on load
-    setInitialState();
-  
-    // Run again if window is resized or orientation changes
-    window.addEventListener("resize", setInitialState);
+    // Initial state: metadata visible by default everywhere
+    updateToggleText();
   
     // Toggle click handler
     toggleBtn.addEventListener("click", () => {
@@ -325,4 +308,5 @@ document.addEventListener("DOMContentLoaded", () => {
     // Sync when fullscreen changes
     document.addEventListener("fullscreenchange", updateToggleText);
   }
+
 }); // ✅ this closing brace + parenthesis was missing
