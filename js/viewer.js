@@ -654,12 +654,11 @@ function handleDoubleClick(e) {
 
     if (!isImage && !isWrapper) return;
 
-    // Reuse the same layered close/reset logic
-    handleCloseButton();
+    handleCloseButton(); // layered reset/exit/close
 }
 
-// Attach to both image and wrapper
-document.addEventListener("dblclick", handleDoubleClick);
+// Attach only inside viewer
+viewer.addEventListener("dblclick", handleDoubleClick);
 
 
 // ===========================================
@@ -682,15 +681,15 @@ function handleDoubleTap(e) {
     const tapLength = currentTime - lastTapTime;
 
     if (tapLength < 300 && tapLength > 0) {
-        // Double-tap detected → reuse layered logic
-        handleCloseButton();
+        handleCloseButton(); // layered reset/exit/close
     }
 
     lastTapTime = currentTime;
 }
 
-// Attach to touchend globally
-document.addEventListener("touchend", handleDoubleTap, { passive:true });
+// Attach only inside viewer
+viewer.addEventListener("touchend", handleDoubleTap, { passive:true });
+
 
 // ===========================================
 // Mouse wheel zoom (scoped to viewer open)
