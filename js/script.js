@@ -283,45 +283,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-// ===============================
-// Metadata Toggle Behavior
-// ===============================
-const toggleBtn = document.querySelector(".metadata-toggle");
-const metadata = document.querySelector(".viewerContent");
-
-if (toggleBtn && metadata) {
-  function updateToggleText() {
-    toggleBtn.textContent = metadata.classList.contains("collapsed")
-      ? "Show Details"
-      : "Hide Details";
-  }
-
-  // ✅ Auto-apply collapsed state only on mobile landscape
-  function setInitialState() {
-    const isMobileLandscape =
-      window.innerWidth <= 768 &&
-      window.matchMedia("(orientation: landscape)").matches;
-
-    if (isMobileLandscape) {
-      metadata.classList.add("collapsed");
-    } else {
-      metadata.classList.remove("collapsed");
+  // ===============================
+  // Metadata Toggle Behavior
+  // ===============================
+  const toggleBtn = document.querySelector(".metadata-toggle");
+  const metadata = document.querySelector(".viewerContent");
+  
+  if (toggleBtn && metadata) {
+    function updateToggleText() {
+      toggleBtn.textContent = metadata.classList.contains("collapsed")
+        ? "Show Details"
+        : "Hide Details";
     }
-    updateToggleText();
+  
+    // ✅ Auto-apply collapsed state only on mobile landscape
+    function setInitialState() {
+      const isMobileLandscape =
+        window.innerWidth <= 768 &&
+        window.matchMedia("(orientation: landscape)").matches;
+  
+      if (isMobileLandscape) {
+        metadata.classList.add("collapsed");
+      } else {
+        metadata.classList.remove("collapsed");
+      }
+      updateToggleText();
+    }
+  
+    // Run once on load
+    setInitialState();
+  
+    // Run again if window is resized or orientation changes
+    window.addEventListener("resize", setInitialState);
+  
+    // Toggle click handler
+    toggleBtn.addEventListener("click", () => {
+      metadata.classList.toggle("collapsed");
+      updateToggleText();
+    });
+  
+    // Sync when fullscreen changes
+    document.addEventListener("fullscreenchange", updateToggleText);
   }
-
-  // Run once on load
-  setInitialState();
-
-  // Run again if window is resized or orientation changes
-  window.addEventListener("resize", setInitialState);
-
-  // Toggle click handler
-  toggleBtn.addEventListener("click", () => {
-    metadata.classList.toggle("collapsed");
-    updateToggleText();
-  });
-
-  // Sync when fullscreen changes
-  document.addEventListener("fullscreenchange", updateToggleText);
-}
