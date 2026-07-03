@@ -171,7 +171,6 @@ document.querySelectorAll('.skill-wrapper').forEach(wrapper => {
   });
 });
 
-
 // Fade-in timeline items on scroll with staggered delay
 document.addEventListener("DOMContentLoaded", () => {
   const items = document.querySelectorAll(".timeline li");
