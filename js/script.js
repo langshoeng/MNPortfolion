@@ -296,8 +296,25 @@ document.addEventListener("DOMContentLoaded", () => {
         : "Hide Details";
     }
   
-    // Initial state: metadata visible by default everywhere
-    updateToggleText();
+    // ✅ Auto-apply collapsed state only on mobile landscape
+    function setInitialState() {
+      const isMobileLandscape =
+        window.innerWidth <= 768 &&
+        window.matchMedia("(orientation: landscape)").matches;
+  
+      if (isMobileLandscape) {
+        metadata.classList.add("collapsed"); // start collapsed
+      } else {
+        metadata.classList.remove("collapsed"); // start expanded
+      }
+      updateToggleText();
+    }
+  
+    // Run once on load
+    setInitialState();
+  
+    // Run again if window is resized or orientation changes
+    window.addEventListener("resize", setInitialState);
   
     // Toggle click handler
     toggleBtn.addEventListener("click", () => {
