@@ -1559,7 +1559,7 @@ section {
   border-radius: 6px;
   font-size: 14px;
   font-weight: 600;
-  margin: 10px auto;
+  margin: 12px auto; /* centers under media */
   cursor: pointer;
 }
 
@@ -1569,7 +1569,7 @@ section {
     display: block;
   }
 
-  .viewer-window.metadata-mode .viewerContent.collapsed {
+  .viewerContent.collapsed {
     display: none; /* hide metadata until expanded */
   }
 }
