@@ -1567,17 +1567,13 @@ section {
 }
 
 
-/* ==========================================
-   Metadata Toggle
-========================================== */
-
 /* Hide toggle everywhere by default */
 .metadata-toggle {
   display: none;
   background: #333;
   color: #fff;
   border: none;
-  padding: 6px 10px;   /* smaller button to fit nav row */
+  padding: 6px 10px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 600;
@@ -1586,7 +1582,7 @@ section {
 }
 
 /* Show toggle only on mobile landscape */
-@media (max-width: 768px) and (orientation: landscape) {
+@media screen and (max-width: 768px) and (orientation: landscape) {
   .metadata-toggle {
     display: block;
   }
