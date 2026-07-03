@@ -1444,11 +1444,11 @@ footer{
 .timeline li::before {
   content: "";
   position: absolute;
-  left: -12px;       /* centers with border */
-  top: 0.25em;       /* aligns with text baseline */
-  width: 10px;       /* smaller dot */
-  height: 10px;
-  background: #ff5722;
+  left: -9px; /* adjust to center with border */
+  top: 0.4em; /* aligns with text baseline */
+  width: 12px;  /* smaller dot */
+  height: 12px;
+  background: #ff5722; /* accent color */
   border-radius: 50%;
   border: 2px solid #fff;
 }
