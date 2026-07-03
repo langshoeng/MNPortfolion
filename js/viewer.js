@@ -666,7 +666,9 @@ viewer.addEventListener("dblclick", handleDoubleClick);
 // Uses same layered logic as handleCloseButton
 // ===========================================
 
-let lastTapTime = 0;
+// ⚠️ Do NOT redeclare lastTapTime if you already have one.
+// If you want to keep it separate, rename this to lastTapTimeMobile.
+let lastTapTimeMobile = 0;
 
 function handleDoubleTap(e) {
     if (!viewer.classList.contains("show")) return;
@@ -678,13 +680,13 @@ function handleDoubleTap(e) {
     if (!isImage && !isWrapper) return;
 
     const currentTime = new Date().getTime();
-    const tapLength = currentTime - lastTapTime;
+    const tapLength = currentTime - lastTapTimeMobile;
 
     if (tapLength < 300 && tapLength > 0) {
         handleCloseButton(); // layered reset/exit/close
     }
 
-    lastTapTime = currentTime;
+    lastTapTimeMobile = currentTime;
 }
 
 // Attach only inside viewer
