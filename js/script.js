@@ -170,3 +170,22 @@ document.querySelectorAll('.skill-wrapper').forEach(wrapper => {
     percentText.textContent = '0%';
   });
 });
+
+// Fade-in timeline items on scroll with staggered delay
+document.addEventListener("DOMContentLoaded", () => {
+  const items = document.querySelectorAll(".timeline li");
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Find index of the item
+        const index = Array.from(items).indexOf(entry.target);
+        // Apply staggered delay based on index
+        entry.target.style.transitionDelay = `${index * 0.15}s`;
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.2 });
+
+  items.forEach(item => observer.observe(item));
+});
