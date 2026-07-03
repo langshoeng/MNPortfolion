@@ -507,6 +507,9 @@ body.viewer-open {
     background:#181818;
 }
 
+.contact-section i {
+  margin-right: 8px; /* adjust as needed */
+}
 
 /* ===========================================
    FOOTER
