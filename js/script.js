@@ -262,7 +262,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const navbarCollapse = document.getElementById("menu");
   const bsCollapse = new bootstrap.Collapse(navbarCollapse, { toggle: false });
 
-  // Close menu when clicking outside
   document.addEventListener("click", (event) => {
     const isClickInside = navbarCollapse.contains(event.target) || event.target.closest(".navbar-toggler");
     if (!isClickInside && navbarCollapse.classList.contains("show")) {
@@ -270,7 +269,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Close menu when clicking a nav-link
   document.querySelectorAll(".navbar-nav .nav-link").forEach(link => {
     link.addEventListener("click", () => {
       if (navbarCollapse.classList.contains("show")) {
@@ -279,7 +277,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Close menu when scrolling
   window.addEventListener("scroll", () => {
     if (navbarCollapse.classList.contains("show")) {
       bsCollapse.hide();
@@ -293,11 +290,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const metadata = document.querySelector(".viewerContent");
 
   if (toggleBtn && metadata) {
-    toggleBtn.addEventListener("click", () => {
-      metadata.classList.toggle("collapsed");
+    function updateToggleText() {
       toggleBtn.textContent = metadata.classList.contains("collapsed")
         ? "Show Details"
         : "Hide Details";
+    }
+
+    // Initial state
+    updateToggleText();
+
+    // Toggle click handler
+    toggleBtn.addEventListener("click", () => {
+      metadata.classList.toggle("collapsed");
+      updateToggleText();
     });
+
+    // Sync when fullscreen changes
+    document.addEventListener("fullscreenchange", updateToggleText);
   }
 });
