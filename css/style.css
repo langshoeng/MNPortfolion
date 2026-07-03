@@ -1580,25 +1580,24 @@ section {
   margin: 0;
 }
 
-/* Show toggle only on mobile landscape */
-@media screen and (max-width: 768px) and (orientation: landscape) {
+/* Show toggle on any landscape mobile/tablet */
+@media screen and (orientation: landscape) {
   .metadata-toggle {
     display: block;
   }
-
   .viewerContent.collapsed {
-    display: none; /* hide metadata until expanded */
+    display: none;
   }
 }
 
-/* Force metadata visible on desktop in gallery mode */
-@media (min-width: 769px) {
+/* Force metadata visible on desktop gallery mode */
+@media (min-width: 1025px) {
   .viewer-window.gallery-mode .viewerContent {
     display: block !important;
   }
 }
 
-/* Still hide metadata in fullscreen mode (PC + mobile) */
+/* Still hide metadata in fullscreen mode */
 .viewer-window.fullscreen-mode .viewerContent {
   display: none !important;
 }
