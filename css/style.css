@@ -1569,7 +1569,24 @@ section {
     display: block;
   }
 
-  .viewerContent.collapsed {
-    display: none; /* hide metadata until expanded */
+  .viewer-window.metadata-mode {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;       /* full viewport height */
+    overflow: hidden;    /* prevent double scrollbars */
+  }
+
+  .viewer-window.metadata-mode #viewerMediaWrapper {
+    flex: 0 0 60vh;      /* media takes top portion */
+  }
+
+  .viewer-window.metadata-mode .viewerContent {
+    flex: 1;             /* take remaining space */
+    overflow-y: auto;    /* enable scrolling */
+    padding: 16px;
+  }
+
+  .viewer-window.metadata-mode .viewerContent.collapsed {
+    display: none;       /* hidden until toggled */
   }
 }
