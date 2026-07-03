@@ -264,3 +264,36 @@ document.addEventListener("DOMContentLoaded", () => {
   // Cashier (Dec 2016 – Dec 2018)
   document.getElementById("cashier-duration").textContent = calculateDuration(2016, 12, 2018, 12);
 });
+
+
+// ===============================
+// Close Hamburger Menu icon
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  const navbarCollapse = document.getElementById("menu");
+  const bsCollapse = new bootstrap.Collapse(navbarCollapse, { toggle: false });
+
+  // Close menu when clicking outside
+  document.addEventListener("click", (event) => {
+    const isClickInside = navbarCollapse.contains(event.target) || event.target.closest(".navbar-toggler");
+    if (!isClickInside && navbarCollapse.classList.contains("show")) {
+      bsCollapse.hide();
+    }
+  });
+
+  // Close menu when clicking a nav-link
+  document.querySelectorAll(".navbar-nav .nav-link").forEach(link => {
+    link.addEventListener("click", () => {
+      if (navbarCollapse.classList.contains("show")) {
+        bsCollapse.hide();
+      }
+    });
+  });
+
+  // Close menu when scrolling
+  window.addEventListener("scroll", () => {
+    if (navbarCollapse.classList.contains("show")) {
+      bsCollapse.hide();
+    }
+  });
+});
