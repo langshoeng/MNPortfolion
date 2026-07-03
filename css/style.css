@@ -73,7 +73,6 @@ body.viewer-open {
     width:100%;
 }
 
-
 /* ===========================================
    HERO
 =========================================== */
@@ -1511,4 +1510,12 @@ footer{
 /* Optional: limit text width on very wide monitors */
 #about .col-md-8 {
   max-width: 700px;
+}
+
+section {
+  scroll-margin-top: 80px; /* adjust to your navbar height */
+}
+
+#achievements {
+  padding-top: 100px; /* extra space above the title */
 }
