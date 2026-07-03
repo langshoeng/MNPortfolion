@@ -1573,21 +1573,31 @@ section {
   .viewer-window.metadata-mode {
     display: flex;
     flex-direction: column;
-    height: 100vh;       /* full viewport height */
-    overflow: hidden;    /* prevent double scrollbars */
+    height: 100vh;
+    overflow: hidden;
   }
 
-  .viewer-window.metadata-mode #viewerMediaWrapper {
-    flex: 0 0 60vh;      /* media takes top portion */
+  /* Media stays full width and visible */
+  #viewerMediaWrapper {
+    flex-shrink: 0;
+    height: 60vh;        /* lock media height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .viewer-window.metadata-mode .viewerContent {
+  #viewerMedia {
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  .viewerContent {
     flex: 1;             /* take remaining space */
-    overflow-y: auto;    /* enable scrolling */
+    overflow-y: auto;    /* scroll metadata */
     padding: 16px;
   }
 
-  .viewer-window.metadata-mode .viewerContent.collapsed {
-    display: none;       /* hidden until toggled */
+  .viewerContent.collapsed {
+    display: none;
   }
 }
