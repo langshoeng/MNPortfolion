@@ -1431,7 +1431,7 @@ footer{
 
 .timeline {
   position: relative;
-  padding-left: 40px;
+  padding-left: 30px; /* tighter spacing */
   list-style: none;
   border-left: 2px solid #444;
 }
@@ -1444,10 +1444,10 @@ footer{
 .timeline li::before {
   content: "";
   position: absolute;
-  left: -11px;
-  top: 5px;
-  width: 20px;
-  height: 20px;
+  left: -9px; /* adjust to center with border */
+  top: 0.4em; /* aligns with text baseline */
+  width: 12px;  /* smaller dot */
+  height: 12px;
   background: #ff5722; /* accent color */
   border-radius: 50%;
   border: 2px solid #fff;
@@ -1461,14 +1461,5 @@ footer{
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
-}
-
-.timeline-content .company {
-  font-size: 0.95rem;
-  color: #bbb;
-}
-
-.timeline-content .time {
-  font-size: 0.9rem;
-  color: #888;
+  line-height: 1.4;
 }
