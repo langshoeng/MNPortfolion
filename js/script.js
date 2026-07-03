@@ -208,17 +208,17 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("phone").innerHTML =
     `<a href="tel:${countryCode}${number}">${phone}</a>`;
 
-  // LinkedIn
-  const linkedinBase = "https://linkedin.com/in/";
-  const linkedinProfile = "mana-yoeurm-406a23136"; // replace with your actual profile slug
-  const linkedinUrl = linkedinBase + linkedinProfile;
-  document.getElementById("linkedin").innerHTML =
-    `<a href="${linkedinUrl}" target="_blank">LinkedIn</a>`;
+// LinkedIn
+const linkedinBase = "https://linkedin.com/in/";
+const linkedinProfile = "mana-yoeurm-406a23136"; // your slug
+const linkedinUrl = linkedinBase + linkedinProfile;
+document.getElementById("linkedin").innerHTML =
+  `<a href="${linkedinUrl}" target="_blank">mana yoeurm</a>`;
 
-  // Facebook
-  const fbBase = "https://facebook.com/";
-  const fbProfile = "mana.yoeurm"; // replace with your actual profile slug
-  const fbUrl = fbBase + fbProfile;
-  document.getElementById("facebook").innerHTML =
-    `<a href="${fbUrl}" target="_blank">Facebook</a>`;
+// Facebook
+const fbBase = "https://facebook.com/";
+const fbProfile = "mana.yoeurm"; // your slug
+const fbUrl = fbBase + fbProfile;
+document.getElementById("facebook").innerHTML =
+  `<a href="${fbUrl}" target="_blank">Mana Yoeurm</a>`;
 });
