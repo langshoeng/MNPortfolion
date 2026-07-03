@@ -639,15 +639,58 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
+
 // ===========================================
-// Double-click image to toggle fullscreen
-// (Global listener only — per-image bindings removed)
-document.addEventListener("dblclick", e => {
+// Double-click behavior (image + wrapper)
+// Uses same layered logic as handleCloseButton
+// ===========================================
+
+function handleDoubleClick(e) {
     if (!viewer.classList.contains("show")) return;
-    if (e.target.id === "viewerGalleryImage") {
-        toggleFullscreen();
+
+    const img = document.getElementById("viewerGalleryImage");
+    const isImage = (img && e.target === img);
+    const isWrapper = e.target.closest("#viewerMediaWrapper");
+
+    if (!isImage && !isWrapper) return;
+
+    // Reuse the same layered close/reset logic
+    handleCloseButton();
+}
+
+// Attach to both image and wrapper
+document.addEventListener("dblclick", handleDoubleClick);
+
+
+// ===========================================
+// Double-tap behavior (touch devices)
+// Uses same layered logic as handleCloseButton
+// ===========================================
+
+let lastTapTime = 0;
+
+function handleDoubleTap(e) {
+    if (!viewer.classList.contains("show")) return;
+
+    const img = document.getElementById("viewerGalleryImage");
+    const isImage = (img && e.target === img);
+    const isWrapper = e.target.closest("#viewerMediaWrapper");
+
+    if (!isImage && !isWrapper) return;
+
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTapTime;
+
+    if (tapLength < 300 && tapLength > 0) {
+        // Double-tap detected → reuse layered logic
+        handleCloseButton();
     }
-});
+
+    lastTapTime = currentTime;
+}
+
+// Attach to touchend globally
+document.addEventListener("touchend", handleDoubleTap, { passive:true });
 
 // ===========================================
 // Mouse wheel zoom (scoped to viewer open)
