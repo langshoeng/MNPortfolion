@@ -1569,7 +1569,13 @@ section {
     display: block;
   }
 
+  .viewerContent {
+    max-height: 40vh;   /* limit metadata height */
+    overflow-y: auto;   /* allow scrolling */
+    padding: 16px;
+  }
+
   .viewerContent.collapsed {
-    display: none; /* hide metadata until expanded */
+    display: none;      /* hide metadata until expanded */
   }
 }
