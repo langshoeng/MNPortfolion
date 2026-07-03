@@ -189,3 +189,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   items.forEach(item => observer.observe(item));
 });
+
+// ===============================
+// Contact Info Obfuscation
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  // Email
+  const user = "manayoeurm";
+  const domain = "gmail.com";
+  const email = `${user}@${domain}`;
+  document.getElementById("email").innerHTML =
+    `<a href="mailto:${email}">${email}</a>`;
+
+  // Phone
+  const countryCode = "+855";
+  const number = "70705221";
+  const phone = `${countryCode} ${number}`;
+  document.getElementById("phone").innerHTML =
+    `<a href="tel:${countryCode}${number}">${phone}</a>`;
+
+  // LinkedIn
+  const linkedinBase = "https://linkedin.com/in/";
+  const linkedinProfile = "mana-yoeurm-406a23136"; // replace with your actual profile slug
+  const linkedinUrl = linkedinBase + linkedinProfile;
+  document.getElementById("linkedin").innerHTML =
+    `<a href="${linkedinUrl}" target="_blank">LinkedIn</a>`;
+
+  // Facebook
+  const fbBase = "https://facebook.com/";
+  const fbProfile = "mana.yoeurm"; // replace with your actual profile slug
+  const fbUrl = fbBase + fbProfile;
+  document.getElementById("facebook").innerHTML =
+    `<a href="${fbUrl}" target="_blank">Facebook</a>`;
+});
