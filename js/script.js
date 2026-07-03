@@ -325,3 +325,4 @@ document.addEventListener("DOMContentLoaded", () => {
     // Sync when fullscreen changes
     document.addEventListener("fullscreenchange", updateToggleText);
   }
+}); // ✅ this closing brace + parenthesis was missing
