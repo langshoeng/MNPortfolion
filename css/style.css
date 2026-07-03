@@ -1584,7 +1584,12 @@ section {
   margin: 0;
 }
 
-/* Collapse metadata only on mobile landscape */
+/* ✅ Global collapse rule */
+.viewerContent.collapsed {
+  display: none;
+}
+
+/* Collapse metadata only on mobile landscape by default */
 @media screen and (max-width: 768px) and (orientation: landscape) {
   .viewerContent.collapsed {
     display: none; /* metadata hidden until expanded */
