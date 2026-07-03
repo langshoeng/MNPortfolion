@@ -1595,9 +1595,14 @@ section {
   }
 }
 
-/* Force metadata always visible on desktop */
+/* Force metadata visible on desktop in gallery mode */
 @media (min-width: 769px) {
-  .viewerContent {
-    display: block !important; /* override collapsed */
+  .viewer-window.gallery-mode .viewerContent {
+    display: block !important;
   }
+}
+
+/* Still hide metadata in fullscreen mode (PC + mobile) */
+.viewer-window.fullscreen-mode .viewerContent {
+  display: none !important;
 }
