@@ -1477,11 +1477,10 @@ footer{
   transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
 }
 
-/* Hover effect */
 .timeline-content h5:hover {
   color: #ff5722;
   text-shadow: 0 0 6px rgba(255, 87, 34, 0.6);
-  transform: translateY(-2px);
+  transform: translateY(-2px); /* or scale(1.05) if you prefer zoom */
 }
 
 /* Base: always allow wrapping + vertical centering */
