@@ -230,9 +230,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("address").textContent = address;
 });
 
-// ===============================
-// Experience Duration Calculator
-// ===============================
 document.addEventListener("DOMContentLoaded", () => {
   // ===============================
   // Experience Duration Calculator
@@ -288,4 +285,19 @@ document.addEventListener("DOMContentLoaded", () => {
       bsCollapse.hide();
     }
   });
+
+  // ===============================
+  // Metadata Toggle Behavior
+  // ===============================
+  const toggleBtn = document.querySelector(".metadata-toggle");
+  const metadata = document.querySelector(".viewerContent");
+
+  if (toggleBtn && metadata) {
+    toggleBtn.addEventListener("click", () => {
+      metadata.classList.toggle("collapsed");
+      toggleBtn.textContent = metadata.classList.contains("collapsed")
+        ? "Show Details"
+        : "Hide Details";
+    });
+  }
 });
