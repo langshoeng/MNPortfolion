@@ -1550,18 +1550,26 @@ section {
   padding-bottom: 100px;     /* contact section usually needs more breathing room */
 }
 
-/* shrink metada section when rotate phone to landscape */
+.metadata-toggle {
+  display: none; /* hidden by default */
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 10px auto;
+  cursor: pointer;
+}
+
+/* Show toggle only in landscape mobile */
 @media (max-width: 768px) and (orientation: landscape) {
-  .viewer-window.metadata-mode .viewerContent {
-    position: relative;
-    width: 100%;
-    max-height: 40vh;   /* shrink metadata height */
-    overflow-y: auto;   /* allow scrolling */
-    order: 2;           /* push metadata below */
+  .metadata-toggle {
+    display: block;
   }
 
-  .viewer-window.metadata-mode .viewerMedia {
-    order: 1;           /* keep video/image first */
-    height: 60vh;       /* give more space to media */
+  .viewer-window.metadata-mode .viewerContent.collapsed {
+    display: none; /* hide metadata until expanded */
   }
 }
