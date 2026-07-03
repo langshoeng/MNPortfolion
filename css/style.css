@@ -1514,9 +1514,9 @@ footer{
 }
 
 section {
-  scroll-margin-top: 80px; /* adjust to your navbar height */
+  padding-top: 100px;
+  padding-bottom: 60px;
+  scroll-margin-top: 80px;
 }
 
-#achievements {
-  padding-top: 100px; /* extra space above the title */
-}
+#hero { padding-top: 0; } /* hero stays unique */
