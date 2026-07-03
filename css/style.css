@@ -1464,16 +1464,14 @@ footer{
   line-height: 1.4;
 }
 
+/* Base: always allow wrapping + vertical centering */
 #about .row {
   flex-wrap: wrap;
+  align-items: center; /* vertical centering on desktop */
 }
-
 
 /* Force stacking on tablet widths */
 @media (max-width: 1024px) {
-  #about .row {
-    flex-wrap: wrap; /* allow wrapping */
-  }
   #about .col-md-8 {
     flex: 0 0 100%;   /* text takes full width */
     max-width: 100%;
@@ -1488,6 +1486,7 @@ footer{
   }
 }
 
+/* Optional: limit text width on very wide monitors */
 #about .col-md-8 {
   max-width: 700px;
 }
