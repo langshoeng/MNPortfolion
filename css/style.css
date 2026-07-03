@@ -1474,6 +1474,13 @@ footer{
   font-size: 1.1rem;
   font-weight: 600;
   line-height: 1.4;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.timeline-content h5:hover {
+  color: #ff5722; /* accent orange */
+  text-shadow: 0 0 6px rgba(255, 87, 34, 0.6); /* subtle glow */
+  text-decoration: underline; /* underline on hover */
 }
 
 /* Base: always allow wrapping + vertical centering */
