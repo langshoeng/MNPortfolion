@@ -1514,9 +1514,38 @@ footer{
 }
 
 section {
-  padding-top: 60px;
-  padding-bottom: 60px;
-  scroll-margin-top: 80px;
+  scroll-margin-top: 80px;   /* keeps headings visible when clicked */
+  padding-top: 100px;        /* consistent breathing room above titles */
+  padding-bottom: 80px;      /* balanced space below content */
 }
 
-#hero { padding-top: 0; } /* hero stays unique */
+/* Special cases */
+#hero {
+  padding-top: 0;            /* hero is full screen */
+  padding-bottom: 0;         /* no extra spacing needed */
+}
+
+#skills {
+  padding-top: 100px;
+  padding-bottom: 100px;     /* skills grid looks better with more bottom space */
+}
+
+#projects {
+  padding-top: 100px;
+  padding-bottom: 80px;
+}
+
+#about {
+  padding-top: 100px;
+  padding-bottom: 80px;
+}
+
+#achievements {
+  padding-top: 100px;
+  padding-bottom: 80px;
+}
+
+#contact {
+  padding-top: 100px;
+  padding-bottom: 100px;     /* contact section usually needs more breathing room */
+}
