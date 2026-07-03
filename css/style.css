@@ -1589,21 +1589,24 @@ section {
   display: none;
 }
 
-/* Collapse metadata only on mobile landscape by default */
+/* Mobile landscape: start collapsed by default */
 @media screen and (max-width: 768px) and (orientation: landscape) {
+  .viewerContent {
+    display: none; /* collapsed by default */
+  }
   .viewerContent.collapsed {
-    display: none; /* metadata hidden until expanded */
+    display: none; /* keep hidden until toggled */
   }
 }
 
-/* On desktop, always show metadata by default */
+/* Desktop: metadata visible by default */
 @media (min-width: 769px) {
   .viewer-window.gallery-mode .viewerContent {
     display: block !important;
   }
 }
 
-/* In fullscreen mode (PC + mobile), hide metadata */
+/* Fullscreen mode: always hide metadata */
 .viewer-window.fullscreen-mode .viewerContent {
   display: none !important;
 }
