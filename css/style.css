@@ -1575,10 +1575,9 @@ section {
     overflow: hidden;
   }
 
-  /* Media stays full width and visible */
   #viewerMediaWrapper {
     flex-shrink: 0;
-    height: 60vh;        /* lock media height */
+    height: 60vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1589,10 +1588,12 @@ section {
     max-width: 100%;
   }
 
+  /* ✅ Base style when expanded */
   .viewerContent {
-    flex: 1;             /* take remaining space */
-    overflow-y: auto;    /* scroll metadata */
+    flex: 1;
+    overflow-y: auto;
     padding: 16px;
+    display: block;   /* <-- important */
   }
 
   .viewerContent.collapsed {
