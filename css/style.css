@@ -1584,26 +1584,9 @@ section {
   margin: 0;
 }
 
-/* ✅ Global collapse rule */
+/* Global collapse rule: works everywhere */
 .viewerContent.collapsed {
-  display: none;
-}
-
-/* Mobile landscape: start collapsed by default */
-@media screen and (max-width: 768px) and (orientation: landscape) {
-  .viewerContent {
-    display: none; /* collapsed by default */
-  }
-  .viewerContent.collapsed {
-    display: none; /* keep hidden until toggled */
-  }
-}
-
-/* Desktop: metadata visible by default */
-@media (min-width: 769px) {
-  .viewer-window.gallery-mode .viewerContent {
-    display: block !important;
-  }
+  display: none !important;
 }
 
 /* Fullscreen mode: always hide metadata */
