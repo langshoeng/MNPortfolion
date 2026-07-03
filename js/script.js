@@ -229,3 +229,38 @@ document.addEventListener("DOMContentLoaded", () => {
   const address = `${city}, ${country}`;
   document.getElementById("address").textContent = address;
 });
+
+// ===============================
+// Experience Duration Calculator
+// ===============================
+function calculateDuration(startYear, startMonth, endYear = null, endMonth = null) {
+  const startDate = new Date(startYear, startMonth - 1);
+  const endDate = endYear && endMonth ? new Date(endYear, endMonth - 1) : new Date();
+
+  let years = endDate.getFullYear() - startDate.getFullYear();
+  let months = endDate.getMonth() - startDate.getMonth();
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  return `${years} yr${years !== 1 ? "s" : ""} ${months} mo${months !== 1 ? "s" : ""}`;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Self Employed and Freelance (Present)
+  document.getElementById("self-employed-duration").textContent = calculateDuration(2024, 5);
+
+  // Marketing Assistant (Jan 2024 – May 2024)
+  document.getElementById("marketing-duration").textContent = calculateDuration(2024, 1, 2024, 5);
+
+  // Master IT Cambodia (Jan 2021 – Nov 2023)
+  document.getElementById("masterit-duration").textContent = calculateDuration(2021, 1, 2023, 11);
+
+  // iTeam Cambodia (Apr 2019 – Nov 2020)
+  document.getElementById("iteam-duration").textContent = calculateDuration(2019, 4, 2020, 11);
+
+  // Cashier (Dec 2016 – Dec 2018)
+  document.getElementById("cashier-duration").textContent = calculateDuration(2016, 12, 2018, 12);
+});
