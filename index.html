@@ -366,49 +366,23 @@
         <button id="viewerClose">&times;</button>
 
         <!-- ================= MEDIA ================= -->
-        
         <div id="viewerMediaWrapper">
+          <button id="viewerPrevMedia" class="viewerArrow" aria-label="Previous">&#10094;</button>
+          <div id="viewerMedia"></div>
+          <button id="viewerNextMedia" class="viewerArrow" aria-label="Next">&#10095;</button>
         
-            <button
-                id="viewerPrevMedia"
-                class="viewerArrow"
-                aria-label="Previous"
-            >
-                &#10094;
-            </button>
-        
-            <div id="viewerMedia"></div>
-        
-            <button
-                id="viewerNextMedia"
-                class="viewerArrow"
-                aria-label="Next"
-            >
-                &#10095;
-            </button>
-        
-            <!-- ✅ Fullscreen toggle button -->
-            <button
-                id="viewerFullscreenToggle"
-                class="viewerIcon"
-                aria-label="Fullscreen"
-            >
-                ⛶
-            </button>
+          <!-- ✅ Fullscreen toggle button -->
+          <button id="viewerFullscreenToggle" class="viewerIcon" aria-label="Fullscreen">⛶</button>
         </div>
-
+        
         <!-- ================= GALLERY NAV ================= -->
-        
         <div id="viewerGalleryNav">
-        
-            <div id="viewerDots"></div>
-        
-            <div id="viewerCounter"></div>
-        
+          <div id="viewerDots"></div>
+          <div id="viewerCounter"></div>
         </div>
-
+        
         <!-- ================= INFO ================= -->
-
+        <!-- ✅ Toggle button sits right before metadata -->
         <button class="metadata-toggle">Show Details</button>
         
         <div class="viewerContent collapsed">
@@ -418,11 +392,8 @@
               <div id="viewerMeta"></div>
             </div>
           </div>
-
-            <p id="viewerDescription"></p>
-
-            <div id="viewerSoftware"></div>
-
+          <p id="viewerDescription"></p>
+          <div id="viewerSoftware"></div>
         </div>
 
     </div>
