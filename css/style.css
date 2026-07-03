@@ -1563,6 +1563,7 @@ section {
   cursor: pointer;
 }
 
+
 /* Show toggle only in landscape mobile */
 @media (max-width: 768px) and (orientation: landscape) {
   .metadata-toggle {
