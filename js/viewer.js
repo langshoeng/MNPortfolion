@@ -57,7 +57,9 @@ function toggleFullscreen() {
         if (img) applyZoom(img);
         updateArrowState();
     }
+    updateToggleText(); // ✅ keep button label in sync
 }
+
 
 // Fullscreen button click
 if (fullscreenBtn) {
@@ -745,6 +747,33 @@ document.addEventListener("mousemove", e => {
     if (img) applyZoom(img);
 });
 
+// ===========================================
+// METADATA TOGGLE
+// ===========================================
+const toggleBtn = document.querySelector('.metadata-toggle');
+const viewerContent = document.querySelector('.viewerContent');
+
+function updateToggleText() {
+  if (viewerContent.classList.contains('collapsed')) {
+    toggleBtn.textContent = 'Show Details';
+  } else {
+    toggleBtn.textContent = 'Hide Details';
+  }
+}
+
+// Initial state
+updateToggleText();
+
+// Toggle click handler
+toggleBtn.addEventListener('click', () => {
+  viewerContent.classList.toggle('collapsed');
+  updateToggleText();
+});
+
+// Also listen for native fullscreen changes (F11, ESC, etc.)
+document.addEventListener('fullscreenchange', () => {
+  updateToggleText();
+});
 
 // ===========================================
 // GLOBAL
