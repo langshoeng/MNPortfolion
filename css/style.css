@@ -1441,7 +1441,7 @@ footer{
   margin-bottom: 30px;
 }
 
-/* Timeline fade-in animation */
+/* Timeline fade-in animation with stagger */
 .timeline li {
   opacity: 0;
   transform: translateY(20px);
