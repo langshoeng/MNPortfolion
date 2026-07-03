@@ -190,13 +190,30 @@ document.addEventListener("DOMContentLoaded", () => {
   items.forEach(item => observer.observe(item));
 });
 
-// ===============================
-// Timeline Hover Stagger (optional polish)
-// ===============================
+// Timeline hover stagger (only when moving across multiple titles quickly)
 document.addEventListener("DOMContentLoaded", () => {
   const titles = document.querySelectorAll(".timeline-content h5");
 
+  let lastHoverTime = 0;
+
   titles.forEach((title, index) => {
-    title.style.transitionDelay = `${index * 50}ms`; // 50ms stagger
+    title.addEventListener("mouseenter", () => {
+      const now = Date.now();
+      const timeDiff = now - lastHoverTime;
+
+      // If hovering quickly across items (<300ms apart), apply stagger
+      if (timeDiff < 300) {
+        title.style.transitionDelay = `${index * 50}ms`;
+      } else {
+        title.style.transitionDelay = "0ms"; // instant if hovered alone
+      }
+
+      lastHoverTime = now;
+    });
+
+    // Reset delay on mouseleave
+    title.addEventListener("mouseleave", () => {
+      title.style.transitionDelay = "0ms";
+    });
   });
 });
