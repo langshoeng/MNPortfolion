@@ -1427,3 +1427,47 @@ footer{
 .viewerIcon:hover {
   background: rgba(0,0,0,0.8);
 }
+
+.timeline {
+  position: relative;
+  padding-left: 40px;
+  list-style: none;
+  border-left: 2px solid #444;
+}
+
+.timeline li {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: -11px;
+  top: 5px;
+  width: 20px;
+  height: 20px;
+  background: #ff5722; /* accent color */
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.timeline-content {
+  padding-left: 10px;
+}
+
+.timeline-content h5 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.timeline-content .company {
+  font-size: 0.95rem;
+  color: #bbb;
+}
+
+.timeline-content .time {
+  font-size: 0.9rem;
+  color: #888;
+}
