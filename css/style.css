@@ -1206,26 +1206,61 @@ footer{
    Hide Gallery Navigation by Default
 ========================================== */
 
-#viewerGalleryNav{
+/* ==========================================
+   Gallery Navigation
+========================================== */
 
-    display:none;
-
+#viewerGalleryNav {
+    display: none; /* hidden by default */
+    align-items: center;
+    justify-content: space-between;
+    background: #111;
+    padding: 6px 10px;   /* thinner bar */
+    gap: 8px;
+    font-size: 12px;     /* smaller text/dots */
 }
 
-#viewerCounter{
+#viewerDots {
+    display: flex;
+    gap: 6px;
+    flex: 1; /* dots stretch */
+}
 
-    justify-content:center;
+.viewerDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #666;
+}
 
-    align-items:center;
+.viewerDot.active {
+    width: 14px;
+    background: #fff;
+}
 
-    height:42px;
+#viewerCounter {
+    font-size: 12px;
+    color: #999;
+}
 
-    background:#111;
+/* ✅ Place toggle in same row */
+.metadata-toggle {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;   /* smaller button */
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0;           /* remove auto-centering */
+}
 
-    color:#999;
-
-    font-size:14px;
-
+/* ==========================================
+   Gallery Mode
+========================================== */
+.viewer-window.gallery-mode #viewerGalleryNav {
+    display: flex;
 }
 
 /* ==========================================
@@ -1275,62 +1310,43 @@ footer{
 @media (max-width:768px){
 
     .viewer-window{
-
         width:100vw;
-
         height:100vh;
-
         max-height:100vh;
-
         border-radius:0;
-
     }
 
     .viewerContent{
-
         padding:24px;
-
     }
 
     #viewerTitle{
-
         font-size:28px;
-
     }
 
     .viewerArrow{
-
         width:46px;
-
         height:46px;
-
         font-size:22px;
-
     }
 
+    /* ✅ Slimmer nav bar */
     #viewerGalleryNav{
-
-        gap:12px;
-
-        padding:14px 16px;
-
+        gap:8px;
+        padding:6px 10px;   /* thinner padding */
     }
 
+    /* ✅ Smaller dots */
     .viewerDot{
-
-        width:8px;
-
-        height:8px;
-
+        width:6px;
+        height:6px;
     }
 
     .viewerDot.active{
-
-        width:24px;
-
+        width:14px;
     }
-
 }
+
 
 .missing-media {
     display:flex;
@@ -1555,12 +1571,12 @@ section {
   background: #333;
   color: #fff;
   border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 6px 10px;   /* smaller button to fit nav row */
+  border-radius: 4px;
+  font-size: 12px;
   font-weight: 600;
-  margin: 12px auto; /* centers under media */
   cursor: pointer;
+  margin: 0;           /* no auto-centering */
 }
 
 /* Show toggle only in landscape mobile */
