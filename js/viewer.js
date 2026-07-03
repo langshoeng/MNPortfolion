@@ -64,14 +64,6 @@ if (fullscreenBtn) {
   fullscreenBtn.addEventListener("click", toggleFullscreen);
 }
 
-// ✅ Preserve original double-click fullscreen on the image itself
-document.addEventListener("dblclick", e => {
-  const img = document.getElementById("viewerGalleryImage");
-  if (img && e.target === img) {
-    toggleFullscreen();
-  }
-});
-
 // Zoom controls
 let zoomLevel = 1;
 let offsetX = 0, offsetY = 0;
@@ -641,10 +633,8 @@ document.addEventListener("keydown", (e) => {
 
 
 // ===========================================
-// Double-click behavior (image + wrapper)
-// Uses same layered logic as handleCloseButton
+// Double-click behavior (image only)
 // ===========================================
-
 function handleDoubleClick(e) {
     if (!viewer.classList.contains("show")) return;
 
@@ -656,42 +646,35 @@ function handleDoubleClick(e) {
     if (viewerWindow.classList.contains("fullscreen-mode")) {
         // FULLSCREEN MODE
         if (isTransformed) {
-            // Reset transform only
             zoomLevel = 1; offsetX = 0; offsetY = 0;
             applyZoom(img);
         } else {
-            // Exit fullscreen back to metadata mode
-            toggleFullscreen();
+            toggleFullscreen(); // exit fullscreen
         }
     } else {
         // METADATA MODE
         if (isTransformed) {
-            // Reset transform only
             zoomLevel = 1; offsetX = 0; offsetY = 0;
             applyZoom(img);
         } else {
-            // Enter fullscreen
-            toggleFullscreen();
+            toggleFullscreen(); // enter fullscreen
         }
     }
 }
 
-// Attach only inside viewer
 viewer.addEventListener("dblclick", handleDoubleClick);
 
 
 // ===========================================
 // Double-tap behavior (touch devices)
-// Mirrors desktop double-click logic
 // ===========================================
-
 let lastTapTimeMobile = 0;
 
 function handleDoubleTap(e) {
     if (!viewer.classList.contains("show")) return;
 
     const img = document.getElementById("viewerGalleryImage");
-    if (!img || e.target !== img) return; // only act on image double-tap
+    if (!img || e.target !== img) return;
 
     const currentTime = new Date().getTime();
     const tapLength = currentTime - lastTapTimeMobile;
@@ -700,7 +683,6 @@ function handleDoubleTap(e) {
         const isTransformed = (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0);
 
         if (viewerWindow.classList.contains("fullscreen-mode")) {
-            // FULLSCREEN MODE
             if (isTransformed) {
                 zoomLevel = 1; offsetX = 0; offsetY = 0;
                 applyZoom(img);
@@ -708,7 +690,6 @@ function handleDoubleTap(e) {
                 toggleFullscreen(); // exit fullscreen
             }
         } else {
-            // METADATA MODE
             if (isTransformed) {
                 zoomLevel = 1; offsetX = 0; offsetY = 0;
                 applyZoom(img);
@@ -721,7 +702,6 @@ function handleDoubleTap(e) {
     lastTapTimeMobile = currentTime;
 }
 
-// Attach only inside viewer
 viewer.addEventListener("touchend", handleDoubleTap, { passive:true });
 
 
