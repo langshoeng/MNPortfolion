@@ -1566,9 +1566,13 @@ section {
   padding-bottom: 100px;     /* contact section usually needs more breathing room */
 }
 
-/* Hide toggle everywhere by default */
+/* ==========================================
+   Metadata Toggle
+========================================== */
+
+/* Show toggle everywhere by default */
 .metadata-toggle {
-  display: none;
+  display: block;
   background: #333;
   color: #fff;
   border: none;
@@ -1580,24 +1584,21 @@ section {
   margin: 0;
 }
 
-/* Show toggle on any landscape mobile/tablet */
-@media screen and (orientation: landscape) {
-  .metadata-toggle {
-    display: block;
-  }
+/* Collapse metadata only on mobile landscape */
+@media screen and (max-width: 768px) and (orientation: landscape) {
   .viewerContent.collapsed {
-    display: none;
+    display: none; /* hide metadata until expanded */
   }
 }
 
-/* Force metadata visible on desktop gallery mode */
-@media (min-width: 1025px) {
+/* On desktop, always show metadata by default */
+@media (min-width: 769px) {
   .viewer-window.gallery-mode .viewerContent {
     display: block !important;
   }
 }
 
-/* Still hide metadata in fullscreen mode */
+/* In fullscreen mode (PC + mobile), hide metadata */
 .viewer-window.fullscreen-mode .viewerContent {
   display: none !important;
 }
