@@ -1464,12 +1464,16 @@ footer{
   line-height: 1.4;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1024px) {
   #about .row .col-md-8 {
     margin-top: 20px; /* push text below image */
   }
   #about img {
-    max-width: 200px; /* shrink portrait on tablets */
+    max-width: 220px; /* shrink portrait on tablets */
+    margin-bottom: 15px;
   }
 }
 
+#about .row {
+  flex-wrap: wrap;
+}
