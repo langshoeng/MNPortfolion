@@ -649,12 +649,31 @@ function handleDoubleClick(e) {
     if (!viewer.classList.contains("show")) return;
 
     const img = document.getElementById("viewerGalleryImage");
-    const isImage = (img && e.target === img);
-    const isWrapper = e.target.closest("#viewerMediaWrapper");
+    if (!img || e.target !== img) return; // only act on image double-click
 
-    if (!isImage && !isWrapper) return;
+    const isTransformed = (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0);
 
-    handleCloseButton(); // layered reset/exit/close
+    if (viewerWindow.classList.contains("fullscreen-mode")) {
+        // FULLSCREEN MODE
+        if (isTransformed) {
+            // Reset transform only
+            zoomLevel = 1; offsetX = 0; offsetY = 0;
+            applyZoom(img);
+        } else {
+            // Exit fullscreen back to metadata mode
+            toggleFullscreen();
+        }
+    } else {
+        // METADATA MODE
+        if (isTransformed) {
+            // Reset transform only
+            zoomLevel = 1; offsetX = 0; offsetY = 0;
+            applyZoom(img);
+        } else {
+            // Enter fullscreen
+            toggleFullscreen();
+        }
+    }
 }
 
 // Attach only inside viewer
@@ -663,27 +682,40 @@ viewer.addEventListener("dblclick", handleDoubleClick);
 
 // ===========================================
 // Double-tap behavior (touch devices)
-// Uses same layered logic as handleCloseButton
+// Mirrors desktop double-click logic
 // ===========================================
 
-// ⚠️ Do NOT redeclare lastTapTime if you already have one.
-// If you want to keep it separate, rename this to lastTapTimeMobile.
 let lastTapTimeMobile = 0;
 
 function handleDoubleTap(e) {
     if (!viewer.classList.contains("show")) return;
 
     const img = document.getElementById("viewerGalleryImage");
-    const isImage = (img && e.target === img);
-    const isWrapper = e.target.closest("#viewerMediaWrapper");
-
-    if (!isImage && !isWrapper) return;
+    if (!img || e.target !== img) return; // only act on image double-tap
 
     const currentTime = new Date().getTime();
     const tapLength = currentTime - lastTapTimeMobile;
 
     if (tapLength < 300 && tapLength > 0) {
-        handleCloseButton(); // layered reset/exit/close
+        const isTransformed = (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0);
+
+        if (viewerWindow.classList.contains("fullscreen-mode")) {
+            // FULLSCREEN MODE
+            if (isTransformed) {
+                zoomLevel = 1; offsetX = 0; offsetY = 0;
+                applyZoom(img);
+            } else {
+                toggleFullscreen(); // exit fullscreen
+            }
+        } else {
+            // METADATA MODE
+            if (isTransformed) {
+                zoomLevel = 1; offsetX = 0; offsetY = 0;
+                applyZoom(img);
+            } else {
+                toggleFullscreen(); // enter fullscreen
+            }
+        }
     }
 
     lastTapTimeMobile = currentTime;
