@@ -1569,13 +1569,27 @@ section {
     display: block;
   }
 
+  /* ✅ Expanded metadata scrolls independently */
   .viewerContent {
-    max-height: 40vh;   /* limit metadata height */
-    overflow-y: auto;   /* allow scrolling */
+    max-height: calc(100vh - 60vh - 50px); /* viewport minus media height minus toggle */
+    overflow-y: auto;
     padding: 16px;
   }
 
   .viewerContent.collapsed {
-    display: none;      /* hide metadata until expanded */
+    display: none; /* hide metadata until expanded */
+  }
+
+  /* ✅ Keep media visible and fixed height */
+  #viewerMediaWrapper {
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #viewerMedia {
+    max-height: 100%;
+    max-width: 100%;
   }
 }
