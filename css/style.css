@@ -1441,6 +1441,18 @@ footer{
   margin-bottom: 30px;
 }
 
+/* Timeline fade-in animation */
+.timeline li {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.timeline li.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .timeline li::before {
   content: "";
   position: absolute;
