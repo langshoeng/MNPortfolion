@@ -4,8 +4,7 @@
 
 const viewer = document.getElementById("projectViewer");
 const viewerWindow = document.querySelector(".viewer-window");
-
-const viewerMedia = document.getElementById("viewerMedia");
+const viewerMedia = document.getElementById("viewerMedia"); // ✅ container
 
 const viewerTitle = document.getElementById("viewerTitle");
 const viewerMeta = document.getElementById("viewerMeta");
@@ -14,7 +13,6 @@ const viewerSoftware = document.getElementById("viewerSoftware");
 
 const viewerPrev = document.getElementById("viewerPrevMedia");
 const viewerNext = document.getElementById("viewerNextMedia");
-
 const fullscreenBtn = document.getElementById("viewerFullscreenToggle");
 
 const viewerDots = document.getElementById("viewerDots");
@@ -38,25 +36,25 @@ let currentImage = 0;
 // Missing Image Placeholder
 // ===========================================
 function createMissingPlaceholder() {
-    const div = document.createElement("div");
-    div.className = "missing-media";
-    div.textContent = "Preview not available";
-    return div;
+  const div = document.createElement("div");
+  div.className = "missing-media";
+  div.textContent = "Preview not available";
+  return div;
 }
 
 // Fullscreen toggle
 function toggleFullscreen() {
-    viewerWindow.classList.toggle("fullscreen-mode");
-    if (viewerWindow.classList.contains("fullscreen-mode")) {
-        enableFullscreenGestures();
-        updateArrowState();
-    } else {
-        disableFullscreenGestures();
-        zoomLevel = 1; offsetX = 0; offsetY = 0;
-        const img = document.getElementById("viewerGalleryImage");
-        if (img) applyZoom(img);
-        updateArrowState();
-    }
+  viewerWindow.classList.toggle("fullscreen-mode");
+  if (viewerWindow.classList.contains("fullscreen-mode")) {
+    enableFullscreenGestures();
+    updateArrowState();
+  } else {
+    disableFullscreenGestures();
+    zoomLevel = 1; offsetX = 0; offsetY = 0;
+    const img = viewerMedia.querySelector(".viewer-media");
+    if (img) applyZoom(img);
+    updateArrowState();
+  }
 }
 
 // Fullscreen button click
@@ -69,36 +67,36 @@ let zoomLevel = 1;
 let offsetX = 0, offsetY = 0;
 
 function applyZoom(img) {
-    img.style.transform = `scale(${zoomLevel}) translate(${offsetX}px, ${offsetY}px)`;
-    updateArrowState();
+  img.style.transform = `scale(${zoomLevel}) translate(${offsetX}px, ${offsetY}px)`;
+  updateArrowState();
 }
 
 function updateArrowState() {
-    if (zoomLevel > 1) {
-        viewerPrev.classList.add("disabled");
-        viewerNext.classList.add("disabled");
-    } else {
-        viewerPrev.classList.remove("disabled");
-        viewerNext.classList.remove("disabled");
-    }
+  if (zoomLevel > 1) {
+    viewerPrev.classList.add("disabled");
+    viewerNext.classList.add("disabled");
+  } else {
+    viewerPrev.classList.remove("disabled");
+    viewerNext.classList.remove("disabled");
+  }
 }
 
 function zoomIn() {
-    zoomLevel += 0.25;
-    const img = document.getElementById("viewerGalleryImage");
-    if (img) applyZoom(img);
+  zoomLevel += 0.25;
+  const img = viewerMedia.querySelector(".viewer-media");
+  if (img) applyZoom(img);
 }
 
 function zoomOut() {
-    zoomLevel = Math.max(1, zoomLevel - 0.25);
-    const img = document.getElementById("viewerGalleryImage");
-    if (img) applyZoom(img);
+  zoomLevel = Math.max(1, zoomLevel - 0.25);
+  const img = viewerMedia.querySelector(".viewer-media");
+  if (img) applyZoom(img);
 }
 
 function getDistance(touches) {
-    const dx = touches[0].clientX - touches[1].clientX;
-    const dy = touches[0].clientY - touches[1].clientY;
-    return Math.sqrt(dx*dx + dy*dy);
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx*dx + dy*dy);
 }
 
 // Pinch Gesture Handlers (fullscreen only)
@@ -106,29 +104,30 @@ let pinchActive = false;
 let pinchJustEnded = false;
 
 function pinchStart(e) {
-    if (e.touches.length === 2) {
-        initialDistance = getDistance(e.touches);
-        pinchZoomLevel = zoomLevel;
-        pinchActive = true; // mark pinch as active
-    }
+  if (e.touches.length === 2) {
+    initialDistance = getDistance(e.touches);
+    pinchZoomLevel = zoomLevel;
+    pinchActive = true;
+  }
 }
 
 function pinchMove(e) {
-    if (e.touches.length === 2) {
-        e.preventDefault(); // block browser zoom
-        const newDistance = getDistance(e.touches);
-        const scaleChange = newDistance / initialDistance;
-        zoomLevel = Math.min(4, Math.max(1, pinchZoomLevel * scaleChange));
-        applyZoom(document.getElementById("viewerGalleryImage"));
-    }
+  if (e.touches.length === 2) {
+    e.preventDefault();
+    const newDistance = getDistance(e.touches);
+    const scaleChange = newDistance / initialDistance;
+    zoomLevel = Math.min(4, Math.max(1, pinchZoomLevel * scaleChange));
+    const img = viewerMedia.querySelector(".viewer-media");
+    if (img) applyZoom(img);
+  }
 }
 
 function pinchEnd(e) {
-    if (e.touches.length === 0) {
-        pinchActive = false;
-        pinchJustEnded = true;
-        setTimeout(() => { pinchJustEnded = false; }, 100); // short guard window
-    }
+  if (e.touches.length === 0) {
+    pinchActive = false;
+    pinchJustEnded = true;
+    setTimeout(() => { pinchJustEnded = false; }, 100);
+  }
 }
 
 // ===========================================
@@ -137,27 +136,24 @@ function pinchEnd(e) {
 let lastTapTime = 0;
 
 function handleDoubleTap(e) {
-    if (!viewerWindow.classList.contains("fullscreen-mode")) return;
-    if (e.target.id !== "viewerGalleryImage") return;
+  if (!viewerWindow.classList.contains("fullscreen-mode")) return;
+  const img = viewerMedia.querySelector(".viewer-media");
+  if (!img || e.target !== img) return;
 
-    const currentTime = new Date().getTime();
-    const tapLength = currentTime - lastTapTime;
+  const currentTime = new Date().getTime();
+  const tapLength = currentTime - lastTapTime;
 
-    if (tapLength < 300 && tapLength > 0) {
-        // Double‑tap detected
-        if (zoomLevel === 1) {
-            zoomLevel = 2; // zoom in
-        } else {
-            zoomLevel = 1; offsetX = 0; offsetY = 0; // reset zoom
-        }
-        applyZoom(document.getElementById("viewerGalleryImage"));
+  if (tapLength < 300 && tapLength > 0) {
+    if (zoomLevel === 1) {
+      zoomLevel = 2;
+    } else {
+      zoomLevel = 1; offsetX = 0; offsetY = 0;
     }
-
-    lastTapTime = currentTime;
+    applyZoom(img);
+  }
+  lastTapTime = currentTime;
 }
-
 document.addEventListener("touchend", handleDoubleTap, { passive:true });
-
 
 // ===========================================
 // Touch Drag to Pan (fullscreen only)
@@ -166,87 +162,85 @@ let isTouchDragging = false;
 let lastTouchX = 0, lastTouchY = 0;
 
 function touchDragStart(e) {
-    if (!viewerWindow.classList.contains("fullscreen-mode")) return;
-    if (e.touches.length === 1 && zoomLevel > 1) {
-        isTouchDragging = true;
-        lastTouchX = e.touches[0].clientX;
-        lastTouchY = e.touches[0].clientY;
-    }
+  if (!viewerWindow.classList.contains("fullscreen-mode")) return;
+  if (e.touches.length === 1 && zoomLevel > 1) {
+    isTouchDragging = true;
+    lastTouchX = e.touches[0].clientX;
+    lastTouchY = e.touches[0].clientY;
+  }
 }
 
 function touchDragMove(e) {
-    if (!isTouchDragging) return;
-    if (e.touches.length === 1) {
-        e.preventDefault(); // prevent page scroll
-        const dx = e.touches[0].clientX - lastTouchX;
-        const dy = e.touches[0].clientY - lastTouchY;
-        lastTouchX = e.touches[0].clientX;
-        lastTouchY = e.touches[0].clientY;
-        offsetX += dx / zoomLevel;
-        offsetY += dy / zoomLevel;
-        const img = document.getElementById("viewerGalleryImage");
-        if (img) applyZoom(img);
-    }
+  if (!isTouchDragging) return;
+  if (e.touches.length === 1) {
+    e.preventDefault();
+    const dx = e.touches[0].clientX - lastTouchX;
+    const dy = e.touches[0].clientY - lastTouchY;
+    lastTouchX = e.touches[0].clientX;
+    lastTouchY = e.touches[0].clientY;
+    offsetX += dx / zoomLevel;
+    offsetY += dy / zoomLevel;
+    const img = viewerMedia.querySelector(".viewer-media");
+    if (img) applyZoom(img);
+  }
 }
 
 function touchDragEnd(e) {
-    isTouchDragging = false;
+  isTouchDragging = false;
 }
 
 // ===========================================
-// Swipe Navigation (fullscreen only, safe threshold)
+// Swipe Navigation (fullscreen only)
 // ===========================================
 let swipeStartX = 0, swipeStartY = 0;
 let isSwipeCandidate = false;
 
 document.addEventListener("touchstart", e => {
-    if (!viewerWindow.classList.contains("fullscreen-mode")) return;
-
-    // Only allow swipe if one finger AND not zoomed
-    if (e.touches.length === 1 && zoomLevel === 1) {
-        swipeStartX = e.touches[0].clientX;
-        swipeStartY = e.touches[0].clientY;
-        isSwipeCandidate = true;
-    } else {
-        isSwipeCandidate = false;
-    }
+  if (!viewerWindow.classList.contains("fullscreen-mode")) return;
+  if (e.touches.length === 1 && zoomLevel === 1) {
+    swipeStartX = e.touches[0].clientX;
+    swipeStartY = e.touches[0].clientY;
+    isSwipeCandidate = true;
+  } else {
+    isSwipeCandidate = false;
+  }
 }, { passive:true });
 
 document.addEventListener("touchend", e => {
-    if (!viewerWindow.classList.contains("fullscreen-mode")) return;
-    if (!isSwipeCandidate) return;
-    if (pinchActive) return;
-    if (pinchJustEnded) return;   // <-- new guard
-    if (zoomLevel > 1) return;
+  if (!viewerWindow.classList.contains("fullscreen-mode")) return;
+  if (!isSwipeCandidate) return;
+  if (pinchActive) return;
+  if (pinchJustEnded) return;
+  if (zoomLevel > 1) return;
 
-    const dx = e.changedTouches[0].clientX - swipeStartX;
-    const dy = e.changedTouches[0].clientY - swipeStartY;
+  const dx = e.changedTouches[0].clientX - swipeStartX;
+  const dy = e.changedTouches[0].clientY - swipeStartY;
 
-    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
-        if (dx > 0) previousViewerImage();
-        else nextViewerImage();
-    }
-    isSwipeCandidate = false;
+  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+    if (dx > 0) previousViewerImage();
+    else nextViewerImage();
+  }
+  isSwipeCandidate = false;
 }, { passive:true });
 
 function enableFullscreenGestures() {
-    document.addEventListener("touchstart", pinchStart, { passive:false });
-    document.addEventListener("touchmove", pinchMove, { passive:false });
-    document.addEventListener("touchend", pinchEnd, { passive:false });
+  document.addEventListener("touchstart", pinchStart, { passive:false });
+  document.addEventListener("touchmove", pinchMove, { passive:false });
+  document.addEventListener("touchend", pinchEnd, { passive:false });
 
-    document.addEventListener("touchstart", touchDragStart, { passive:false });
-    document.addEventListener("touchmove", touchDragMove, { passive:false });
-    document.addEventListener("touchend", touchDragEnd, { passive:false });
+  document.addEventListener("touchstart", touchDragStart, { passive:false });
+  document.addEventListener("touchmove", touchDragMove, { passive:false });
+  document.addEventListener("touchend", touchDragEnd, { passive:false });
 }
 
 function disableFullscreenGestures() {
-    document.removeEventListener("touchstart", pinchStart);
-    document.removeEventListener("touchmove", pinchMove);
-    document.removeEventListener("touchend", pinchEnd);
+  document.removeEventListener("touchstart", pinchStart);
+  document.removeEventListener("touchmove", pinchMove);
+  document.removeEventListener("touchend", pinchEnd);
 
-    document.removeEventListener("touchstart", touchDragStart);
-    document.removeEventListener("touchmove", touchDragMove);
-    document.removeEventListener("touchend", touchDragEnd);
+  document.removeEventListener("touchstart", touchDragStart);
+  document.removeEventListener("touchmove", touchDragMove);
+  document.removeEventListener("touchend", touchDragEnd);
 }
 
 // ===========================================
