@@ -593,26 +593,16 @@ function handleDoubleClick(e) {
   const img = viewerMedia.querySelector(".viewer-media");
   if (!img || e.target !== img) return;
 
-  const wrapper = document.getElementById("viewerMediaWrapper");
-
-  if (viewerWindow.classList.contains("fullscreen-mode")) {
-    // Exit fullscreen → restore metadata
-    viewerWindow.classList.remove("fullscreen-mode");
-
-    if (wrapper) {
-      wrapper.style.aspectRatio = "16/9";   // restore default ratio
-      wrapper.style.width = "100%";
-      wrapper.style.height = "auto";
-    }
-  } else {
-    // Enter fullscreen → true fullscreen
+  if (!document.fullscreenElement) {
+    // Enter true fullscreen
+    viewerWindow.requestFullscreen().catch(err => {
+      console.error(`Error attempting fullscreen: ${err.message}`);
+    });
     viewerWindow.classList.add("fullscreen-mode");
-
-    if (wrapper) {
-      wrapper.style.aspectRatio = "auto";   // remove ratio constraint
-      wrapper.style.width = "100%";
-      wrapper.style.height = "100%";
-    }
+  } else {
+    // Exit fullscreen
+    document.exitFullscreen();
+    viewerWindow.classList.remove("fullscreen-mode");
   }
 }
 viewer.addEventListener("dblclick", handleDoubleClick);
