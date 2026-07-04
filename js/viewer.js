@@ -594,7 +594,6 @@ function closeProject() {
     currentProject = null;
 }
 
-
 // ===========================================
 // BUTTON EVENTS
 // ===========================================
@@ -631,7 +630,6 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
-
 // ===========================================
 // Double-click behavior (image only)
 // ===========================================
@@ -663,7 +661,6 @@ function handleDoubleClick(e) {
 }
 
 viewer.addEventListener("dblclick", handleDoubleClick);
-
 
 // ===========================================
 // Double-tap behavior (touch devices)
@@ -704,7 +701,6 @@ function handleDoubleTap(e) {
 
 viewer.addEventListener("touchend", handleDoubleTap, { passive:true });
 
-
 // ===========================================
 // Mouse wheel zoom (scoped to viewer open)
 // ===========================================
@@ -744,7 +740,6 @@ document.addEventListener("mousemove", e => {
     const img = document.getElementById("viewerGalleryImage");
     if (img) applyZoom(img);
 });
-
 
 // ===========================================
 // GLOBAL
