@@ -600,15 +600,7 @@ function handleDoubleClick(e) {
   const img = viewerMedia.querySelector(".viewer-media");
   if (!img || e.target !== img) return;
 
-  if (viewerWindow.classList.contains("fullscreen-mode")) {
-    // Exit fullscreen → metadata mode
-    viewerWindow.classList.remove("fullscreen-mode");
-    enterMetadata();
-  } else {
-    // Enter fullscreen → no metadata, full image
-    viewerWindow.classList.add("fullscreen-mode");
-    enterFullscreen();
-  }
+  viewerWindow.classList.toggle("fullscreen-mode");
 }
 
 viewer.addEventListener("dblclick", handleDoubleClick);
@@ -626,26 +618,12 @@ function handleDoubleTap(e) {
   const tapLength = currentTime - lastTapTimeMobile;
 
   if (tapLength < 300 && tapLength > 0) {
-    const isTransformed = (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0);
-
-    if (viewerWindow.classList.contains("fullscreen-mode")) {
-      if (isTransformed) {
-        zoomLevel = 1; offsetX = 0; offsetY = 0;
-        applyZoom(img);
-      } else {
-        toggleFullscreen();
-      }
-    } else {
-      if (isTransformed) {
-        zoomLevel = 1; offsetX = 0; offsetY = 0;
-        applyZoom(img);
-      } else {
-        toggleFullscreen();
-      }
-    }
+    // ✅ Just toggle fullscreen
+    viewerWindow.classList.toggle("fullscreen-mode");
   }
   lastTapTimeMobile = currentTime;
 }
+
 viewer.addEventListener("touchend", handleDoubleTap, { passive:true });
 
 // ===========================================
