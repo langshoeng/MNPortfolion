@@ -380,6 +380,12 @@ function openProject(project){
         });
     }
 
+    // ✅ Reset metadata toggle state on project open
+    if (metadataToggle && viewerContent) {
+        viewerContent.classList.add("collapsed"); // always start collapsed
+        updateToggleText(); // set button text to "Show Details"
+    }
+
     if (project.video && project.video.type === "youtube") {
         viewerWindow.classList.add("video-mode");
         viewerMedia.innerHTML = `
@@ -568,6 +574,30 @@ function blockPageScroll(e) {
     e.stopPropagation();
 }
 
+// ===========================================
+// METADATA TOGGLE
+// ===========================================
+const metadataToggle = document.querySelector(".metadata-toggle");
+const viewerContent = document.querySelector(".viewerContent");
+
+function updateToggleText() {
+  if (!metadataToggle || !viewerContent) return;
+  if (viewerContent.classList.contains("collapsed")) {
+    metadataToggle.textContent = "Show Details";
+  } else {
+    metadataToggle.textContent = "Hide Details";
+  }
+}
+
+if (metadataToggle) {
+  // Initialize text on load
+  updateToggleText();
+
+  metadataToggle.addEventListener("click", () => {
+    viewerContent.classList.toggle("collapsed");
+    updateToggleText();
+  });
+}
 
 // ===========================================
 // CLOSE
@@ -583,15 +613,21 @@ function closeProject() {
     
     viewer.classList.remove("show");
     viewerWindow.classList.remove("gallery-mode", "video-mode");
-
+  
     viewerMedia.innerHTML = "";
     viewerDots.innerHTML = "";
     viewerCounter.textContent = "";
-
+  
     currentGallery = [];
     currentImage = 0;
     currentProject = null;
-}
+  
+    // ✅ Reset toggle text to default
+    if (metadataToggle && viewerContent) {
+      viewerContent.classList.add("collapsed");
+      updateToggleText();
+    }
+  }
 
 // ===========================================
 // BUTTON EVENTS
