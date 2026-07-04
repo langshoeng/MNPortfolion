@@ -67,6 +67,7 @@ let zoomLevel = 1;
 let offsetX = 0, offsetY = 0;
 
 function applyZoom(img) {
+  img.style.transformOrigin = "center center"; // ✅ zoom from center
   img.style.transform = `scale(${zoomLevel}) translate(${offsetX}px, ${offsetY}px)`;
   updateArrowState();
 }
@@ -640,15 +641,24 @@ function handleDoubleTap(e) {
 viewer.addEventListener("touchend", handleDoubleTap, { passive:true });
 
 // ===========================================
-// Mouse wheel zoom
+// Mouse wheel zoom (desktop)
 // ===========================================
 document.addEventListener("wheel", e => {
   if (!viewer.classList.contains("show")) return;
   const img = viewerMedia.querySelector(".viewer-media");
   if (!img) return;
-  if (e.deltaY < 0) zoomIn();
-  else zoomOut();
-});
+
+  e.preventDefault(); // stop page scroll while zooming
+
+  if (e.deltaY < 0) {
+    zoomIn();   // zoom in
+  } else {
+    zoomOut();  // zoom out
+  }
+
+  // ✅ Apply transform immediately
+  applyZoom(img);
+}, { passive:false });
 
 // ===========================================
 // Drag to pan
