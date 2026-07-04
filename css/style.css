@@ -1564,12 +1564,12 @@ section {
 }
 
 /* Show toggle only in landscape mobile */
-@media screen and (orientation: landscape) {
+@media (max-width: 768px) and (orientation: landscape) {
   .metadata-toggle {
     display: block;
   }
 
   .viewerContent.collapsed {
-    display: none;
+    display: none; /* hide metadata until expanded */
   }
 }
