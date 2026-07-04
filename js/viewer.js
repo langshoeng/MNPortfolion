@@ -600,10 +600,32 @@ function handleDoubleClick(e) {
   const img = viewerMedia.querySelector(".viewer-media");
   if (!img || e.target !== img) return;
 
-  // ✅ Only toggle fullscreen mode
-  viewerWindow.classList.toggle("fullscreen-mode");
+  if (viewerWindow.classList.contains("fullscreen-mode")) {
+    // Exit fullscreen → restore metadata mode
+    viewerWindow.classList.remove("fullscreen-mode");
+
+    // Restore aspect ratio
+    const wrapper = document.getElementById("viewerMediaWrapper");
+    if (wrapper) {
+      wrapper.style.aspectRatio = "16/9";
+      wrapper.style.width = "100%";
+      wrapper.style.height = "auto";
+    }
+  } else {
+    // Enter fullscreen → true fullscreen, no padding
+    viewerWindow.classList.add("fullscreen-mode");
+
+    // Force wrapper to fill screen
+    const wrapper = document.getElementById("viewerMediaWrapper");
+    if (wrapper) {
+      wrapper.style.aspectRatio = "auto";
+      wrapper.style.width = "100%";
+      wrapper.style.height = "100%";
+    }
+  }
 }
 viewer.addEventListener("dblclick", handleDoubleClick);
+
 
 // ===========================================
 // Double-tap (mobile)
@@ -618,8 +640,23 @@ function handleDoubleTap(e) {
   const tapLength = currentTime - lastTapTimeMobile;
 
   if (tapLength < 300 && tapLength > 0) {
-    // ✅ Only toggle fullscreen mode
-    viewerWindow.classList.toggle("fullscreen-mode");
+    if (viewerWindow.classList.contains("fullscreen-mode")) {
+      viewerWindow.classList.remove("fullscreen-mode");
+      const wrapper = document.getElementById("viewerMediaWrapper");
+      if (wrapper) {
+        wrapper.style.aspectRatio = "16/9";
+        wrapper.style.width = "100%";
+        wrapper.style.height = "auto";
+      }
+    } else {
+      viewerWindow.classList.add("fullscreen-mode");
+      const wrapper = document.getElementById("viewerMediaWrapper");
+      if (wrapper) {
+        wrapper.style.aspectRatio = "auto";
+        wrapper.style.width = "100%";
+        wrapper.style.height = "100%";
+      }
+    }
   }
   lastTapTimeMobile = currentTime;
 }
