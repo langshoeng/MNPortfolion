@@ -359,66 +359,73 @@
 
 <div id="projectViewer">
 
-  <div class="viewer-overlay"></div>
+    <div class="viewer-overlay"></div>
 
-  <div class="viewer-window">
+    <div class="viewer-window">
 
-    <!-- Close button -->
-    <button id="viewerClose">&times;</button>
+        <button id="viewerClose">&times;</button>
 
-    <!-- ================= MEDIA ================= -->
-    <div id="viewerMediaWrapper">
-      <button id="viewerPrevMedia" class="viewerArrow" aria-label="Previous">&#10094;</button>
-      
-      <!-- ✅ Empty container for JS injection -->
-      <div id="viewerMedia"></div>
-      
-      <button id="viewerNextMedia" class="viewerArrow" aria-label="Next">&#10095;</button>
-      
-      <!-- Fullscreen toggle -->
-      <button id="viewerFullscreenToggle" class="viewerIcon" aria-label="Fullscreen">⛶</button>
-    </div>
-    
-    <!-- ================= GALLERY NAV ================= -->
-    <div id="viewerGalleryNav">
-      <div id="viewerDots"></div>
-      <div id="viewerCounter"></div>
-      <button class="metadata-toggle">Hide Details</button>
-    </div>
-    
-    <!-- ================= INFO ================= -->
-    <div class="viewerContent">
-      <div class="viewerHeader">
-        <div>
-          <h2 id="viewerTitle">Project Title</h2>
-          <div id="viewerMeta">Meta info here</div>
+        <!-- ================= MEDIA ================= -->
+        <div id="viewerMediaWrapper">
+          <button id="viewerPrevMedia" class="viewerArrow" aria-label="Previous">&#10094;</button>
+          <div id="viewerMedia"></div>
+          <button id="viewerNextMedia" class="viewerArrow" aria-label="Next">&#10095;</button>
+        
+          <!-- ✅ Fullscreen toggle button -->
+          <button id="viewerFullscreenToggle" class="viewerIcon" aria-label="Fullscreen">⛶</button>
         </div>
-      </div>
-      <p id="viewerDescription">Project description goes here.</p>
-      <div id="viewerSoftware">Software list here</div>
-    </div>
-  </div>
-</div>
+        
+        <!-- ================= GALLERY NAV ================= -->
+        <div id="viewerGalleryNav">
+          <div id="viewerDots"></div>
+          <div id="viewerCounter"></div>
+        </div>
+        
+        <!-- ================= INFO ================= -->
+        <!-- ✅ Toggle button sits right before metadata -->
+        <button class="metadata-toggle">Show Details</button>
+        
+        <div class="viewerContent collapsed">
+          <div class="viewerHeader">
+            <div>
+              <h2 id="viewerTitle"></h2>
+              <div id="viewerMeta"></div>
+            </div>
+          </div>
+          <p id="viewerDescription"></p>
+          <div id="viewerSoftware"></div>
+        </div>
 
+    </div>
+
+</div>
+    
 <!-- ==========================================
-     IMAGE GALLERY (optional modal)
+     IMAGE GALLERY
 ========================================== -->
 
 <div id="galleryModal">
-  <div class="gallery-overlay"></div>
-  <button id="galleryClose">&times;</button>
-  <button id="galleryPrev">&#10094;</button>
-  <button id="galleryNext">&#10095;</button>
-  <img id="galleryImage" alt="Gallery Image">
-  <div id="galleryCounter"></div>
+
+    <div class="gallery-overlay"></div>
+
+    <button id="galleryClose">&times;</button>
+
+    <button id="galleryPrev">&#10094;</button>
+
+    <button id="galleryNext">&#10095;</button>
+
+    <img id="galleryImage" alt="Gallery Image">
+
+    <div id="galleryCounter"></div>
+
 </div>
 
-<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
 <script src="js/viewer.js"></script>
 <script src="js/projects.js"></script>
 <script src="js/gallery.js"></script>
 <script src="js/script.js"></script>
+
 </body>
 </html>
-
