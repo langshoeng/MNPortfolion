@@ -600,24 +600,17 @@ function handleDoubleClick(e) {
   const img = viewerMedia.querySelector(".viewer-media");
   if (!img || e.target !== img) return;
 
-  const isTransformed = (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0);
-
   if (viewerWindow.classList.contains("fullscreen-mode")) {
-    if (isTransformed) {
-      zoomLevel = 1; offsetX = 0; offsetY = 0;
-      applyZoom(img);
-    } else {
-      toggleFullscreen();
-    }
+    // Exit fullscreen → metadata mode
+    viewerWindow.classList.remove("fullscreen-mode");
+    enterMetadata();
   } else {
-    if (isTransformed) {
-      zoomLevel = 1; offsetX = 0; offsetY = 0;
-      applyZoom(img);
-    } else {
-      toggleFullscreen();
-    }
+    // Enter fullscreen → no metadata, full image
+    viewerWindow.classList.add("fullscreen-mode");
+    enterFullscreen();
   }
 }
+
 viewer.addEventListener("dblclick", handleDoubleClick);
 
 // ===========================================
