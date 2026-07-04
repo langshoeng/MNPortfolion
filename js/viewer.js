@@ -379,7 +379,7 @@ function openProject(project){
         });
     }
 
-    // ✅ Metadata toggle setup
+    // ✅ Metadata toggle setup (bind fresh each time)
     const metadataToggle = document.querySelector(".metadata-toggle");
     const viewerContent = document.querySelector(".viewerContent");
     if (metadataToggle && viewerContent) {
@@ -445,7 +445,6 @@ function openProject(project){
         buildViewerGallery();
     }
 }
-
 
 // ===========================================
 // BUILD GALLERY
