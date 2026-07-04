@@ -339,93 +339,96 @@ function getYoutubeEmbed(url){
 
 
 // ===========================================
-// OPEN PROJECT
+// OPEN PROJECT (merged with gallery logic)
 // ===========================================
+function openProject(project) {
+  currentProject = project;
+  currentGallery = [];
+  currentImage = 0;
 
-function openProject(project){
-    currentProject = project;
-    currentGallery = [];
+  viewer.classList.add("show");
+  savedScrollY = window.scrollY;
+
+  viewerWindow.classList.remove("fullscreen-mode");
+  zoomLevel = 1; offsetX = 0; offsetY = 0;
+
+  viewerWindow.addEventListener("wheel", blockPageScroll, { passive:false });
+  viewerWindow.addEventListener("touchmove", blockPageScroll, { passive:false });
+
+  viewerWindow.classList.remove("gallery-mode","video-mode");
+  viewerPrev.style.display = "none";
+  viewerNext.style.display = "none";
+
+  viewerMedia.innerHTML = "";
+  viewerDots.innerHTML = "";
+  viewerCounter.textContent = "";
+
+  // Metadata
+  viewerTitle.textContent = project.title || "";
+  viewerMeta.innerHTML = `
+      <div><strong>Client</strong><br>${project.client || "-"}</div>
+      <div style="margin-top:12px;"><strong>Year</strong><br>${project.year || "-"}</div>
+  `;
+  viewerDescription.textContent = project.description || "";
+
+  viewerSoftware.innerHTML = "";
+  if (project.software) {
+    project.software.forEach(app => {
+      const badge = document.createElement("span");
+      badge.className = "viewerBadge";
+      badge.textContent = app;
+      viewerSoftware.appendChild(badge);
+    });
+  }
+
+  // Video (YouTube)
+  if (project.video && project.video.type === "youtube") {
+    viewerWindow.classList.add("video-mode");
+    viewerMedia.innerHTML = `
+        <iframe class="viewer-media"
+            src="${getYoutubeEmbed(project.video.url)}"
+            frameborder="0"
+            allow="autoplay; fullscreen; encrypted-media"
+            onerror="this.replaceWith(createMissingPlaceholder())"></iframe>
+    `;
+    return;
+  }
+
+  // Video (MP4)
+  if (project.video && project.video.type === "mp4") {
+    viewerWindow.classList.add("video-mode");
+    viewerMedia.innerHTML = `
+        <video class="viewer-media" controls autoplay onerror="this.replaceWith(createMissingPlaceholder())">
+            <source src="${project.video.url}" type="video/mp4">
+        </video>
+    `;
+    return;
+  }
+
+  // Image gallery
+  if (project.gallery && project.gallery.length) {
+    viewerWindow.classList.add("gallery-mode");
+    currentGallery = project.gallery;
     currentImage = 0;
 
-    viewer.classList.add("show");
-    savedScrollY = window.scrollY;
+    viewerPrev.style.display = "";
+    viewerNext.style.display = "";
 
-    viewerWindow.classList.remove("fullscreen-mode");
-    zoomLevel = 1; offsetX = 0; offsetY = 0;
-
-    viewerWindow.addEventListener("wheel", blockPageScroll, { passive:false });
-    viewerWindow.addEventListener("touchmove", blockPageScroll, { passive:false });
-
-    viewerWindow.classList.remove("gallery-mode","video-mode");
-    viewerPrev.style.display = "none";
-    viewerNext.style.display = "none";
-
-    viewerMedia.innerHTML = "";
-    viewerDots.innerHTML = "";
-    viewerCounter.textContent = "";
-
-    viewerTitle.textContent = project.title || "";
-    viewerMeta.innerHTML = `
-        <div><strong>Client</strong><br>${project.client || "-"}</div>
-        <div style="margin-top:12px;"><strong>Year</strong><br>${project.year || "-"}</div>
+    viewerMedia.innerHTML = `
+        <img src="${currentGallery[0]}"
+             class="viewer-media"
+             alt="Gallery Image">
     `;
-    viewerDescription.textContent = project.description || "";
+    const img = viewerMedia.querySelector(".viewer-media");
 
-    viewerSoftware.innerHTML = "";
-    if(project.software){
-        project.software.forEach(app=>{
-            const badge = document.createElement("span");
-            badge.className = "viewerBadge";
-            badge.textContent = app;
-            viewerSoftware.appendChild(badge);
-        });
-    }
+    img.onerror = () => {
+      viewerMedia.innerHTML = "";
+      const placeholder = createMissingPlaceholder();
+      viewerMedia.appendChild(placeholder);
+    };
 
-    if (project.video && project.video.type === "youtube") {
-        viewerWindow.classList.add("video-mode");
-        viewerMedia.innerHTML = `
-            <iframe src="${getYoutubeEmbed(project.video.url)}"
-                frameborder="0"
-                allow="autoplay; fullscreen; encrypted-media"
-                onerror="this.replaceWith(createMissingPlaceholder())"></iframe>
-        `;
-        return;
-    }
-
-    if (project.video && project.video.type === "mp4") {
-        viewerWindow.classList.add("video-mode");
-        viewerMedia.innerHTML = `
-            <video controls autoplay onerror="this.replaceWith(createMissingPlaceholder())">
-                <source src="${project.video.url}" type="video/mp4">
-            </video>
-        `;
-        return;
-    }
-
-    if (project.gallery && project.gallery.length) {
-        viewerWindow.classList.add("gallery-mode");
-        currentGallery = project.gallery;
-        currentImage = 0;
-
-        viewerPrev.style.display = "";
-        viewerNext.style.display = "";
-
-        viewerMedia.innerHTML = `
-            <img id="viewerGalleryImage"
-                 src="${currentGallery[0]}"
-                 alt="Gallery Image">
-        `;
-        const img = document.getElementById("viewerGalleryImage");
-
-        img.onerror = () => {
-            viewerMedia.innerHTML = "";
-            const placeholder = createMissingPlaceholder();
-            viewerMedia.appendChild(placeholder);
-        };
-
-        // ❌ Removed per-image dblclick binding here
-        buildViewerGallery();
-    }
+    buildViewerGallery();
+  }
 }
 
 // ===========================================
