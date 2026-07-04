@@ -45,17 +45,32 @@ function createMissingPlaceholder() {
 // Fullscreen toggle
 function toggleFullscreen() {
   viewerWindow.classList.toggle("fullscreen-mode");
+  const wrapper = document.getElementById("viewerMediaWrapper");
+  const img = viewerMedia.querySelector(".viewer-media");
+
   if (viewerWindow.classList.contains("fullscreen-mode")) {
+    // ✅ Remove aspect ratio constraint
+    if (wrapper) {
+      wrapper.style.aspectRatio = "auto";
+      wrapper.style.width = "100%";
+      wrapper.style.height = "100%";
+    }
     enableFullscreenGestures();
     updateArrowState();
   } else {
+    // ✅ Restore default aspect ratio
+    if (wrapper) {
+      wrapper.style.aspectRatio = "16/9";
+      wrapper.style.width = "100%";
+      wrapper.style.height = "auto";
+    }
     disableFullscreenGestures();
     zoomLevel = 1; offsetX = 0; offsetY = 0;
-    const img = viewerMedia.querySelector(".viewer-media");
     if (img) applyZoom(img);
     updateArrowState();
   }
 }
+
 
 // Fullscreen button click
 if (fullscreenBtn) {
