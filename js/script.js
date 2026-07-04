@@ -283,71 +283,72 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ===============================
-  // Metadata Toggle Behavior (Fullscreen-driven + Mobile Landscape Auto-collapse)
-  // ===============================
-  const toggleBtn = document.querySelector(".metadata-toggle");
-  const metadata = document.querySelector(".viewerContent");
-  const viewer = document.querySelector(".viewer-window"); // main viewer container
-  const viewerMedia = document.querySelector(".viewer-media"); // image/video element
-  
-  let currentMode = "metadata"; // default when opening project
-  
-  function enterMetadata() {
-    metadata.classList.remove("collapsed");
-    viewer.classList.remove("fullscreen-mode");
-    currentMode = "metadata";
-    toggleBtn.textContent = "Hide Details";
-  }
-  
-  function enterFullscreen() {
-    viewer.classList.add("fullscreen-mode");
-    metadata.classList.add("collapsed"); // always hide metadata in fullscreen
-    currentMode = "fullscreen";
+// ===============================
+// Metadata Toggle Behavior (Fullscreen-driven + Mobile Landscape Auto-collapse)
+// ===============================
+const toggleBtn = document.querySelector(".metadata-toggle");
+const metadata = document.querySelector(".viewerContent");
+const viewer = document.querySelector(".viewer-window"); // main viewer container
+const viewerMediaContainer = document.getElementById("viewerMedia"); // ✅ container div
+
+let currentMode = "metadata"; // default when opening project
+
+function enterMetadata() {
+  metadata.classList.remove("collapsed");
+  viewer.classList.remove("fullscreen-mode");
+  currentMode = "metadata";
+  toggleBtn.textContent = "Hide Details";
+}
+
+function enterFullscreen() {
+  viewer.classList.add("fullscreen-mode");
+  metadata.classList.add("collapsed"); // always hide metadata in fullscreen
+  currentMode = "fullscreen";
+  toggleBtn.textContent = "Show Details";
+}
+
+// ✅ Auto-apply collapsed state only on mobile landscape
+function setInitialState() {
+  const isMobileLandscape =
+    window.innerWidth <= 768 &&
+    window.matchMedia("(orientation: landscape)").matches;
+
+  if (isMobileLandscape) {
+    metadata.classList.add("collapsed");
+    currentMode = "plain";
     toggleBtn.textContent = "Show Details";
+  } else {
+    enterMetadata();
   }
-  
-  // ✅ Auto-apply collapsed state only on mobile landscape
-  function setInitialState() {
-    const isMobileLandscape =
-      window.innerWidth <= 768 &&
-      window.matchMedia("(orientation: landscape)").matches;
-  
-    if (isMobileLandscape) {
-      // start collapsed (plain image mode)
-      metadata.classList.add("collapsed");
-      currentMode = "plain";
-      toggleBtn.textContent = "Show Details";
-    } else {
-      // start with metadata visible
-      enterMetadata();
-    }
-  }
-  
-  // Run once on load
-  setInitialState();
-  
-  // Run again if window is resized or orientation changes
-  window.addEventListener("resize", setInitialState);
-  
-  // Button click
+}
+
+// Run once on load
+setInitialState();
+
+// Run again if window is resized or orientation changes
+window.addEventListener("resize", setInitialState);
+
+// Button click
+if (toggleBtn) {
   toggleBtn.addEventListener("click", () => {
     if (currentMode === "metadata") {
-      enterFullscreen(); // Hide Details → fullscreen
-    } else if (currentMode === "fullscreen") {
-      enterMetadata(); // Show Details → exit fullscreen + show metadata
-    } else if (currentMode === "plain") {
-      enterMetadata(); // Show Details in plain → show metadata
-    }
-  });
-  
-  // Double-click on media
-  viewerMedia.addEventListener("dblclick", () => {
-    if (currentMode === "metadata" || currentMode === "plain") {
       enterFullscreen();
     } else if (currentMode === "fullscreen") {
       enterMetadata();
+    } else if (currentMode === "plain") {
+      enterMetadata();
     }
   });
+}
 
-}); 
+// Double-click on media (bind to container, check for child)
+viewerMediaContainer.addEventListener("dblclick", (e) => {
+  const mediaEl = viewerMediaContainer.querySelector(".viewer-media");
+  if (!mediaEl || e.target !== mediaEl) return;
+
+  if (currentMode === "metadata" || currentMode === "plain") {
+    enterFullscreen();
+  } else if (currentMode === "fullscreen") {
+    enterMetadata();
+  }
+});
