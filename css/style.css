@@ -1369,15 +1369,28 @@ footer{
 
 /* Fullscreen mode */
 .viewer-window.fullscreen-mode {
-    width:100vw;
-    height:100vh;
-    max-height:100vh;
-    border-radius:0;
-    background:#000;
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    background: #000;
 }
 
+/* Hide metadata in fullscreen */
 .viewer-window.fullscreen-mode .viewerContent {
-    display:none; /* hide metadata */
+    display: none !important;
+}
+
+/* Let media fill entire window in fullscreen */
+.viewer-window.fullscreen-mode #viewerMediaWrapper {
+    aspect-ratio: auto;   /* remove fixed ratio */
+    width: 100%;
+    height: 100%;
+}
+
+.viewer-window.fullscreen-mode #viewerMedia {
+    width: 100%;
+    height: 100%;
 }
 
 /* Zoomable image */
@@ -1591,10 +1604,5 @@ section {
 
 /* Global collapse rule: works everywhere */
 .viewerContent.collapsed {
-  display: none !important;
-}
-
-/* Fullscreen mode: always hide metadata */
-.viewer-window.fullscreen-mode .viewerContent {
   display: none !important;
 }
