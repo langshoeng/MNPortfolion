@@ -340,7 +340,6 @@ function getYoutubeEmbed(url){
 // ===========================================
 // OPEN PROJECT
 // ===========================================
-
 function openProject(project){
     currentProject = project;
     currentGallery = [];
@@ -452,7 +451,6 @@ function buildViewerGallery(){
     updateViewerGallery();
 
 }
-
 
 // ===========================================
 // UPDATE GALLERY
