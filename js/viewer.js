@@ -600,23 +600,21 @@ function handleDoubleClick(e) {
   const img = viewerMedia.querySelector(".viewer-media");
   if (!img || e.target !== img) return;
 
+  const wrapper = document.getElementById("viewerMediaWrapper");
+
   if (viewerWindow.classList.contains("fullscreen-mode")) {
     // Exit fullscreen → restore metadata mode
     viewerWindow.classList.remove("fullscreen-mode");
 
-    // Restore aspect ratio
-    const wrapper = document.getElementById("viewerMediaWrapper");
     if (wrapper) {
-      wrapper.style.aspectRatio = "16/9";
-      wrapper.style.width = "100%";
-      wrapper.style.height = "auto";
+      wrapper.style.removeProperty("aspect-ratio"); // clear inline override
+      wrapper.style.width = "";
+      wrapper.style.height = "";
     }
   } else {
     // Enter fullscreen → true fullscreen, no padding
     viewerWindow.classList.add("fullscreen-mode");
 
-    // Force wrapper to fill screen
-    const wrapper = document.getElementById("viewerMediaWrapper");
     if (wrapper) {
       wrapper.style.aspectRatio = "auto";
       wrapper.style.width = "100%";
@@ -625,7 +623,6 @@ function handleDoubleClick(e) {
   }
 }
 viewer.addEventListener("dblclick", handleDoubleClick);
-
 
 // ===========================================
 // Double-tap (mobile)
