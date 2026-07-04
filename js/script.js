@@ -351,6 +351,7 @@ viewerMediaContainer.addEventListener("dblclick", (e) => {
   } else if (currentMode === "fullscreen") {
     enterMetadata();
   }
+    
 });
 
 });
