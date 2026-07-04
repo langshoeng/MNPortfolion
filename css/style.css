@@ -1563,8 +1563,8 @@ section {
   cursor: pointer;
 }
 
-/* Show toggle only in landscape mobile */
-@media (max-width: 768px) and (orientation: landscape) {
+/* Show toggle on handheld devices (phones + tablets) when in landscape */
+@media screen and (max-width: 1024px) and (orientation: landscape) {
   .metadata-toggle {
     display: block;
   }
