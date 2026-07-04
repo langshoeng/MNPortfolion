@@ -284,7 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ===============================
-  // Metadata Toggle Behavior (Fullscreen-driven)
+  // Metadata Toggle Behavior (Fullscreen-driven + Mobile Landscape Auto-collapse)
   // ===============================
   const toggleBtn = document.querySelector(".metadata-toggle");
   const metadata = document.querySelector(".viewerContent");
@@ -307,25 +307,47 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleBtn.textContent = "Show Details";
   }
   
+  // ✅ Auto-apply collapsed state only on mobile landscape
+  function setInitialState() {
+    const isMobileLandscape =
+      window.innerWidth <= 768 &&
+      window.matchMedia("(orientation: landscape)").matches;
+  
+    if (isMobileLandscape) {
+      // start collapsed (plain image mode)
+      metadata.classList.add("collapsed");
+      currentMode = "plain";
+      toggleBtn.textContent = "Show Details";
+    } else {
+      // start with metadata visible
+      enterMetadata();
+    }
+  }
+  
+  // Run once on load
+  setInitialState();
+  
+  // Run again if window is resized or orientation changes
+  window.addEventListener("resize", setInitialState);
+  
   // Button click
   toggleBtn.addEventListener("click", () => {
     if (currentMode === "metadata") {
       enterFullscreen(); // Hide Details → fullscreen
     } else if (currentMode === "fullscreen") {
       enterMetadata(); // Show Details → exit fullscreen + show metadata
+    } else if (currentMode === "plain") {
+      enterMetadata(); // Show Details in plain → show metadata
     }
   });
   
   // Double-click on media
   viewerMedia.addEventListener("dblclick", () => {
-    if (currentMode === "metadata") {
+    if (currentMode === "metadata" || currentMode === "plain") {
       enterFullscreen();
     } else if (currentMode === "fullscreen") {
       enterMetadata();
     }
   });
-  
-  // ✅ Initial state: metadata visible by default
-  enterMetadata();
 
-}); // ✅ this closing brace + parenthesis was missing
+}); 
