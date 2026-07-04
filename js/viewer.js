@@ -619,7 +619,7 @@ function handleDoubleTap(e) {
   const tapLength = currentTime - lastTapTimeMobile;
 
   if (tapLength < 300 && tapLength > 0) {
-    // ✅ Just toggle fullscreen
+    // ✅ Just toggle fullscreen mode
     viewerWindow.classList.toggle("fullscreen-mode");
   }
   lastTapTimeMobile = currentTime;
