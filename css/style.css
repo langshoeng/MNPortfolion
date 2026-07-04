@@ -1276,19 +1276,17 @@ footer{
 /* ==========================================
    Video Mode
 ========================================== */
+
+.viewer-window.video-mode #viewerGalleryNav,
+
 .viewer-window.video-mode #viewerPrevMedia,
-.viewer-window.video-mode #viewerNextMedia {
-    display: none; /* hide arrows for video */
-}
 
-/* ✅ Keep gallery nav visible so toggle button shows */
-.viewer-window.video-mode #viewerGalleryNav {
-    display: flex;
-}
+.viewer-window.video-mode #viewerNextMedia,
 
-/* ✅ Counter optional — hide if you don’t want it for video */
-.viewer-window.video-mode #viewerCounter {
-    display: none;
+.viewer-window.video-mode #viewerCounter{
+
+    display:none;
+
 }
 
 /* ==========================================
