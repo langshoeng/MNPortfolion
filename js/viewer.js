@@ -590,13 +590,21 @@ function updateToggleText() {
 }
 
 if (metadataToggle) {
-  // Initialize text on load
-  updateToggleText();
-
   metadataToggle.addEventListener("click", () => {
     viewerContent.classList.toggle("collapsed");
     updateToggleText();
   });
+}
+
+// ✅ Reset state on open
+function resetMetadataToggle(initialCollapsed = false) {
+  if (!metadataToggle || !viewerContent) return;
+  if (initialCollapsed) {
+    viewerContent.classList.add("collapsed");
+  } else {
+    viewerContent.classList.remove("collapsed");
+  }
+  updateToggleText();
 }
 
 // ===========================================
