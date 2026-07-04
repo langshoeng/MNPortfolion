@@ -262,6 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const navbarCollapse = document.getElementById("menu");
   const bsCollapse = new bootstrap.Collapse(navbarCollapse, { toggle: false });
 
+  // Close menu when clicking outside
   document.addEventListener("click", (event) => {
     const isClickInside = navbarCollapse.contains(event.target) || event.target.closest(".navbar-toggler");
     if (!isClickInside && navbarCollapse.classList.contains("show")) {
@@ -269,6 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Close menu when clicking a nav-link
   document.querySelectorAll(".navbar-nav .nav-link").forEach(link => {
     link.addEventListener("click", () => {
       if (navbarCollapse.classList.contains("show")) {
@@ -277,81 +279,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Close menu when scrolling
   window.addEventListener("scroll", () => {
     if (navbarCollapse.classList.contains("show")) {
       bsCollapse.hide();
     }
   });
 
-// ===============================
-// Metadata Toggle Behavior (Fullscreen-driven + Mobile Landscape Auto-collapse)
-// ===============================
-const toggleBtn = document.querySelector(".metadata-toggle");
-const metadata = document.querySelector(".viewerContent");
-const viewer = document.querySelector(".viewer-window"); // main viewer container
-const viewerMediaContainer = document.getElementById("viewerMedia"); // ✅ container div
+  // ===============================
+  // Metadata Toggle Behavior
+  // ===============================
+  const toggleBtn = document.querySelector(".metadata-toggle");
+  const metadata = document.querySelector(".viewerContent");
 
-let currentMode = "metadata"; // default when opening project
-
-function enterMetadata() {
-  metadata.classList.remove("collapsed");
-  viewer.classList.remove("fullscreen-mode");
-  currentMode = "metadata";
-  toggleBtn.textContent = "Hide Details";
-}
-
-function enterFullscreen() {
-  viewer.classList.add("fullscreen-mode");
-  metadata.classList.add("collapsed"); // always hide metadata in fullscreen
-  currentMode = "fullscreen";
-  toggleBtn.textContent = "Show Details";
-}
-
-// ✅ Auto-apply collapsed state only on mobile landscape
-function setInitialState() {
-  const isMobileLandscape =
-    window.innerWidth <= 768 &&
-    window.matchMedia("(orientation: landscape)").matches;
-
-  if (isMobileLandscape) {
-    metadata.classList.add("collapsed");
-    currentMode = "plain";
-    toggleBtn.textContent = "Show Details";
-  } else {
-    enterMetadata();
+  if (toggleBtn && metadata) {
+    toggleBtn.addEventListener("click", () => {
+      metadata.classList.toggle("collapsed");
+      toggleBtn.textContent = metadata.classList.contains("collapsed")
+        ? "Show Details"
+        : "Hide Details";
+    });
   }
-}
-
-// Run once on load
-setInitialState();
-
-// Run again if window is resized or orientation changes
-window.addEventListener("resize", setInitialState);
-
-// Button click
-if (toggleBtn) {
-  toggleBtn.addEventListener("click", () => {
-    if (currentMode === "metadata") {
-      enterFullscreen();
-    } else if (currentMode === "fullscreen") {
-      enterMetadata();
-    } else if (currentMode === "plain") {
-      enterMetadata();
-    }
-  });
-}
-
-// Double-click on media (bind to container, check for child)
-viewerMediaContainer.addEventListener("dblclick", (e) => {
-  const mediaEl = viewerMediaContainer.querySelector(".viewer-media");
-  if (!mediaEl || e.target !== mediaEl) return;
-
-  if (currentMode === "metadata" || currentMode === "plain") {
-    enterFullscreen();
-  } else if (currentMode === "fullscreen") {
-    enterMetadata();
-  }
-    
-});
-
 });
