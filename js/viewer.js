@@ -339,12 +339,19 @@ function getYoutubeEmbed(url){
 
 
 // ===========================================
-// OPEN PROJECT (merged with gallery logic)
+// OPEN PROJECT (final corrected version)
 // ===========================================
 function openProject(project) {
   currentProject = project;
   currentGallery = [];
   currentImage = 0;
+
+  // ✅ Guard: make sure container exists
+  const viewerMedia = document.getElementById("viewerMedia");
+  if (!viewerMedia) {
+    console.error("viewerMedia container not found in DOM");
+    return;
+  }
 
   viewer.classList.add("show");
   savedScrollY = window.scrollY;
@@ -430,6 +437,7 @@ function openProject(project) {
     buildViewerGallery();
   }
 }
+
 
 // ===========================================
 // BUILD GALLERY
