@@ -438,6 +438,7 @@ function openProject(project){
     }
 }
 
+
 // ===========================================
 // BUILD GALLERY
 // ===========================================
@@ -451,6 +452,7 @@ function buildViewerGallery(){
     updateViewerGallery();
 
 }
+
 
 // ===========================================
 // UPDATE GALLERY
@@ -505,6 +507,7 @@ function updateViewerGallery() {
     });
 }
 
+
 // ===========================================
 // NEXT IMAGE
 // ===========================================
@@ -514,6 +517,7 @@ function nextViewerImage() {
     zoomLevel = 1; offsetX = 0; offsetY = 0; // reset here
     updateViewerGallery();
 }
+
 
 // ===========================================
 // PREVIOUS IMAGE
