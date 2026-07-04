@@ -600,10 +600,9 @@ function handleDoubleClick(e) {
   const img = viewerMedia.querySelector(".viewer-media");
   if (!img || e.target !== img) return;
 
-  // ✅ Just toggle fullscreen mode
+  // ✅ Only toggle fullscreen mode
   viewerWindow.classList.toggle("fullscreen-mode");
 }
-
 viewer.addEventListener("dblclick", handleDoubleClick);
 
 // ===========================================
@@ -619,12 +618,11 @@ function handleDoubleTap(e) {
   const tapLength = currentTime - lastTapTimeMobile;
 
   if (tapLength < 300 && tapLength > 0) {
-    // ✅ Just toggle fullscreen mode
+    // ✅ Only toggle fullscreen mode
     viewerWindow.classList.toggle("fullscreen-mode");
   }
   lastTapTimeMobile = currentTime;
 }
-
 viewer.addEventListener("touchend", handleDoubleTap, { passive:true });
 
 // ===========================================
