@@ -745,6 +745,7 @@ document.addEventListener("mousemove", e => {
     if (img) applyZoom(img);
 });
 
+
 // ===========================================
 // GLOBAL
 // ===========================================
