@@ -340,6 +340,7 @@ function getYoutubeEmbed(url){
 // ===========================================
 // OPEN PROJECT
 // ===========================================
+
 function openProject(project){
     currentProject = project;
     currentGallery = [];
@@ -379,26 +380,6 @@ function openProject(project){
         });
     }
 
-    // ✅ Metadata toggle setup (bind fresh each time)
-    const metadataToggle = document.querySelector(".metadata-toggle");
-    const viewerContent = document.querySelector(".viewerContent");
-    if (metadataToggle && viewerContent) {
-        // Reset state depending on project type
-        if (project.video) {
-            viewerContent.classList.remove("collapsed"); // expanded by default
-        } else {
-            viewerContent.classList.add("collapsed");   // collapsed by default
-        }
-        updateToggleText(metadataToggle, viewerContent);
-
-        // Attach click handler fresh each time
-        metadataToggle.onclick = () => {
-            viewerContent.classList.toggle("collapsed");
-            updateToggleText(metadataToggle, viewerContent);
-        };
-    }
-
-    // ================= VIDEO =================
     if (project.video && project.video.type === "youtube") {
         viewerWindow.classList.add("video-mode");
         viewerMedia.innerHTML = `
@@ -420,7 +401,6 @@ function openProject(project){
         return;
     }
 
-    // ================= IMAGE GALLERY =================
     if (project.gallery && project.gallery.length) {
         viewerWindow.classList.add("gallery-mode");
         currentGallery = project.gallery;
@@ -442,6 +422,7 @@ function openProject(project){
             viewerMedia.appendChild(placeholder);
         };
 
+        // ❌ Removed per-image dblclick binding here
         buildViewerGallery();
     }
 }
@@ -514,7 +495,6 @@ function updateViewerGallery() {
     });
 }
 
-
 // ===========================================
 // NEXT IMAGE
 // ===========================================
@@ -524,7 +504,6 @@ function nextViewerImage() {
     zoomLevel = 1; offsetX = 0; offsetY = 0; // reset here
     updateViewerGallery();
 }
-
 
 // ===========================================
 // PREVIOUS IMAGE
@@ -589,27 +568,6 @@ function blockPageScroll(e) {
     e.stopPropagation();
 }
 
-// ===========================================
-// METADATA TOGGLE (helper functions)
-// ===========================================
-function updateToggleText(metadataToggle, viewerContent) {
-  if (!metadataToggle || !viewerContent) return;
-  if (viewerContent.classList.contains("collapsed")) {
-    metadataToggle.textContent = "Show Details";
-  } else {
-    metadataToggle.textContent = "Hide Details";
-  }
-}
-
-function resetMetadataToggle(metadataToggle, viewerContent, initialCollapsed = false) {
-  if (!metadataToggle || !viewerContent) return;
-  if (initialCollapsed) {
-    viewerContent.classList.add("collapsed");
-  } else {
-    viewerContent.classList.remove("collapsed");
-  }
-  updateToggleText(metadataToggle, viewerContent);
-}
 
 // ===========================================
 // CLOSE
@@ -625,21 +583,15 @@ function closeProject() {
     
     viewer.classList.remove("show");
     viewerWindow.classList.remove("gallery-mode", "video-mode");
-  
+
     viewerMedia.innerHTML = "";
     viewerDots.innerHTML = "";
     viewerCounter.textContent = "";
-  
+
     currentGallery = [];
     currentImage = 0;
     currentProject = null;
-  
-    // ✅ Reset toggle text to default
-    if (metadataToggle && viewerContent) {
-      viewerContent.classList.add("collapsed");
-      updateToggleText();
-    }
-  }
+}
 
 // ===========================================
 // BUTTON EVENTS
