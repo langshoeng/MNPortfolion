@@ -600,6 +600,7 @@ function handleDoubleClick(e) {
   const img = viewerMedia.querySelector(".viewer-media");
   if (!img || e.target !== img) return;
 
+  // ✅ Just toggle fullscreen mode
   viewerWindow.classList.toggle("fullscreen-mode");
 }
 
