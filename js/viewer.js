@@ -44,33 +44,28 @@ function createMissingPlaceholder() {
 
 // Fullscreen toggle
 function toggleFullscreen() {
-  viewerWindow.classList.toggle("fullscreen-mode");
   const wrapper = document.getElementById("viewerMediaWrapper");
-  const img = viewerMedia.querySelector(".viewer-media");
 
   if (viewerWindow.classList.contains("fullscreen-mode")) {
-    // ✅ Remove aspect ratio constraint
+    // Exit fullscreen
+    viewerWindow.classList.remove("fullscreen-mode");
+
+    if (wrapper) {
+      wrapper.style.removeProperty("aspect-ratio");
+      wrapper.style.width = "";
+      wrapper.style.height = "";
+    }
+  } else {
+    // Enter fullscreen
+    viewerWindow.classList.add("fullscreen-mode");
+
     if (wrapper) {
       wrapper.style.aspectRatio = "auto";
       wrapper.style.width = "100%";
       wrapper.style.height = "100%";
     }
-    enableFullscreenGestures();
-    updateArrowState();
-  } else {
-    // ✅ Restore default aspect ratio
-    if (wrapper) {
-      wrapper.style.aspectRatio = "16/9";
-      wrapper.style.width = "100%";
-      wrapper.style.height = "auto";
-    }
-    disableFullscreenGestures();
-    zoomLevel = 1; offsetX = 0; offsetY = 0;
-    if (img) applyZoom(img);
-    updateArrowState();
   }
 }
-
 
 // Fullscreen button click
 if (fullscreenBtn) {
@@ -592,41 +587,16 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// ===========================================
-// Double-click (desktop)
-// ===========================================
+// Desktop double-click
 function handleDoubleClick(e) {
   if (!viewer.classList.contains("show")) return;
   const img = viewerMedia.querySelector(".viewer-media");
   if (!img || e.target !== img) return;
-
-  const wrapper = document.getElementById("viewerMediaWrapper");
-
-  if (viewerWindow.classList.contains("fullscreen-mode")) {
-    // Exit fullscreen → restore metadata mode
-    viewerWindow.classList.remove("fullscreen-mode");
-
-    if (wrapper) {
-      wrapper.style.removeProperty("aspect-ratio"); // clear inline override
-      wrapper.style.width = "";
-      wrapper.style.height = "";
-    }
-  } else {
-    // Enter fullscreen → true fullscreen, no padding
-    viewerWindow.classList.add("fullscreen-mode");
-
-    if (wrapper) {
-      wrapper.style.aspectRatio = "auto";
-      wrapper.style.width = "100%";
-      wrapper.style.height = "100%";
-    }
-  }
+  toggleFullscreen();
 }
 viewer.addEventListener("dblclick", handleDoubleClick);
 
-// ===========================================
-// Double-tap (mobile)
-// ===========================================
+// Mobile double-tap
 let lastTapTimeMobile = 0;
 function handleDoubleTap(e) {
   if (!viewer.classList.contains("show")) return;
@@ -637,23 +607,7 @@ function handleDoubleTap(e) {
   const tapLength = currentTime - lastTapTimeMobile;
 
   if (tapLength < 300 && tapLength > 0) {
-    if (viewerWindow.classList.contains("fullscreen-mode")) {
-      viewerWindow.classList.remove("fullscreen-mode");
-      const wrapper = document.getElementById("viewerMediaWrapper");
-      if (wrapper) {
-        wrapper.style.aspectRatio = "16/9";
-        wrapper.style.width = "100%";
-        wrapper.style.height = "auto";
-      }
-    } else {
-      viewerWindow.classList.add("fullscreen-mode");
-      const wrapper = document.getElementById("viewerMediaWrapper");
-      if (wrapper) {
-        wrapper.style.aspectRatio = "auto";
-        wrapper.style.width = "100%";
-        wrapper.style.height = "100%";
-      }
-    }
+    toggleFullscreen();
   }
   lastTapTimeMobile = currentTime;
 }
