@@ -592,7 +592,28 @@ function handleDoubleClick(e) {
   if (!viewer.classList.contains("show")) return;
   const img = viewerMedia.querySelector(".viewer-media");
   if (!img || e.target !== img) return;
-  toggleFullscreen();
+
+  const wrapper = document.getElementById("viewerMediaWrapper");
+
+  if (viewerWindow.classList.contains("fullscreen-mode")) {
+    // Exit fullscreen → restore metadata
+    viewerWindow.classList.remove("fullscreen-mode");
+
+    if (wrapper) {
+      wrapper.style.aspectRatio = "16/9";   // restore default ratio
+      wrapper.style.width = "100%";
+      wrapper.style.height = "auto";
+    }
+  } else {
+    // Enter fullscreen → true fullscreen
+    viewerWindow.classList.add("fullscreen-mode");
+
+    if (wrapper) {
+      wrapper.style.aspectRatio = "auto";   // remove ratio constraint
+      wrapper.style.width = "100%";
+      wrapper.style.height = "100%";
+    }
+  }
 }
 viewer.addEventListener("dblclick", handleDoubleClick);
 
@@ -607,7 +628,23 @@ function handleDoubleTap(e) {
   const tapLength = currentTime - lastTapTimeMobile;
 
   if (tapLength < 300 && tapLength > 0) {
-    toggleFullscreen();
+    const wrapper = document.getElementById("viewerMediaWrapper");
+
+    if (viewerWindow.classList.contains("fullscreen-mode")) {
+      viewerWindow.classList.remove("fullscreen-mode");
+      if (wrapper) {
+        wrapper.style.aspectRatio = "16/9";
+        wrapper.style.width = "100%";
+        wrapper.style.height = "auto";
+      }
+    } else {
+      viewerWindow.classList.add("fullscreen-mode");
+      if (wrapper) {
+        wrapper.style.aspectRatio = "auto";
+        wrapper.style.width = "100%";
+        wrapper.style.height = "100%";
+      }
+    }
   }
   lastTapTimeMobile = currentTime;
 }
