@@ -284,46 +284,48 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ===============================
-  // Metadata Toggle Behavior
+  // Metadata Toggle Behavior (Fullscreen-driven)
   // ===============================
   const toggleBtn = document.querySelector(".metadata-toggle");
   const metadata = document.querySelector(".viewerContent");
+  const viewer = document.querySelector(".viewer-window"); // main viewer container
+  const viewerMedia = document.querySelector(".viewer-media"); // image/video element
   
-  if (toggleBtn && metadata) {
-    function updateToggleText() {
-      toggleBtn.textContent = metadata.classList.contains("collapsed")
-        ? "Show Details"
-        : "Hide Details";
-    }
+  let currentMode = "metadata"; // default when opening project
   
-    // ✅ Auto-apply collapsed state only on mobile landscape
-    function setInitialState() {
-      const isMobileLandscape =
-        window.innerWidth <= 768 &&
-        window.matchMedia("(orientation: landscape)").matches;
-  
-      if (isMobileLandscape) {
-        metadata.classList.add("collapsed"); // start collapsed
-      } else {
-        metadata.classList.remove("collapsed"); // start expanded
-      }
-      updateToggleText();
-    }
-  
-    // Run once on load
-    setInitialState();
-  
-    // Run again if window is resized or orientation changes
-    window.addEventListener("resize", setInitialState);
-  
-    // Toggle click handler
-    toggleBtn.addEventListener("click", () => {
-      metadata.classList.toggle("collapsed");
-      updateToggleText();
-    });
-  
-    // Sync when fullscreen changes
-    document.addEventListener("fullscreenchange", updateToggleText);
+  function enterMetadata() {
+    metadata.classList.remove("collapsed");
+    viewer.classList.remove("fullscreen-mode");
+    currentMode = "metadata";
+    toggleBtn.textContent = "Hide Details";
   }
+  
+  function enterFullscreen() {
+    viewer.classList.add("fullscreen-mode");
+    metadata.classList.add("collapsed"); // always hide metadata in fullscreen
+    currentMode = "fullscreen";
+    toggleBtn.textContent = "Show Details";
+  }
+  
+  // Button click
+  toggleBtn.addEventListener("click", () => {
+    if (currentMode === "metadata") {
+      enterFullscreen(); // Hide Details → fullscreen
+    } else if (currentMode === "fullscreen") {
+      enterMetadata(); // Show Details → exit fullscreen + show metadata
+    }
+  });
+  
+  // Double-click on media
+  viewerMedia.addEventListener("dblclick", () => {
+    if (currentMode === "metadata") {
+      enterFullscreen();
+    } else if (currentMode === "fullscreen") {
+      enterMetadata();
+    }
+  });
+  
+  // ✅ Initial state: metadata visible by default
+  enterMetadata();
 
 }); // ✅ this closing brace + parenthesis was missing
