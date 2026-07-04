@@ -352,3 +352,4 @@ viewerMediaContainer.addEventListener("dblclick", (e) => {
     enterMetadata();
   }
 });
+});
