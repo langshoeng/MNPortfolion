@@ -379,18 +379,26 @@ function openProject(project){
         });
     }
 
-    // ✅ Reset metadata toggle state depending on project type
+    // ✅ Metadata toggle setup
+    const metadataToggle = document.querySelector(".metadata-toggle");
+    const viewerContent = document.querySelector(".viewerContent");
     if (metadataToggle && viewerContent) {
+        // Reset state depending on project type
         if (project.video) {
-            // For video projects: start expanded (Hide Details)
-            viewerContent.classList.remove("collapsed");
+            viewerContent.classList.remove("collapsed"); // expanded by default
         } else {
-            // For image projects: start collapsed (Show Details)
-            viewerContent.classList.add("collapsed");
+            viewerContent.classList.add("collapsed");   // collapsed by default
         }
-        updateToggleText();
+        updateToggleText(metadataToggle, viewerContent);
+
+        // Attach click handler fresh each time
+        metadataToggle.onclick = () => {
+            viewerContent.classList.toggle("collapsed");
+            updateToggleText(metadataToggle, viewerContent);
+        };
     }
 
+    // ================= VIDEO =================
     if (project.video && project.video.type === "youtube") {
         viewerWindow.classList.add("video-mode");
         viewerMedia.innerHTML = `
@@ -412,6 +420,7 @@ function openProject(project){
         return;
     }
 
+    // ================= IMAGE GALLERY =================
     if (project.gallery && project.gallery.length) {
         viewerWindow.classList.add("gallery-mode");
         currentGallery = project.gallery;
@@ -433,7 +442,6 @@ function openProject(project){
             viewerMedia.appendChild(placeholder);
         };
 
-        // ❌ Removed per-image dblclick binding here
         buildViewerGallery();
     }
 }
@@ -583,12 +591,9 @@ function blockPageScroll(e) {
 }
 
 // ===========================================
-// METADATA TOGGLE
+// METADATA TOGGLE (helper functions)
 // ===========================================
-const metadataToggle = document.querySelector(".metadata-toggle");
-const viewerContent = document.querySelector(".viewerContent");
-
-function updateToggleText() {
+function updateToggleText(metadataToggle, viewerContent) {
   if (!metadataToggle || !viewerContent) return;
   if (viewerContent.classList.contains("collapsed")) {
     metadataToggle.textContent = "Show Details";
@@ -597,22 +602,14 @@ function updateToggleText() {
   }
 }
 
-if (metadataToggle) {
-  metadataToggle.addEventListener("click", () => {
-    viewerContent.classList.toggle("collapsed");
-    updateToggleText();
-  });
-}
-
-// ✅ Reset state on open
-function resetMetadataToggle(initialCollapsed = false) {
+function resetMetadataToggle(metadataToggle, viewerContent, initialCollapsed = false) {
   if (!metadataToggle || !viewerContent) return;
   if (initialCollapsed) {
     viewerContent.classList.add("collapsed");
   } else {
     viewerContent.classList.remove("collapsed");
   }
-  updateToggleText();
+  updateToggleText(metadataToggle, viewerContent);
 }
 
 // ===========================================
