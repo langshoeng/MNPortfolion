@@ -1,7 +1,6 @@
 // ===========================================
 // PROJECT VIEWER V2
 // ===========================================
-
 const viewer = document.getElementById("projectViewer");
 const viewerWindow = document.querySelector(".viewer-window");
 
