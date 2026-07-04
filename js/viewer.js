@@ -380,10 +380,16 @@ function openProject(project){
         });
     }
 
-    // ✅ Reset metadata toggle state on project open
+    // ✅ Reset metadata toggle state depending on project type
     if (metadataToggle && viewerContent) {
-        viewerContent.classList.add("collapsed"); // always start collapsed
-        updateToggleText(); // set button text to "Show Details"
+        if (project.video) {
+            // For video projects: start expanded (Hide Details)
+            viewerContent.classList.remove("collapsed");
+        } else {
+            // For image projects: start collapsed (Show Details)
+            viewerContent.classList.add("collapsed");
+        }
+        updateToggleText();
     }
 
     if (project.video && project.video.type === "youtube") {
