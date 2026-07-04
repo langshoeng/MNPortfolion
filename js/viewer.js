@@ -440,324 +440,249 @@ function openProject(project) {
 
 
 // ===========================================
-// BUILD GALLERY
+// Build Viewer Gallery
 // ===========================================
+function buildViewerGallery() {
+  viewerDots.innerHTML = "";
+  viewerCounter.textContent = `${currentImage + 1} / ${currentGallery.length}`;
 
-function buildViewerGallery(){
+  currentGallery.forEach((src, index) => {
+    const dot = document.createElement("span");
+    dot.className = "viewerDot";
+    if (index === currentImage) dot.classList.add("active");
 
-    viewerPrev.onclick = previousViewerImage;
-
-    viewerNext.onclick = nextViewerImage;
-
-    updateViewerGallery();
-
-}
-
-
-// ===========================================
-// UPDATE GALLERY
-// ===========================================
-
-function updateViewerGallery() {
-    let galleryImg = document.getElementById("viewerGalleryImage");
-
-    if (!galleryImg) {
-        viewerMedia.innerHTML = `<img id="viewerGalleryImage" alt="Gallery Image" class="zoomable">`;
-        galleryImg = document.getElementById("viewerGalleryImage");
-    }
-
-    const nextSrc = currentGallery[currentImage];
-    const preload = new Image();
-    preload.src = nextSrc;
-
-    showLoadingSpinner();
-
-    preload.onload = () => {
-        galleryImg.src = nextSrc;
-        galleryImg.style.opacity = "0";
-        hideLoadingSpinner();
-        requestAnimationFrame(() => {
-            galleryImg.style.transition = "opacity 0.3s ease";
-            galleryImg.style.opacity = "1";
-        });
-    };
-
-    preload.onerror = () => {
-        hideLoadingSpinner();
-        const placeholder = createMissingPlaceholder();
-        placeholder.style.opacity = "1";
-        galleryImg.replaceWith(placeholder);
-    };
-
-    // ❌ Removed per-image dblclick binding here
-
-    viewerCounter.textContent = `${currentImage + 1} of ${currentGallery.length}`;
-    preloadGallery();
-
-    viewerDots.innerHTML = "";
-    currentGallery.forEach((image, index) => {
-        const dot = document.createElement("button");
-        dot.type = "button";
-        dot.className = index === currentImage ? "viewerDot active" : "viewerDot";
-        dot.onclick = () => {
-            currentImage = index;
-            updateViewerGallery();
-        };
-        viewerDots.appendChild(dot);
+    dot.addEventListener("click", () => {
+      showGalleryImage(index);
     });
+
+    viewerDots.appendChild(dot);
+  });
 }
 
 // ===========================================
-// NEXT IMAGE
+// Show Gallery Image
 // ===========================================
-function nextViewerImage() {
-    if (!currentGallery.length) return;
-    currentImage = (currentImage + 1) % currentGallery.length;
-    zoomLevel = 1; offsetX = 0; offsetY = 0; // reset here
-    updateViewerGallery();
-}
+function showGalleryImage(index) {
+  currentImage = index;
 
-// ===========================================
-// PREVIOUS IMAGE
-// ===========================================
-function previousViewerImage() {
-    if (!currentGallery.length) return;
-    currentImage = (currentImage - 1 + currentGallery.length) % currentGallery.length;
-    zoomLevel = 1; offsetX = 0; offsetY = 0; // reset here
-    updateViewerGallery();
-}
+  viewerMedia.innerHTML = `
+    <img src="${currentGallery[currentImage]}"
+         class="viewer-media"
+         alt="Gallery Image">
+  `;
 
+  const img = viewerMedia.querySelector(".viewer-media");
 
-function preloadGallery(){
-
-    if(currentGallery.length<2)
-        return;
-
-    const next =
-        new Image();
-
-    next.src =
-        currentGallery[
-            (currentImage+1)
-            %
-            currentGallery.length
-        ];
-
-    const prev =
-        new Image();
-
-    prev.src =
-        currentGallery[
-            (currentImage-1+currentGallery.length)
-            %
-            currentGallery.length
-        ];
-
-}
-
-document.addEventListener("load",(e)=>{
-
-    if(e.target.id==="viewerGalleryImage"){
-
-        e.target.style.opacity="1";
-
-    }
-
-},true);
-
-
-function blockPageScroll(e) {
-    if (!viewer.classList.contains("show")) return;
-
-    // If the event is inside the viewer media (image/video), let zoom/pan handlers run
-    if (viewerMedia.contains(e.target)) {
-        // Do NOT preventDefault here — allow your zoom/pan logic to consume it
-        return;
-    }
-
-    // Otherwise block homepage scroll
-    e.preventDefault();
-    e.stopPropagation();
-}
-
-
-// ===========================================
-// CLOSE
-// ===========================================
-
-function closeProject() {
-    // Restore homepage scroll position
-    window.scrollTo(0, savedScrollY);
-    
-    // Remove scroll blocking
-    viewerWindow.removeEventListener("wheel", blockPageScroll);
-    viewerWindow.removeEventListener("touchmove", blockPageScroll);
-    
-    viewer.classList.remove("show");
-    viewerWindow.classList.remove("gallery-mode", "video-mode");
-
+  img.onerror = () => {
     viewerMedia.innerHTML = "";
-    viewerDots.innerHTML = "";
-    viewerCounter.textContent = "";
+    const placeholder = createMissingPlaceholder();
+    viewerMedia.appendChild(placeholder);
+  };
 
-    currentGallery = [];
-    currentImage = 0;
-    currentProject = null;
+  // Update dots and counter
+  Array.from(viewerDots.children).forEach((dot, i) => {
+    dot.classList.toggle("active", i === currentImage);
+  });
+  viewerCounter.textContent = `${currentImage + 1} / ${currentGallery.length}`;
 }
 
+// ===========================================
+// Navigation (Prev/Next)
+// ===========================================
+viewerPrev.addEventListener("click", () => {
+  if (currentGallery.length) {
+    const newIndex = (currentImage - 1 + currentGallery.length) % currentGallery.length;
+    showGalleryImage(newIndex);
+  }
+});
+
+viewerNext.addEventListener("click", () => {
+  if (currentGallery.length) {
+    const newIndex = (currentImage + 1) % currentGallery.length;
+    showGalleryImage(newIndex);
+  }
+});
+
 
 // ===========================================
-// BUTTON EVENTS
+// Preload Gallery
 // ===========================================
+function preloadGallery() {
+  if (currentGallery.length < 2) return;
 
-// Close button (X) with layered behavior
+  const next = new Image();
+  next.src = currentGallery[(currentImage + 1) % currentGallery.length];
+
+  const prev = new Image();
+  prev.src = currentGallery[(currentImage - 1 + currentGallery.length) % currentGallery.length];
+}
+
+// ===========================================
+// Block Page Scroll
+// ===========================================
+function blockPageScroll(e) {
+  if (!viewer.classList.contains("show")) return;
+
+  // Allow zoom/pan inside viewer media
+  if (viewerMedia.contains(e.target)) return;
+
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+// ===========================================
+// Close Project
+// ===========================================
+function closeProject() {
+  window.scrollTo(0, savedScrollY);
+
+  viewerWindow.removeEventListener("wheel", blockPageScroll);
+  viewerWindow.removeEventListener("touchmove", blockPageScroll);
+
+  viewer.classList.remove("show");
+  viewerWindow.classList.remove("gallery-mode", "video-mode");
+
+  viewerMedia.innerHTML = "";
+  viewerDots.innerHTML = "";
+  viewerCounter.textContent = "";
+
+  currentGallery = [];
+  currentImage = 0;
+  currentProject = null;
+}
+
+// ===========================================
+// Button Events
+// ===========================================
 document.getElementById("viewerClose").addEventListener("click", handleCloseButton);
-
-// Overlay click always closes viewer
 document.querySelector(".viewer-overlay").addEventListener("click", closeProject);
 
 // ===========================================
-// KEYBOARD
+// Keyboard Navigation
 // ===========================================
 document.addEventListener("keydown", (e) => {
-    if (!viewer.classList.contains("show")) return;
+  if (!viewer.classList.contains("show")) return;
 
-    switch (e.key) {
-        case "Escape":
-            // ✅ Use the same layered logic as the (X) button
-            handleCloseButton();
-            break;
-
-        case "ArrowLeft":
-            if (currentGallery.length) {
-                previousViewerImage();
-            }
-            break;
-
-        case "ArrowRight":
-            if (currentGallery.length) {
-                nextViewerImage();
-            }
-            break;
-    }
+  switch (e.key) {
+    case "Escape":
+      handleCloseButton();
+      break;
+    case "ArrowLeft":
+      if (currentGallery.length) {
+        const newIndex = (currentImage - 1 + currentGallery.length) % currentGallery.length;
+        showGalleryImage(newIndex);
+      }
+      break;
+    case "ArrowRight":
+      if (currentGallery.length) {
+        const newIndex = (currentImage + 1) % currentGallery.length;
+        showGalleryImage(newIndex);
+      }
+      break;
+  }
 });
 
-
 // ===========================================
-// Double-click behavior (image only)
+// Double-click (desktop)
 // ===========================================
 function handleDoubleClick(e) {
-    if (!viewer.classList.contains("show")) return;
+  if (!viewer.classList.contains("show")) return;
+  const img = viewerMedia.querySelector(".viewer-media");
+  if (!img || e.target !== img) return;
 
-    const img = document.getElementById("viewerGalleryImage");
-    if (!img || e.target !== img) return; // only act on image double-click
+  const isTransformed = (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0);
 
+  if (viewerWindow.classList.contains("fullscreen-mode")) {
+    if (isTransformed) {
+      zoomLevel = 1; offsetX = 0; offsetY = 0;
+      applyZoom(img);
+    } else {
+      toggleFullscreen();
+    }
+  } else {
+    if (isTransformed) {
+      zoomLevel = 1; offsetX = 0; offsetY = 0;
+      applyZoom(img);
+    } else {
+      toggleFullscreen();
+    }
+  }
+}
+viewer.addEventListener("dblclick", handleDoubleClick);
+
+// ===========================================
+// Double-tap (mobile)
+// ===========================================
+let lastTapTimeMobile = 0;
+function handleDoubleTap(e) {
+  if (!viewer.classList.contains("show")) return;
+  const img = viewerMedia.querySelector(".viewer-media");
+  if (!img || e.target !== img) return;
+
+  const currentTime = new Date().getTime();
+  const tapLength = currentTime - lastTapTimeMobile;
+
+  if (tapLength < 300 && tapLength > 0) {
     const isTransformed = (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0);
 
     if (viewerWindow.classList.contains("fullscreen-mode")) {
-        // FULLSCREEN MODE
-        if (isTransformed) {
-            zoomLevel = 1; offsetX = 0; offsetY = 0;
-            applyZoom(img);
-        } else {
-            toggleFullscreen(); // exit fullscreen
-        }
+      if (isTransformed) {
+        zoomLevel = 1; offsetX = 0; offsetY = 0;
+        applyZoom(img);
+      } else {
+        toggleFullscreen();
+      }
     } else {
-        // METADATA MODE
-        if (isTransformed) {
-            zoomLevel = 1; offsetX = 0; offsetY = 0;
-            applyZoom(img);
-        } else {
-            toggleFullscreen(); // enter fullscreen
-        }
+      if (isTransformed) {
+        zoomLevel = 1; offsetX = 0; offsetY = 0;
+        applyZoom(img);
+      } else {
+        toggleFullscreen();
+      }
     }
+  }
+  lastTapTimeMobile = currentTime;
 }
-
-viewer.addEventListener("dblclick", handleDoubleClick);
-
-
-// ===========================================
-// Double-tap behavior (touch devices)
-// ===========================================
-let lastTapTimeMobile = 0;
-
-function handleDoubleTap(e) {
-    if (!viewer.classList.contains("show")) return;
-
-    const img = document.getElementById("viewerGalleryImage");
-    if (!img || e.target !== img) return;
-
-    const currentTime = new Date().getTime();
-    const tapLength = currentTime - lastTapTimeMobile;
-
-    if (tapLength < 300 && tapLength > 0) {
-        const isTransformed = (zoomLevel !== 1 || offsetX !== 0 || offsetY !== 0);
-
-        if (viewerWindow.classList.contains("fullscreen-mode")) {
-            if (isTransformed) {
-                zoomLevel = 1; offsetX = 0; offsetY = 0;
-                applyZoom(img);
-            } else {
-                toggleFullscreen(); // exit fullscreen
-            }
-        } else {
-            if (isTransformed) {
-                zoomLevel = 1; offsetX = 0; offsetY = 0;
-                applyZoom(img);
-            } else {
-                toggleFullscreen(); // enter fullscreen
-            }
-        }
-    }
-
-    lastTapTimeMobile = currentTime;
-}
-
 viewer.addEventListener("touchend", handleDoubleTap, { passive:true });
 
-
 // ===========================================
-// Mouse wheel zoom (scoped to viewer open)
+// Mouse wheel zoom
 // ===========================================
 document.addEventListener("wheel", e => {
-    if (!viewer.classList.contains("show")) return;
-    const img = document.getElementById("viewerGalleryImage");
-    if (!img) return;
-    if (e.deltaY < 0) zoomIn();
-    else zoomOut();
+  if (!viewer.classList.contains("show")) return;
+  const img = viewerMedia.querySelector(".viewer-media");
+  if (!img) return;
+  if (e.deltaY < 0) zoomIn();
+  else zoomOut();
 });
 
 // ===========================================
-// Drag to pan when zoomed (scoped to viewer open)
+// Drag to pan
 // ===========================================
 let isDragging = false, startX, startY;
-
 document.addEventListener("mousedown", e => {
-    if (!viewer.classList.contains("show")) return;
-    const img = document.getElementById("viewerGalleryImage");
-    if (!img) return;
-    isDragging = true;
-    startX = e.clientX;
-    startY = e.clientY;
+  if (!viewer.classList.contains("show")) return;
+  const img = viewerMedia.querySelector(".viewer-media");
+  if (!img) return;
+  isDragging = true;
+  startX = e.clientX;
+  startY = e.clientY;
 });
-
 document.addEventListener("mouseup", () => { isDragging = false; });
-
 document.addEventListener("mousemove", e => {
-    if (!viewer.classList.contains("show")) return;
-    if (!isDragging) return;
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-    startX = e.clientX;
-    startY = e.clientY;
-    offsetX += dx / zoomLevel;
-    offsetY += dy / zoomLevel;
-    const img = document.getElementById("viewerGalleryImage");
-    if (img) applyZoom(img);
+  if (!viewer.classList.contains("show")) return;
+  if (!isDragging) return;
+  const dx = e.clientX - startX;
+  const dy = e.clientY - startY;
+  startX = e.clientX;
+  startY = e.clientY;
+  offsetX += dx / zoomLevel;
+  offsetY += dy / zoomLevel;
+  const img = viewerMedia.querySelector(".viewer-media");
+  if (img) applyZoom(img);
 });
-
 
 // ===========================================
-// GLOBAL
+// Global
 // ===========================================
 window.openProject = openProject;
