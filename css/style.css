@@ -970,25 +970,20 @@ footer{
 
 #viewerMedia iframe,
 #viewerMedia video,
-#viewerMedia img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    opacity: 1;
+#viewerMedia img{
 
-    /* ✅ Add these lines */
-    transition: transform 0.25s ease, opacity 0.25s ease;
-    transform-origin: center center;
-    cursor: zoom-in;
-}
+    width:100%;
+    height:100%;
 
-.viewer-window.fullscreen-mode .viewer-media {
-    cursor: grab; /* when zoomed and pannable */
-}
+    object-fit:contain;
 
-.viewer-window.fullscreen-mode .viewer-media:active {
-    cursor: grabbing; /* while dragging */
+    display:block;
+
+    opacity:1;
+
+    transition:
+        opacity .25s ease;
+
 }
 
 /* ==========================================
@@ -1211,61 +1206,26 @@ footer{
    Hide Gallery Navigation by Default
 ========================================== */
 
-/* ==========================================
-   Gallery Navigation
-========================================== */
+#viewerGalleryNav{
 
-#viewerGalleryNav {
-    display: none; /* hidden by default */
-    align-items: center;
-    justify-content: space-between;
-    background: #111;
-    padding: 6px 10px;   /* thinner bar */
-    gap: 8px;
-    font-size: 12px;     /* smaller text/dots */
+    display:none;
+
 }
 
-#viewerDots {
-    display: flex;
-    gap: 6px;
-    flex: 1; /* dots stretch */
-}
+#viewerCounter{
 
-.viewerDot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #666;
-}
+    justify-content:center;
 
-.viewerDot.active {
-    width: 14px;
-    background: #fff;
-}
+    align-items:center;
 
-#viewerCounter {
-    font-size: 12px;
-    color: #999;
-}
+    height:42px;
 
-/* ✅ Place toggle in same row */
-.metadata-toggle {
-    background: #333;
-    color: #fff;
-    border: none;
-    padding: 6px 10px;   /* smaller button */
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    margin: 0;           /* remove auto-centering */
-}
+    background:#111;
 
-/* ==========================================
-   Gallery Mode
-========================================== */
-.viewer-window.gallery-mode #viewerGalleryNav {
-    display: flex;
+    color:#999;
+
+    font-size:14px;
+
 }
 
 /* ==========================================
@@ -1315,43 +1275,62 @@ footer{
 @media (max-width:768px){
 
     .viewer-window{
+
         width:100vw;
+
         height:100vh;
+
         max-height:100vh;
+
         border-radius:0;
+
     }
 
     .viewerContent{
+
         padding:24px;
+
     }
 
     #viewerTitle{
+
         font-size:28px;
+
     }
 
     .viewerArrow{
+
         width:46px;
+
         height:46px;
+
         font-size:22px;
+
     }
 
-    /* ✅ Slimmer nav bar */
     #viewerGalleryNav{
-        gap:8px;
-        padding:6px 10px;   /* thinner padding */
+
+        gap:12px;
+
+        padding:14px 16px;
+
     }
 
-    /* ✅ Smaller dots */
     .viewerDot{
-        width:6px;
-        height:6px;
+
+        width:8px;
+
+        height:8px;
+
     }
 
     .viewerDot.active{
-        width:14px;
-    }
-}
 
+        width:24px;
+
+    }
+
+}
 
 .missing-media {
     display:flex;
@@ -1369,27 +1348,15 @@ footer{
 
 /* Fullscreen mode */
 .viewer-window.fullscreen-mode {
-    width: 100vw;
-    height: 100vh;
-    max-height: 100vh;
-    border-radius: 0;
-    background: #000;
+    width:100vw;
+    height:100vh;
+    max-height:100vh;
+    border-radius:0;
+    background:#000;
 }
 
-/* Hide metadata in fullscreen */
 .viewer-window.fullscreen-mode .viewerContent {
-    display: none !important;
-}
-
-/* Let media fill entire window in fullscreen */
-.viewer-window.fullscreen-mode #viewerMediaWrapper {
-  aspect-ratio: auto !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-.viewer-window.fullscreen-mode #viewerMedia {
-  width: 100%;
-  height: 100%;
+    display:none; /* hide metadata */
 }
 
 /* Zoomable image */
@@ -1583,25 +1550,26 @@ section {
   padding-bottom: 100px;     /* contact section usually needs more breathing room */
 }
 
-/* ==========================================
-   Metadata Toggle
-========================================== */
-
-/* Always show the toggle button */
 .metadata-toggle {
-  display: inline-block;
+  display: none; /* hidden by default */
   background: #333;
   color: #fff;
   border: none;
-  padding: 6px 10px;
-  border-radius: 4px;
-  font-size: 12px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
   font-weight: 600;
+  margin: 12px auto; /* centers under media */
   cursor: pointer;
-  margin: 0;
 }
 
-/* Global collapse rule: works everywhere */
-.viewerContent.collapsed {
-  display: none !important;
+/* Show toggle only in landscape mobile */
+@media screen and (orientation: landscape) {
+  .metadata-toggle {
+    display: block;
+  }
+
+  .viewerContent.collapsed {
+    display: none;
+  }
 }
