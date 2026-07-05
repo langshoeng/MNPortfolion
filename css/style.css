@@ -530,8 +530,8 @@ body.viewer-open {
 .about-img-wrapper {
   display: inline-block;
   position: relative;
-  overflow: hidden;
-  border-radius: 12px; /* optional rounded corners */
+  overflow: hidden;          /* keeps sweep contained */
+  border-radius: 12px;       /* optional rounded corners */
   transition: box-shadow 0.4s ease;
 }
 
@@ -542,9 +542,12 @@ body.viewer-open {
     0 0 48px rgba(66,165,245,0.6);        /* extended glow */
 }
 
-/* Image scaling only */
+/* Image scaling + fit */
 .about-img-wrapper img {
   display: block;
+  width: 100%;               /* fill wrapper width */
+  height: 100%;              /* fill wrapper height */
+  object-fit: cover;         /* crop to fit, no gaps */
   transition: transform 0.4s ease;
   border-radius: 12px;
 }
