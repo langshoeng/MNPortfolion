@@ -524,7 +524,7 @@ body.viewer-open {
 }
 
 /* ===========================================
-   About Section Image Styling (Wrapper Scales)
+   About Section Image Styling (Wrapper Scales + Image Fills)
 =========================================== */
 .about-img-wrapper {
   position: relative;
@@ -545,10 +545,10 @@ body.viewer-open {
     0 0 48px rgba(66,165,245,0.6);
 }
 
-/* Image fills wrapper completely */
+/* Image forced to fill wrapper */
 .about-img-wrapper img {
   width: 100%;
-  height: 100%;
+  height: 100%;                 /* force fill vertically */
   object-fit: cover;            /* crop if needed */
   object-position: center;      /* keep subject centered */
   display: block;
