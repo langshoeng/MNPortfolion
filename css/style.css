@@ -524,14 +524,13 @@ body.viewer-open {
 }
 
 /* ===========================================
-   About Section Image Styling (Fixed Ratio)
+   About Section Image Styling (Auto-fit)
 =========================================== */
 .about-img-wrapper {
+  display: inline-block;
   position: relative;
-  width: 100%;
-  padding-top: 120%;        /* portrait ratio, adjust as needed */
   border-radius: 12px;
-  overflow: hidden;
+  overflow: hidden;              /* keeps sweep contained */
   transition: box-shadow 0.4s ease;
 }
 
@@ -542,13 +541,12 @@ body.viewer-open {
     0 0 48px rgba(66,165,245,0.6);
 }
 
-/* Image fills wrapper completely */
+/* Image defines wrapper height */
 .about-img-wrapper img {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;        /* ensures no gaps */
+  display: block;
+  width: 100%;                   /* fill wrapper width */
+  height: auto;                  /* keep natural aspect ratio */
+  object-fit: cover;             /* crop if needed, no gaps */
   transition: transform 0.4s ease;
   border-radius: 12px;
 }
@@ -562,8 +560,8 @@ body.viewer-open {
   content: "";
   position: absolute;
   top: 0;
-  left: -100%;              /* start fully off-screen */
-  width: 60%;               /* slightly wider sweep */
+  left: -100%;                   /* start fully off-screen */
+  width: 60%;
   height: 100%;
   background: linear-gradient(
     120deg,
@@ -580,8 +578,9 @@ body.viewer-open {
 
 @keyframes sweep {
   0% { left: -100%; }
-  100% { left: 140%; }      /* end fully off-screen */
+  100% { left: 140%; }           /* end fully off-screen */
 }
+
 
 /* ===========================================
    CONTACT
