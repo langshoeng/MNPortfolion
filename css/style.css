@@ -581,19 +581,6 @@ body.viewer-open {
   100% { left: 140%; }
 }
 
-/* Responsive heights */
-@media (max-width: 768px) {
-  .about-img-wrapper {
-    height: 220px;              /* shorter frame on tablets */
-  }
-}
-
-@media (max-width: 480px) {
-  .about-img-wrapper {
-    height: 180px;              /* shorter frame on mobile */
-  }
-}
-
 /* ===========================================
    CONTACT
 =========================================== */
