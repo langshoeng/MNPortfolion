@@ -1380,6 +1380,28 @@ footer{
     display:none; /* hide metadata */
 }
 
+
+/* Title bar styling */
+#viewerHeader {
+  padding: 12px 16px;
+  background: #111;
+  border-bottom: 1px solid #272727;
+  text-align: center;       /* center align */
+  margin-bottom: 8px;       /* space between title and media */
+}
+
+#viewerHeader h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Hide title bar in fullscreen */
+.viewer-window.fullscreen-mode #viewerHeader {
+  display: none;
+}
+
 /* Zoomable image */
 .zoomable {
     cursor:grab;
@@ -1571,23 +1593,48 @@ section {
   padding-bottom: 100px;     /* contact section usually needs more breathing room */
 }
 
-/* Title bar styling */
-#viewerHeader {
-  padding: 12px 16px;
-  background: #111;
-  border-bottom: 1px solid #272727;
-  text-align: center;       /* center align */
-  margin-bottom: 8px;       /* space between title and media */
+/* ==========================================
+   Portrait Fullscreen (Mobile)
+========================================== */
+@media (max-width: 768px) and (orientation: portrait) {
+  .viewer-window.fullscreen-mode #viewerMediaWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;   /* full viewport height */
+  }
+
+  .viewer-window.fullscreen-mode #viewerMedia {
+    max-height: 90vh; /* leave breathing room */
+    max-width: 100%;
+  }
+
+  /* Hide header/title in fullscreen portrait */
+  .viewer-window.fullscreen-mode #viewerHeader {
+    display: none;
+  }
 }
 
-#viewerHeader h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #fff;
-}
+/* ==========================================
+   Mobile Controls (Smaller buttons)
+========================================== */
+@media (max-width: 768px) {
+  #viewerClose {
+    font-size: 20px;   /* smaller X */
+    top: 8px;
+    right: 8px;
+    padding: 4px;
+  }
 
-/* Hide title bar in fullscreen */
-.viewer-window.fullscreen-mode #viewerHeader {
-  display: none;
+  .viewerArrow {
+    width: 36px;       /* smaller arrows */
+    height: 36px;
+    font-size: 18px;
+    padding: 4px;
+  }
+
+  #viewerFullscreenToggle {
+    font-size: 18px;   /* smaller fullscreen icon */
+    padding: 4px;
+  }
 }
