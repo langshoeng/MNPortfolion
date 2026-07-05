@@ -523,7 +523,6 @@ body.viewer-open {
   max-width: 700px;
 }
 
-
 /* ===========================================
    About Section Image Styling (Force Fill, Centered)
 =========================================== */
@@ -585,6 +584,7 @@ body.viewer-open {
   0% { left: -100%; }
   100% { left: 140%; }
 }
+
 
 /* ===========================================
    CONTACT
