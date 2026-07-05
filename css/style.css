@@ -543,8 +543,10 @@ body.viewer-open {
 
 .about-img-wrapper:hover img {
   transform: scale(1.05);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.4),
-              0 0 12px rgba(66,165,245,0.7);
+  box-shadow: 
+    0 12px 24px rgba(0,0,0,0.4),          /* shadow */
+    0 0 24px rgba(66,165,245,0.9),        /* brighter glow */
+    0 0 48px rgba(66,165,245,0.6);        /* extended glow */
 }
 
 /* Light sweep effect */
@@ -552,8 +554,8 @@ body.viewer-open {
   content: "";
   position: absolute;
   top: 0;
-  left: -75%;
-  width: 50%;
+  left: -100%;   /* start fully off-screen */
+  width: 60%;    /* slightly wider sweep */
   height: 100%;
   background: linear-gradient(
     120deg,
@@ -569,8 +571,8 @@ body.viewer-open {
 }
 
 @keyframes sweep {
-  0% { left: -75%; }
-  100% { left: 125%; }
+  0% { left: -100%; }
+  100% { left: 140%; } /* end fully off-screen */
 }
 
 /* ===========================================
