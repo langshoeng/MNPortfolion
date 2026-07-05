@@ -529,29 +529,39 @@ body.viewer-open {
 .about-img-wrapper {
   position: relative;
   width: 100%;
-  max-width: 250px;             /* optional: limit width */
-  height: 320px;                /* fixed portrait frame */
-  margin: 0 auto;               /* center horizontally */
+  max-width: 250px;
+  height: 320px;
+  margin: 0 auto;
   border-radius: 12px;
   overflow: hidden;
+  line-height: 0; /* Prevent inline image gaps */
   transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .about-img-wrapper:hover {
-  transform: scale(1.05);       /* zooms entire block */
-  box-shadow: 
+  transform: scale(1.05);
+  box-shadow:
     0 12px 24px rgba(0,0,0,0.4),
     0 0 24px rgba(66,165,245,0.9),
     0 0 48px rgba(66,165,245,0.6);
 }
 
-/* Image forced to fill wrapper */
+/* Force image to completely cover the wrapper */
 .about-img-wrapper img {
-  width: 100%;
-  height: 100%;                 /* force fill vertically */
-  object-fit: cover;            /* crop if needed */
-  object-position: center;      /* keep subject centered */
   display: block;
+  width: 100% !important;
+  height: 100% !important;
+
+  /* Always fill the wrapper */
+  object-fit: cover;
+  object-position: center center;
+
+  /* Override Bootstrap or other CSS */
+  max-width: none !important;
+  max-height: none !important;
+  min-width: 100%;
+  min-height: 100%;
+
   border-radius: 12px;
 }
 
@@ -560,7 +570,7 @@ body.viewer-open {
   content: "";
   position: absolute;
   top: 0;
-  left: -100%;                  /* start fully off-screen */
+  left: -100%;
   width: 60%;
   height: 100%;
   background: linear-gradient(
@@ -570,6 +580,7 @@ body.viewer-open {
     rgba(255,255,255,0.0) 100%
   );
   transform: skewX(-25deg);
+  pointer-events: none;
 }
 
 .about-img-wrapper:hover::after {
@@ -577,8 +588,12 @@ body.viewer-open {
 }
 
 @keyframes sweep {
-  0% { left: -100%; }
-  100% { left: 140%; }          /* end fully off-screen */
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 140%;
+  }
 }
 
 /* ===========================================
