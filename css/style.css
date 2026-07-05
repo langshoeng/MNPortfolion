@@ -482,39 +482,38 @@ body.viewer-open {
 /* ===========================================
    ABOUT
 =========================================== */
-
-#about{
-    padding:100px 0;
-    background:#181818;
+#about {
+  padding: 100px 0;
+  background: #181818;
+  color: #fff;
 }
 
-.about-text{
-    max-width:700px;
-    font-size:18px;
-    line-height:1.8;
-    text-align: justify;
-    text-justify: none
+.about-text {
+  max-width: 700px;
+  font-size: 18px;
+  line-height: 1.8;
+  text-align: justify;
 }
 
 /* Base: always allow wrapping + vertical centering */
 #about .row {
   flex-wrap: wrap;
-  align-items: center; /* vertical centering on desktop */
+  align-items: center;
 }
 
 /* Force stacking on tablet widths */
 @media (max-width: 1024px) {
   #about .col-md-8 {
-    flex: 0 0 100%;   /* text takes full width */
+    flex: 0 0 100%;
     max-width: 100%;
-    margin-top: 24px; /* spacing below image */
+    margin-top: 24px;
   }
   #about img {
-    max-width: 200px; /* shrink portrait */
+    max-width: 200px;
     margin-bottom: 20px;
     display: block;
     margin-left: auto;
-    margin-right: auto; /* center image */
+    margin-right: auto;
   }
 }
 
@@ -523,16 +522,15 @@ body.viewer-open {
   max-width: 700px;
 }
 
-
 /* ===========================================
-   About Section Image Styling (Responsive)
+   About Section Image Styling
 =========================================== */
 .about-img-wrapper {
   position: relative;
   width: 100%;
-  max-width: 250px;             /* optional: limit width */
-  height: 280px;                /* default height */
-  margin: 0 auto;               /* center horizontally */
+  max-width: 250px;
+  height: 280px;                /* fixed portrait frame */
+  margin: 0 auto;
   border-radius: 12px;
   overflow: hidden;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
@@ -540,7 +538,7 @@ body.viewer-open {
 
 .about-img-wrapper:hover {
   transform: scale(1.05);       /* zooms entire block */
-  box-shadow: 
+  box-shadow:
     0 12px 24px rgba(0,0,0,0.4),
     0 0 24px rgba(66,165,245,0.9),
     0 0 48px rgba(66,165,245,0.6);
@@ -549,9 +547,9 @@ body.viewer-open {
 /* Image fills wrapper completely */
 .about-img-wrapper img {
   width: 100%;
-  height: 100%;                 /* force fill wrapper */
+  height: 100% !important;      /* override Bootstrap img-fluid */
   object-fit: cover;            /* crop if needed */
-  object-position: center;      /* keep subject centered */
+  object-position: center;
   display: block;
   border-radius: 12px;
 }
@@ -581,7 +579,6 @@ body.viewer-open {
   0% { left: -100%; }
   100% { left: 140%; }
 }
-
 
 /* ===========================================
    CONTACT
