@@ -526,22 +526,29 @@ body.viewer-open {
 /* ===========================================
    About Section Image Styling
 =========================================== */
-#about img {
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  border-radius: 12px; /* optional: rounded corners */
+/* Wrapper for About image */
+.about-img-wrapper {
+  display: inline-block;
   position: relative;
   overflow: hidden;
+  border-radius: 12px; /* optional rounded corners */
 }
 
-/* Hover effects */
-#about img:hover {
-  transform: scale(1.05); /* slight zoom */
+/* Image scaling + glow */
+.about-img-wrapper img {
+  display: block;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  border-radius: 12px;
+}
+
+.about-img-wrapper:hover img {
+  transform: scale(1.05);
   box-shadow: 0 12px 24px rgba(0,0,0,0.4),
-              0 0 12px rgba(66, 165, 245, 0.7); /* shadow + glow */
+              0 0 12px rgba(66,165,245,0.7);
 }
 
 /* Light sweep effect */
-#about img::after {
+.about-img-wrapper::after {
   content: "";
   position: absolute;
   top: 0;
@@ -557,8 +564,7 @@ body.viewer-open {
   transform: skewX(-25deg);
 }
 
-/* Animate sweep on hover */
-#about img:hover::after {
+.about-img-wrapper:hover::after {
   animation: sweep 0.8s forwards;
 }
 
