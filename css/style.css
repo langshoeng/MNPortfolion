@@ -532,21 +532,25 @@ body.viewer-open {
   position: relative;
   overflow: hidden;
   border-radius: 12px; /* optional rounded corners */
+  transition: box-shadow 0.4s ease;
 }
 
-/* Image scaling + glow */
+.about-img-wrapper:hover {
+  box-shadow: 
+    0 12px 24px rgba(0,0,0,0.4),          /* shadow */
+    0 0 24px rgba(66,165,245,0.9),        /* brighter glow */
+    0 0 48px rgba(66,165,245,0.6);        /* extended glow */
+}
+
+/* Image scaling only */
 .about-img-wrapper img {
   display: block;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transition: transform 0.4s ease;
   border-radius: 12px;
 }
 
 .about-img-wrapper:hover img {
   transform: scale(1.05);
-  box-shadow: 
-    0 12px 24px rgba(0,0,0,0.4),          /* shadow */
-    0 0 24px rgba(66,165,245,0.9),        /* brighter glow */
-    0 0 48px rgba(66,165,245,0.6);        /* extended glow */
 }
 
 /* Light sweep effect */
