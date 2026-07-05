@@ -300,4 +300,23 @@ document.addEventListener("DOMContentLoaded", () => {
         : "Hide Details";
     });
   }
+
+  // ===============================
+  // Certificate Modal Behavior
+  // ===============================
+  const certificateModal = document.getElementById('certificateModal');
+  if (certificateModal) {
+    certificateModal.addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget;
+      const title = button.getAttribute('data-title');
+      const link = button.getAttribute('data-link');
+
+      certificateModal.querySelector('.modal-title').textContent = title;
+      certificateModal.querySelector('#certificateFrame').src = link;
+    });
+
+    certificateModal.addEventListener('hidden.bs.modal', function () {
+      certificateModal.querySelector('#certificateFrame').src = "";
+    });
+  }
 });
