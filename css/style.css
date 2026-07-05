@@ -524,30 +524,31 @@ body.viewer-open {
 }
 
 /* ===========================================
-   About Section Image Styling
+   About Section Image Styling (Fixed Ratio)
 =========================================== */
-/* Wrapper for About image */
 .about-img-wrapper {
-  display: inline-block;
   position: relative;
-  overflow: hidden;          /* keeps sweep contained */
-  border-radius: 12px;       /* optional rounded corners */
+  width: 100%;
+  padding-top: 120%;        /* portrait ratio, adjust as needed */
+  border-radius: 12px;
+  overflow: hidden;
   transition: box-shadow 0.4s ease;
 }
 
 .about-img-wrapper:hover {
   box-shadow: 
-    0 12px 24px rgba(0,0,0,0.4),          /* shadow */
-    0 0 24px rgba(66,165,245,0.9),        /* brighter glow */
-    0 0 48px rgba(66,165,245,0.6);        /* extended glow */
+    0 12px 24px rgba(0,0,0,0.4),
+    0 0 24px rgba(66,165,245,0.9),
+    0 0 48px rgba(66,165,245,0.6);
 }
 
-/* Image scaling + fit */
+/* Image fills wrapper completely */
 .about-img-wrapper img {
-  display: block;
-  width: 100%;               /* fill wrapper width */
-  height: 100%;              /* fill wrapper height */
-  object-fit: cover;         /* crop to fit, no gaps */
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;        /* ensures no gaps */
   transition: transform 0.4s ease;
   border-radius: 12px;
 }
@@ -561,8 +562,8 @@ body.viewer-open {
   content: "";
   position: absolute;
   top: 0;
-  left: -100%;   /* start fully off-screen */
-  width: 60%;    /* slightly wider sweep */
+  left: -100%;              /* start fully off-screen */
+  width: 60%;               /* slightly wider sweep */
   height: 100%;
   background: linear-gradient(
     120deg,
@@ -579,7 +580,7 @@ body.viewer-open {
 
 @keyframes sweep {
   0% { left: -100%; }
-  100% { left: 140%; } /* end fully off-screen */
+  100% { left: 140%; }      /* end fully off-screen */
 }
 
 /* ===========================================
