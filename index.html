@@ -356,7 +356,6 @@
 <!-- ==========================================
      PROJECT VIEWER
 ========================================== -->
-
 <div id="projectViewer">
 
     <div class="viewer-overlay"></div>
@@ -365,19 +364,24 @@
 
         <button id="viewerClose">&times;</button>
 
+        <!-- ✅ Title bar at the top -->
+        <div id="viewerHeader">
+          <h2 id="viewerTitle"></h2>
+        </div>
+
         <!-- ================= MEDIA ================= -->
         <div id="viewerMediaWrapper">
           <button id="viewerPrevMedia" class="viewerArrow" aria-label="Previous">&#10094;</button>
           <div id="viewerMedia"></div>
           <button id="viewerNextMedia" class="viewerArrow" aria-label="Next">&#10095;</button>
         
-          <!-- ✅ Fullscreen toggle button -->
+          <!-- Fullscreen toggle button -->
           <button id="viewerFullscreenToggle" class="viewerIcon" aria-label="Fullscreen">⛶</button>
         </div>
         
         <!-- ================= GALLERY NAV ================= -->
         <div id="viewerGalleryNav">
-          <!-- Put toggle on the left -->
+          <!-- Toggle on the left -->
           <button class="metadata-toggle">Show Details</button>
         
           <!-- Dots in the middle -->
@@ -387,13 +391,10 @@
           <div id="viewerCounter"></div>
         </div>
         
+        <!-- ================= INFO ================= -->
         <div class="viewerContent collapsed">
-          <div class="viewerHeader">
-            <div>
-              <h2 id="viewerTitle"></h2>
-              <div id="viewerMeta"></div>
-            </div>
-          </div>
+          <!-- ✅ Removed title here, only metadata -->
+          <div id="viewerMeta"></div>
           <p id="viewerDescription"></p>
           <div id="viewerSoftware"></div>
         </div>
