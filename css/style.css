@@ -174,25 +174,27 @@ body.viewer-open {
   display: inline-block;
   padding: 14px 36px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   color: #fff;
-  background: linear-gradient(145deg, #ff7e5f, #feb47b); /* eye-catching gradient */
+  background: linear-gradient(145deg, #2196f3, #1e88e5); /* vibrant blue gradient */
   border: none;
   border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.25), inset 0 -3px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 -3px 6px rgba(255,255,255,0.2);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
 }
 
 .view-portfolio-btn:hover {
+  background: linear-gradient(145deg, #42a5f5, #2196f3); /* lighter blue on hover */
   transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.35), inset 0 -3px 6px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 18px rgba(0,0,0,0.5), inset 0 -3px 6px rgba(255,255,255,0.3);
 }
 
 .view-portfolio-btn:active {
   transform: translateY(1px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 2px 4px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.4);
 }
+
 
 /* ===========================================
    SECTION TITLE
