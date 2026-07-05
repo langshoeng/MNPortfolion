@@ -171,6 +171,7 @@ document.querySelectorAll('.skill-wrapper').forEach(wrapper => {
   });
 });
 
+
 // ===============================
 // Timeline Fade-in on Scroll (with staggered delay)
 // ===============================
@@ -229,6 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const address = `${city}, ${country}`;
   document.getElementById("address").textContent = address;
 });
+
 
 document.addEventListener("DOMContentLoaded", () => {
   // ===============================
