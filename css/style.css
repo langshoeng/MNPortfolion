@@ -524,7 +524,7 @@ body.viewer-open {
 }
 
 /* ===========================================
-   About Section Image Styling (Auto-fit)
+   About Section Image Styling (Auto-fit, no gaps)
 =========================================== */
 .about-img-wrapper {
   display: inline-block;
@@ -541,12 +541,12 @@ body.viewer-open {
     0 0 48px rgba(66,165,245,0.6);
 }
 
-/* Image defines wrapper height */
+/* Image defines wrapper height naturally */
 .about-img-wrapper img {
   display: block;
   width: 100%;                   /* fill wrapper width */
-  height: auto;                  /* keep natural aspect ratio */
-  object-fit: cover;             /* crop if needed, no gaps */
+  height: auto;                  /* keep aspect ratio */
+  object-fit: cover;             /* ensures no gaps */
   transition: transform 0.4s ease;
   border-radius: 12px;
 }
@@ -580,7 +580,6 @@ body.viewer-open {
   0% { left: -100%; }
   100% { left: 140%; }           /* end fully off-screen */
 }
-
 
 /* ===========================================
    CONTACT
