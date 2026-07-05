@@ -496,6 +496,76 @@ body.viewer-open {
     text-justify: none
 }
 
+/* Base: always allow wrapping + vertical centering */
+#about .row {
+  flex-wrap: wrap;
+  align-items: center; /* vertical centering on desktop */
+}
+
+/* Force stacking on tablet widths */
+@media (max-width: 1024px) {
+  #about .col-md-8 {
+    flex: 0 0 100%;   /* text takes full width */
+    max-width: 100%;
+    margin-top: 24px; /* spacing below image */
+  }
+  #about img {
+    max-width: 200px; /* shrink portrait */
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto; /* center image */
+  }
+}
+
+/* Optional: limit text width on very wide monitors */
+#about .col-md-8 {
+  max-width: 700px;
+}
+
+/* ===========================================
+   About Section Image Styling
+=========================================== */
+#about img {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  border-radius: 12px; /* optional: rounded corners */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover effects */
+#about img:hover {
+  transform: scale(1.05); /* slight zoom */
+  box-shadow: 0 12px 24px rgba(0,0,0,0.4),
+              0 0 12px rgba(66, 165, 245, 0.7); /* shadow + glow */
+}
+
+/* Light sweep effect */
+#about img::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0.0) 0%,
+    rgba(255,255,255,0.4) 50%,
+    rgba(255,255,255,0.0) 100%
+  );
+  transform: skewX(-25deg);
+}
+
+/* Animate sweep on hover */
+#about img:hover::after {
+  animation: sweep 0.8s forwards;
+}
+
+@keyframes sweep {
+  0% { left: -75%; }
+  100% { left: 125%; }
+}
 
 /* ===========================================
    CONTACT
@@ -1528,32 +1598,6 @@ footer{
   transform: translateY(-2px);
 }
 
-/* Base: always allow wrapping + vertical centering */
-#about .row {
-  flex-wrap: wrap;
-  align-items: center; /* vertical centering on desktop */
-}
-
-/* Force stacking on tablet widths */
-@media (max-width: 1024px) {
-  #about .col-md-8 {
-    flex: 0 0 100%;   /* text takes full width */
-    max-width: 100%;
-    margin-top: 24px; /* spacing below image */
-  }
-  #about img {
-    max-width: 200px; /* shrink portrait */
-    margin-bottom: 20px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto; /* center image */
-  }
-}
-
-/* Optional: limit text width on very wide monitors */
-#about .col-md-8 {
-  max-width: 700px;
-}
 
 section {
   scroll-margin-top: 80px;   /* keeps headings visible when clicked */
