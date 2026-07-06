@@ -72,10 +72,8 @@ function renderProjects(filter = "All") {
     //-----------------------------------
     // Card
     //-----------------------------------
-    // Decide preview source
     let previewAttr = "";
     if (project.video && project.video.type !== "none") {
-      // convert YouTube watch link to embed
       const embedUrl = project.video.url.replace("watch?v=", "embed/");
       previewAttr = `data-video="${embedUrl}"`;
     } else if (project.gallery && project.gallery.length) {
@@ -101,6 +99,56 @@ function renderProjects(filter = "All") {
         </div>
       </div>
     `;
+  });
+
+  //-----------------------------------
+  // Bind peek preview events to new cards
+  //-----------------------------------
+  const peekModal = document.getElementById("peekModal");
+  const peekImage = document.getElementById("peekImage");
+  const peekVideo = document.getElementById("peekVideo");
+
+  function showPreview(card) {
+    const video = card.dataset.video;
+    const image = card.dataset.image;
+    if (video) {
+      peekVideo.src = video;
+      peekVideo.style.display = "block";
+      peekImage.style.display = "none";
+    } else if (image) {
+      peekImage.src = image;
+      peekImage.style.display = "block";
+      peekVideo.style.display = "none";
+    }
+    peekModal.classList.add("show");
+  }
+
+  function hidePreview() {
+    peekModal.classList.remove("show");
+    peekVideo.src = "";
+    peekImage.src = "";
+  }
+
+  document.querySelectorAll(".project-card").forEach(card => {
+    let pressTimer;
+    card.addEventListener("mousedown", () => {
+      pressTimer = setTimeout(() => showPreview(card), 300);
+    });
+    card.addEventListener("mouseup", () => {
+      clearTimeout(pressTimer);
+      hidePreview();
+    });
+    card.addEventListener("mouseleave", () => {
+      clearTimeout(pressTimer);
+      hidePreview();
+    });
+    card.addEventListener("touchstart", () => {
+      pressTimer = setTimeout(() => showPreview(card), 300);
+    });
+    card.addEventListener("touchend", () => {
+      clearTimeout(pressTimer);
+      hidePreview();
+    });
   });
 }
 
