@@ -28,6 +28,9 @@ async function loadProjects() {
 
 }
 
+// =======================================
+// Global YouTube API setup
+// =======================================
 let ytPlayer;
 
 function onYouTubeIframeAPIReady() {
@@ -42,20 +45,9 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-// ✅ Wire the unmute pill itself
-if (unmuteHint) {
-  unmuteHint.addEventListener("click", () => {
-    if (ytPlayer) {
-      ytPlayer.unMute();
-      unmuteHint.classList.add("fade-out"); // ✅ fade out immediately
-    }
-  });
-}
-
 // =======================================
 // Render Projects
 // =======================================
-
 function renderProjects(filter = "All") {
   const grid = document.getElementById("projectsGrid");
   grid.innerHTML = "";
@@ -118,24 +110,6 @@ function renderProjects(filter = "All") {
       </div>
     `;
   });
-  
-  // Auto-show hint when card scrolls into view
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const hint = entry.target.querySelector(".peek-hint");
-        if (hint) {
-          hint.style.opacity = "1";
-          setTimeout(() => hint.style.opacity = "0", 3000); // show for 3s
-        }
-        observer.unobserve(entry.target); // only show once per card
-      }
-    });
-  }, { threshold: 0.3 }); // trigger when ~30% of card is visible
-  
-  document.querySelectorAll(".project-card").forEach(card => {
-    observer.observe(card);
-  });
 
   //-----------------------------------
   // Peek modal logic with YouTube API
@@ -147,38 +121,36 @@ function renderProjects(filter = "All") {
   const peekNext = document.getElementById("peekNext");
   const peekVideoWrapper = document.getElementById("peekVideoWrapper");
   const unmuteHint = document.querySelector(".unmute-hint");
-  
+
   let currentGallery = [];
   let currentIndex = 0;
-  
+
   function showPreview(card) {
     const video = card.dataset.video;
     const image = card.dataset.image;
-  
+
     if (video) {
-      // Extract video ID from embed/watch URL
       let videoId = "";
       if (video.includes("embed/")) {
         videoId = video.split("embed/")[1].split("?")[0];
       } else if (video.includes("v=")) {
         videoId = video.split("v=")[1].split("&")[0];
       }
-  
+
       peekVideoWrapper.style.display = "block";
       peekImage.style.display = "none";
       currentGallery = [];
-  
+
       if (ytPlayer && videoId) {
         ytPlayer.loadVideoById({ videoId: videoId, startSeconds: 0 });
-        ytPlayer.mute(); // start muted
+        ytPlayer.mute();
       }
-  
-      // Show unmute hint briefly
+
       if (unmuteHint) {
         unmuteHint.classList.remove("fade-out");
         setTimeout(() => unmuteHint.classList.add("fade-out"), 4000);
       }
-  
+
       if (peekPrev) peekPrev.style.display = "none";
       if (peekNext) peekNext.style.display = "none";
     } else if (image) {
@@ -186,25 +158,18 @@ function renderProjects(filter = "All") {
       const project = allProjects.find(p => p.id === projectId);
       currentGallery = project.gallery || [image];
       currentIndex = 0;
-  
+
       peekImage.src = currentGallery[currentIndex];
       peekImage.style.display = "block";
       peekVideoWrapper.style.display = "none";
-  
+
       if (peekPrev) peekPrev.style.display = "block";
       if (peekNext) peekNext.style.display = "block";
     }
-  
+
     peekModal.classList.add("show");
   }
-  
-  function showImageAt(index) {
-    if (currentGallery.length > 0) {
-      currentIndex = (index + currentGallery.length) % currentGallery.length;
-      peekImage.src = currentGallery[currentIndex];
-    }
-  }
-  
+
   function hidePreview() {
     peekModal.classList.remove("show");
     peekImage.src = "";
@@ -213,73 +178,57 @@ function renderProjects(filter = "All") {
     currentIndex = 0;
     if (ytPlayer) ytPlayer.stopVideo();
   }
-  
+
   if (peekClose) peekClose.addEventListener("click", hidePreview);
   if (peekPrev) peekPrev.addEventListener("click", () => showImageAt(currentIndex - 1));
   if (peekNext) peekNext.addEventListener("click", () => showImageAt(currentIndex + 1));
-  
+
   peekModal.addEventListener("click", (e) => {
     if (e.target === peekModal) hidePreview();
   });
-  
-  // Keyboard navigation
-  document.addEventListener("keydown", (e) => {
-    if (!peekModal.classList.contains("show")) return;
-  
-    if (currentGallery.length > 0) {
-      if (e.key === "ArrowLeft") {
-        showImageAt(currentIndex - 1);
-        peekPrev.classList.add("active");
-        setTimeout(() => peekPrev.classList.remove("active"), 200);
-      } else if (e.key === "ArrowRight") {
-        showImageAt(currentIndex + 1);
-        peekNext.classList.add("active");
-        setTimeout(() => peekNext.classList.remove("active"), 200);
+
+  // ✅ Wire the unmute pill inside renderProjects, after unmuteHint exists
+  if (unmuteHint) {
+    unmuteHint.addEventListener("click", () => {
+      if (ytPlayer) {
+        ytPlayer.unMute();
+        unmuteHint.classList.add("fade-out");
       }
-    }
-    if (e.key === "Escape") {
-      hidePreview();
-    }
-  });
-     
+    });
+  }
+
   //-----------------------------------
-  // Bind events
+  // Bind events for cards
   //-----------------------------------
   document.querySelectorAll(".project-card").forEach(card => {
     let pressTimer;
     let startX, startY;
-    const threshold = 10; // px movement allowed before treating as scroll
+    const threshold = 10;
 
-    // Desktop
     card.addEventListener("mousedown", () => {
       pressTimer = setTimeout(() => showPreview(card), 500);
     });
     card.addEventListener("mouseup", () => clearTimeout(pressTimer));
     card.addEventListener("mouseleave", () => clearTimeout(pressTimer));
 
-    // Mobile
     card.addEventListener("touchstart", (e) => {
       const touch = e.touches[0];
       startX = touch.clientX;
       startY = touch.clientY;
-
-      pressTimer = setTimeout(() => {
-        showPreview(card);
-      }, 500);
+      pressTimer = setTimeout(() => showPreview(card), 500);
     });
 
     card.addEventListener("touchmove", (e) => {
       const touch = e.touches[0];
       if (Math.abs(touch.clientX - startX) > threshold ||
           Math.abs(touch.clientY - startY) > threshold) {
-        clearTimeout(pressTimer); // cancel peek if scrolling
+        clearTimeout(pressTimer);
       }
     });
 
     card.addEventListener("touchend", () => clearTimeout(pressTimer));
   });
 }
-
 
 // =======================================
 // Initial Load
