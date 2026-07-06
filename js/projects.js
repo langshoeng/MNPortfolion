@@ -105,19 +105,36 @@ function renderProjects(filter = "All") {
   function showPreview(card) {
     const video = card.dataset.video;
     const image = card.dataset.image;
+  
     if (video) {
       peekVideo.src = video;
       peekVideo.style.display = "block";
-      peekVideo.style.width = "90%";   // bigger video on desktop
-      peekVideo.style.height = "70vh"; // taller video
       peekImage.style.display = "none";
+  
+      // Desktop: wide rectangle (16:9)
+      if (window.innerWidth > 768) {
+        peekVideo.style.width = "80vw";
+        peekVideo.style.height = "45vw"; // 16:9 ratio
+      } else {
+        // Mobile: full width
+        peekVideo.style.width = "95%";
+        peekVideo.style.height = "50vh";
+      }
     } else if (image) {
       peekImage.src = image;
       peekImage.style.display = "block";
-      peekImage.style.width = "80%";
-      peekImage.style.height = "auto";
       peekVideo.style.display = "none";
+  
+      // Bigger image on mobile
+      if (window.innerWidth <= 768) {
+        peekImage.style.width = "95%";
+        peekImage.style.height = "auto";
+      } else {
+        peekImage.style.width = "80%";
+        peekImage.style.height = "auto";
+      }
     }
+  
     peekModal.classList.add("show");
   }
 
