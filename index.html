@@ -460,12 +460,17 @@
   <div class="peek-content">
     <button id="peekPrev" class="peek-nav">&#10094;</button>
     <img id="peekImage" src="" alt="Preview" style="display:none;">
-    <iframe id="peekVideo" src="" frameborder="0" allowfullscreen style="display:none;"></iframe>
+
+    <!-- Video wrapper with unmute hint -->
+    <div id="peekVideoWrapper" style="position:relative; display:none;">
+      <iframe id="peekVideo" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <div class="unmute-hint">🔊 Tap to Unmute</div>
+    </div>
+
     <button id="peekNext" class="peek-nav">&#10095;</button>
   </div>
 </div>
 
-  
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="js/viewer.js"></script>
