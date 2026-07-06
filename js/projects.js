@@ -115,11 +115,15 @@ function renderProjects(filter = "All") {
       peekVideo.src = video;
       peekVideo.style.display = "block";
       peekImage.style.display = "none";
-      currentGallery = []; // no gallery for video
-
+      currentGallery = [];
+    
+      // Hide navigation arrows for video
+      if (peekPrev) peekPrev.style.display = "none";
+      if (peekNext) peekNext.style.display = "none";
+    
       if (window.innerWidth > 768) {
         peekVideo.style.width = "80vw";
-        peekVideo.style.height = "45vw"; // 16:9 ratio
+        peekVideo.style.height = "45vw";
       } else {
         peekVideo.style.width = "95%";
         peekVideo.style.height = "50vh";
@@ -129,11 +133,15 @@ function renderProjects(filter = "All") {
       const project = allProjects.find(p => p.id === projectId);
       currentGallery = project.gallery || [image];
       currentIndex = 0;
-
+    
       peekImage.src = currentGallery[currentIndex];
       peekImage.style.display = "block";
       peekVideo.style.display = "none";
-
+    
+      // Show navigation arrows for image galleries
+      if (peekPrev) peekPrev.style.display = "block";
+      if (peekNext) peekNext.style.display = "block";
+    
       if (window.innerWidth <= 768) {
         peekImage.style.width = "95%";
       } else {
