@@ -42,6 +42,16 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
+// ✅ Wire the unmute pill itself
+if (unmuteHint) {
+  unmuteHint.addEventListener("click", () => {
+    if (ytPlayer) {
+      ytPlayer.unMute();
+      unmuteHint.classList.add("fade-out"); // ✅ fade out immediately
+    }
+  });
+}
+
 // =======================================
 // Render Projects
 // =======================================
@@ -231,17 +241,7 @@ function renderProjects(filter = "All") {
       hidePreview();
     }
   });
-  
-  // ✅ Wire the unmute pill itself
-  if (unmuteHint) {
-    unmuteHint.addEventListener("click", () => {
-      if (ytPlayer) {
-        ytPlayer.unMute();
-        unmuteHint.classList.add("fade-out"); // fade out immediately
-      }
-    });
-  }
-    
+     
   //-----------------------------------
   // Bind events
   //-----------------------------------
