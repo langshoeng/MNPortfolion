@@ -1804,10 +1804,11 @@ section {
   background: none;
   border: 2px solid transparent;
   border-radius: 50%;       /* perfect circle */
-  width: 40px;              /* equal width */
-  height: 40px;             /* equal height */
-  line-height: 40px;        /* centers arrow vertically */
-  text-align: center;       /* centers arrow horizontally */
+  width: 40px;
+  height: 40px;
+  display: flex;            /* flexbox centering */
+  align-items: center;      /* vertical center */
+  justify-content: center;  /* horizontal center */
   cursor: pointer;
   z-index: 10001;
   transition: all 0.3s ease;
@@ -1815,7 +1816,7 @@ section {
 
 .peek-nav:hover,
 .peek-nav:focus {
-  border-color: #fff;       /* circle outline */
+  border-color: #fff;
   background: rgba(255,255,255,0.1);
 }
 
