@@ -236,6 +236,9 @@ function renderProjects(filter = "All") {
         // Reload video with autoplay but unmuted
         let unmutedUrl = peekVideo.src.replace("&mute=1", "").replace("?mute=1", "");
         peekVideo.src = unmutedUrl;
+  
+        // Fade out immediately after tapping
+        unmuteHint.classList.add("fade-out");
       }
     });
   }
