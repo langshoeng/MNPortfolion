@@ -101,52 +101,68 @@ function renderProjects(filter = "All") {
   const peekImage = document.getElementById("peekImage");
   const peekVideo = document.getElementById("peekVideo");
   const peekClose = document.getElementById("peekClose");
+  const peekPrev = document.getElementById("peekPrev");
+  const peekNext = document.getElementById("peekNext");
+
+  let currentGallery = [];
+  let currentIndex = 0;
 
   function showPreview(card) {
     const video = card.dataset.video;
     const image = card.dataset.image;
-  
+
     if (video) {
       peekVideo.src = video;
       peekVideo.style.display = "block";
       peekImage.style.display = "none";
-  
-      // Desktop: wide rectangle (16:9)
+      currentGallery = []; // no gallery for video
+
       if (window.innerWidth > 768) {
         peekVideo.style.width = "80vw";
         peekVideo.style.height = "45vw"; // 16:9 ratio
       } else {
-        // Mobile: full width
         peekVideo.style.width = "95%";
         peekVideo.style.height = "50vh";
       }
     } else if (image) {
-      peekImage.src = image;
+      const projectId = card.dataset.project;
+      const project = allProjects.find(p => p.id === projectId);
+      currentGallery = project.gallery || [image];
+      currentIndex = 0;
+
+      peekImage.src = currentGallery[currentIndex];
       peekImage.style.display = "block";
       peekVideo.style.display = "none";
-  
-      // Bigger image on mobile
+
       if (window.innerWidth <= 768) {
         peekImage.style.width = "95%";
-        peekImage.style.height = "auto";
       } else {
         peekImage.style.width = "80%";
-        peekImage.style.height = "auto";
       }
     }
-  
+
     peekModal.classList.add("show");
+  }
+
+  function showImageAt(index) {
+    if (currentGallery.length > 0) {
+      currentIndex = (index + currentGallery.length) % currentGallery.length;
+      peekImage.src = currentGallery[currentIndex];
+    }
   }
 
   function hidePreview() {
     peekModal.classList.remove("show");
     peekVideo.src = "";
     peekImage.src = "";
+    currentGallery = [];
+    currentIndex = 0;
   }
 
-  if (peekClose) {
-    peekClose.addEventListener("click", hidePreview);
-  }
+  if (peekClose) peekClose.addEventListener("click", hidePreview);
+  if (peekPrev) peekPrev.addEventListener("click", () => showImageAt(currentIndex - 1));
+  if (peekNext) peekNext.addEventListener("click", () => showImageAt(currentIndex + 1));
+
   peekModal.addEventListener("click", (e) => {
     if (e.target === peekModal) hidePreview();
   });
