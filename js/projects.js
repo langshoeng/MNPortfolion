@@ -33,10 +33,6 @@ async function loadProjects() {
 // Render Projects
 // =======================================
 
-// =======================================
-// Render Projects
-// =======================================
-
 function renderProjects(filter = "All") {
   const grid = document.getElementById("projectsGrid");
   grid.innerHTML = "";
@@ -101,7 +97,7 @@ function renderProjects(filter = "All") {
   });
 
   //-----------------------------------
-  // Bind peek preview events to new cards
+  // Peek modal logic
   //-----------------------------------
   const peekModal = document.getElementById("peekModal");
   const peekImage = document.getElementById("peekImage");
@@ -132,51 +128,34 @@ function renderProjects(filter = "All") {
   if (peekClose) {
     peekClose.addEventListener("click", hidePreview);
   }
+  // Optional: close when clicking overlay
+  peekModal.addEventListener("click", (e) => {
+    if (e.target === peekModal) hidePreview();
+  });
 
+  //-----------------------------------
+  // Bind events
+  //-----------------------------------
   document.querySelectorAll(".project-card").forEach(card => {
     let pressTimer;
-    let peekTriggered = false;
 
     // Desktop
     card.addEventListener("mousedown", () => {
-      peekTriggered = false;
-      pressTimer = setTimeout(() => {
-        showPreview(card);
-        peekTriggered = true;
-      }, 500); // hold threshold
+      pressTimer = setTimeout(() => showPreview(card), 500);
     });
-
-    card.addEventListener("mouseup", (e) => {
-      clearTimeout(pressTimer);
-      if (peekTriggered) {
-        e.stopPropagation(); // stop normal click
-        e.preventDefault();
-        hidePreview();
-      }
-    });
-
-    card.addEventListener("mouseleave", () => {
-      clearTimeout(pressTimer);
-      if (peekTriggered) hidePreview();
-    });
+    card.addEventListener("mouseup", () => clearTimeout(pressTimer));
+    card.addEventListener("mouseleave", () => clearTimeout(pressTimer));
 
     // Mobile
     card.addEventListener("touchstart", (e) => {
-      peekTriggered = false;
       pressTimer = setTimeout(() => {
         e.preventDefault(); // stop browser menu
         showPreview(card);
-        peekTriggered = true;
       }, 500);
     });
-
-    card.addEventListener("touchend", () => {
-      clearTimeout(pressTimer);
-      if (peekTriggered) hidePreview();
-    });
+    card.addEventListener("touchend", () => clearTimeout(pressTimer));
   });
 }
-
 
 // =======================================
 // Initial Load
