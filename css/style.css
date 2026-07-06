@@ -1840,7 +1840,7 @@ section {
   border-radius: 20px;
   opacity: 0;
   transition: opacity 0.3s ease;
-  cursor: pointer; /* ✅ make it clickable */
+  cursor: pointer;
 }
 
 .peek-modal.show .unmute-hint {
