@@ -95,10 +95,22 @@ function renderProjects(filter = "All") {
     `;
   });
   
-  // 👉 Insert the auto-show snippet here, right after all cards are added
-  document.querySelectorAll(".peek-hint").forEach(hint => {
-    hint.style.opacity = "1";
-    setTimeout(() => hint.style.opacity = "0", 3000); // show for 3s
+  // Auto-show hint when card scrolls into view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const hint = entry.target.querySelector(".peek-hint");
+        if (hint) {
+          hint.style.opacity = "1";
+          setTimeout(() => hint.style.opacity = "0", 3000); // show for 3s
+        }
+        observer.unobserve(entry.target); // only show once per card
+      }
+    });
+  }, { threshold: 0.3 }); // trigger when ~30% of card is visible
+  
+  document.querySelectorAll(".project-card").forEach(card => {
+    observer.observe(card);
   });
 
   //-----------------------------------
