@@ -1800,22 +1800,23 @@ section {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.5rem;       /* adjust arrow size */
+  font-size: 1.5rem;        /* arrow size */
   color: #fff;
   background: none;
   border: 2px solid transparent;
-  border-radius: 50%;      /* ensures circle */
-  width: 40px;             /* fixed width */
-  height: 40px;            /* fixed height */
-  line-height: 40px;       /* vertically center arrow */
-  text-align: center;      /* horizontally center arrow */
+  border-radius: 50%;       /* perfect circle */
+  width: 40px;              /* equal width */
+  height: 40px;             /* equal height */
+  line-height: 40px;        /* centers arrow vertically */
+  text-align: center;       /* centers arrow horizontally */
   cursor: pointer;
   z-index: 10001;
   transition: all 0.3s ease;
 }
 
-.peek-nav:hover {
-  border-color: #fff;
+.peek-nav:hover,
+.peek-nav:focus {
+  border-color: #fff;       /* circle outline */
   background: rgba(255,255,255,0.1);
 }
 
