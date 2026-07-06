@@ -1840,11 +1840,11 @@ section {
   border-radius: 20px;
   opacity: 0;
   transition: opacity 0.3s ease;
-  pointer-events: none; /* doesn’t block clicks */
+  cursor: pointer; /* ✅ make it clickable */
 }
 
 .peek-modal.show .unmute-hint {
-  opacity: 1; /* show when modal opens */
+  opacity: 1;
 }
 
 .unmute-hint.fade-out {
