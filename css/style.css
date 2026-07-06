@@ -1847,10 +1847,10 @@ section {
   opacity: 1;
 }
 
-.unmute-hint.fade-out {
-  opacity: 0;
+.peek-modal.show .unmute-hint {
+  opacity: 1;
 }
 
-.peek-modal.show .unmute-hint.fade-out {
-  opacity: 0; /* ✅ overrides the show rule */
+.unmute-hint.fade-out {
+  opacity: 0;
 }
