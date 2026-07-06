@@ -114,11 +114,10 @@ function renderProjects(filter = "All") {
   });
 
   //-----------------------------------
-  // Peek modal logic
+  // Peek modal logic with YouTube API
   //-----------------------------------
   const peekModal = document.getElementById("peekModal");
   const peekImage = document.getElementById("peekImage");
-  const peekVideo = document.getElementById("peekVideo");
   const peekClose = document.getElementById("peekClose");
   const peekPrev = document.getElementById("peekPrev");
   const peekNext = document.getElementById("peekNext");
@@ -127,21 +126,42 @@ function renderProjects(filter = "All") {
   
   let currentGallery = [];
   let currentIndex = 0;
+  let ytPlayer;
+  
+  // YouTube API ready callback
+  function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player('peekVideo', {
+      videoId: '',
+      playerVars: {
+        autoplay: 1,
+        mute: 1,
+        controls: 1,
+        rel: 0
+      }
+    });
+  }
   
   function showPreview(card) {
     const video = card.dataset.video;
     const image = card.dataset.image;
   
     if (video) {
-      // Add autoplay=1 and mute=1 when showing
-      let autoplayUrl = video.includes("?") 
-        ? video + "&autoplay=1&mute=1" 
-        : video + "?autoplay=1&mute=1";
+      // Extract video ID from embed/watch URL
+      let videoId = "";
+      if (video.includes("embed/")) {
+        videoId = video.split("embed/")[1].split("?")[0];
+      } else if (video.includes("v=")) {
+        videoId = video.split("v=")[1].split("&")[0];
+      }
   
-      peekVideo.src = autoplayUrl;
-      peekVideoWrapper.style.display = "block";   // ✅ show wrapper
+      peekVideoWrapper.style.display = "block";
       peekImage.style.display = "none";
       currentGallery = [];
+  
+      if (ytPlayer && videoId) {
+        ytPlayer.loadVideoById({ videoId: videoId, startSeconds: 0 });
+        ytPlayer.mute(); // start muted
+      }
   
       // Show unmute hint briefly
       if (unmuteHint) {
@@ -149,17 +169,8 @@ function renderProjects(filter = "All") {
         setTimeout(() => unmuteHint.classList.add("fade-out"), 4000);
       }
   
-      // Hide navigation arrows for video
       if (peekPrev) peekPrev.style.display = "none";
       if (peekNext) peekNext.style.display = "none";
-  
-      if (window.innerWidth > 768) {
-        peekVideo.style.width = "80vw";
-        peekVideo.style.height = "45vw";
-      } else {
-        peekVideo.style.width = "95%";
-        peekVideo.style.height = "50vh";
-      }
     } else if (image) {
       const projectId = card.dataset.project;
       const project = allProjects.find(p => p.id === projectId);
@@ -168,18 +179,10 @@ function renderProjects(filter = "All") {
   
       peekImage.src = currentGallery[currentIndex];
       peekImage.style.display = "block";
-      peekVideoWrapper.style.display = "none";   // ✅ hide wrapper
-      peekVideo.src = "";
+      peekVideoWrapper.style.display = "none";
   
-      // Show navigation arrows for image galleries
       if (peekPrev) peekPrev.style.display = "block";
       if (peekNext) peekNext.style.display = "block";
-  
-      if (window.innerWidth <= 768) {
-        peekImage.style.width = "95%";
-      } else {
-        peekImage.style.width = "80%";
-      }
     }
   
     peekModal.classList.add("show");
@@ -194,11 +197,11 @@ function renderProjects(filter = "All") {
   
   function hidePreview() {
     peekModal.classList.remove("show");
-    peekVideo.src = "";
     peekImage.src = "";
-    peekVideoWrapper.style.display = "none";   // ✅ hide wrapper
+    peekVideoWrapper.style.display = "none";
     currentGallery = [];
     currentIndex = 0;
+    if (ytPlayer) ytPlayer.stopVideo();
   }
   
   if (peekClose) peekClose.addEventListener("click", hidePreview);
@@ -209,7 +212,7 @@ function renderProjects(filter = "All") {
     if (e.target === peekModal) hidePreview();
   });
   
-  // Keyboard navigation for gallery
+  // Keyboard navigation
   document.addEventListener("keydown", (e) => {
     if (!peekModal.classList.contains("show")) return;
   
@@ -232,13 +235,9 @@ function renderProjects(filter = "All") {
   // ✅ Wire the unmute pill itself
   if (unmuteHint) {
     unmuteHint.addEventListener("click", () => {
-      if (peekVideo.src) {
-        // Reload video with autoplay but unmuted
-        let unmutedUrl = peekVideo.src.replace("&mute=1", "").replace("?mute=1", "");
-        peekVideo.src = unmutedUrl;
-  
-        // Fade out immediately after tapping
-        unmuteHint.classList.add("fade-out");
+      if (ytPlayer) {
+        ytPlayer.unMute();
+        unmuteHint.classList.add("fade-out"); // fade out immediately
       }
     });
   }
