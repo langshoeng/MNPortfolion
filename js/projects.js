@@ -33,6 +33,10 @@ async function loadProjects() {
 // Render Projects
 // =======================================
 
+// =======================================
+// Render Projects
+// =======================================
+
 function renderProjects(filter = "All") {
   const grid = document.getElementById("projectsGrid");
   grid.innerHTML = "";
@@ -48,6 +52,9 @@ function renderProjects(filter = "All") {
     const software = project.software ? project.software.join(" • ") : "";
     const category = project.categories ? project.categories.join(" / ") : "";
 
+    //-----------------------------------
+    // Badge
+    //-----------------------------------
     let mediaBadge = "";
     if (project.video && project.video.type !== "none") {
       mediaBadge = `
@@ -64,8 +71,12 @@ function renderProjects(filter = "All") {
       `;
     }
 
+    //-----------------------------------
+    // Card
+    //-----------------------------------
     let previewAttr = "";
     if (project.video && project.video.type !== "none") {
+      // convert YouTube watch link to embed and strip extra params
       const embedUrl = project.video.url.replace("watch?v=", "embed/").split("&")[0];
       previewAttr = `data-video="${embedUrl}"`;
     } else if (project.gallery && project.gallery.length) {
@@ -89,6 +100,9 @@ function renderProjects(filter = "All") {
     `;
   });
 
+  //-----------------------------------
+  // Bind peek preview events to new cards
+  //-----------------------------------
   const peekModal = document.getElementById("peekModal");
   const peekImage = document.getElementById("peekImage");
   const peekVideo = document.getElementById("peekVideo");
@@ -115,12 +129,15 @@ function renderProjects(filter = "All") {
     peekImage.src = "";
   }
 
-  peekClose.addEventListener("click", hidePreview);
+  if (peekClose) {
+    peekClose.addEventListener("click", hidePreview);
+  }
 
   document.querySelectorAll(".project-card").forEach(card => {
     let pressTimer;
     let peekTriggered = false;
-  
+
+    // Desktop
     card.addEventListener("mousedown", () => {
       peekTriggered = false;
       pressTimer = setTimeout(() => {
@@ -128,22 +145,21 @@ function renderProjects(filter = "All") {
         peekTriggered = true;
       }, 500); // hold threshold
     });
-  
+
     card.addEventListener("mouseup", (e) => {
       clearTimeout(pressTimer);
       if (peekTriggered) {
-        // If peek was triggered, stop normal click
-        e.stopPropagation();
+        e.stopPropagation(); // stop normal click
         e.preventDefault();
         hidePreview();
       }
     });
-  
+
     card.addEventListener("mouseleave", () => {
       clearTimeout(pressTimer);
       if (peekTriggered) hidePreview();
     });
-  
+
     // Mobile
     card.addEventListener("touchstart", (e) => {
       peekTriggered = false;
@@ -153,14 +169,14 @@ function renderProjects(filter = "All") {
         peekTriggered = true;
       }, 500);
     });
-  
+
     card.addEventListener("touchend", () => {
       clearTimeout(pressTimer);
       if (peekTriggered) hidePreview();
     });
   });
-
 }
+
 
 // =======================================
 // Initial Load
