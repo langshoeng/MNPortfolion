@@ -26,37 +26,24 @@ function ensureYTPlayer() {
         rel: 0
       }
     });
+    console.log("YT player ensured");
   }
 }
 
 // =======================================
 // Project Loader
 // =======================================
-
 let allProjects = [];
 
 async function loadProjects() {
-
-    try {
-
-        const response = await fetch(
-            "data/projects.json?nocache=" + Date.now()
-        );
-
-        if (!response.ok) {
-            throw new Error("Unable to load projects.json");
-        }
-
-        allProjects = await response.json();
-
-        renderProjects("All");
-
-    } catch (err) {
-
-        console.error(err);
-
-    }
-
+  try {
+    const response = await fetch("data/projects.json?nocache=" + Date.now());
+    if (!response.ok) throw new Error("Unable to load projects.json");
+    allProjects = await response.json();
+    renderProjects("All");
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 // =======================================
@@ -77,9 +64,6 @@ function renderProjects(filter = "All") {
     const software = project.software ? project.software.join(" • ") : "";
     const category = project.categories ? project.categories.join(" / ") : "";
 
-    //-----------------------------------
-    // Badge
-    //-----------------------------------
     let mediaBadge = "";
     if (project.video && project.video.type !== "none") {
       mediaBadge = `
@@ -96,9 +80,6 @@ function renderProjects(filter = "All") {
       `;
     }
 
-    //-----------------------------------
-    // Card
-    //-----------------------------------
     let previewAttr = "";
     if (project.video && project.video.type !== "none") {
       const embedUrl = project.video.url.replace("watch?v=", "embed/").split("&")[0];
@@ -125,16 +106,13 @@ function renderProjects(filter = "All") {
     `;
   });
 
-  //-----------------------------------
-  // Peek modal logic with YouTube API
-  //-----------------------------------
+  // Peek modal logic
   const peekModal = document.getElementById("peekModal");
   const peekImage = document.getElementById("peekImage");
   const peekClose = document.getElementById("peekClose");
   const peekPrev = document.getElementById("peekPrev");
   const peekNext = document.getElementById("peekNext");
   const peekVideoWrapper = document.getElementById("peekVideoWrapper");
-  const unmuteHint = document.querySelector(".unmute-hint");
 
   let currentGallery = [];
   let currentIndex = 0;
@@ -142,7 +120,7 @@ function renderProjects(filter = "All") {
   function showPreview(card) {
     const video = card.dataset.video;
     const image = card.dataset.image;
-  
+
     if (video) {
       let videoId = "";
       if (video.includes("embed/")) {
@@ -150,24 +128,24 @@ function renderProjects(filter = "All") {
       } else if (video.includes("v=")) {
         videoId = video.split("v=")[1].split("&")[0];
       }
-  
+
       peekVideoWrapper.style.display = "block";
       peekImage.style.display = "none";
       currentGallery = [];
-  
-      // ✅ Ensure player exists before using it
+
       ensureYTPlayer();
-  
+
       if (ytPlayer && videoId) {
         ytPlayer.loadVideoById({ videoId: videoId, startSeconds: 0 });
         ytPlayer.mute();
       }
-  
+
+      const unmuteHint = document.querySelector(".unmute-hint");
       if (unmuteHint) {
         unmuteHint.classList.remove("fade-out");
         setTimeout(() => unmuteHint.classList.add("fade-out"), 4000);
       }
-  
+
       if (peekPrev) peekPrev.style.display = "none";
       if (peekNext) peekNext.style.display = "none";
     } else if (image) {
@@ -175,15 +153,15 @@ function renderProjects(filter = "All") {
       const project = allProjects.find(p => p.id === projectId);
       currentGallery = project.gallery || [image];
       currentIndex = 0;
-  
+
       peekImage.src = currentGallery[currentIndex];
       peekImage.style.display = "block";
       peekVideoWrapper.style.display = "none";
-  
+
       if (peekPrev) peekPrev.style.display = "block";
       if (peekNext) peekNext.style.display = "block";
     }
-  
+
     peekModal.classList.add("show");
   }
 
@@ -204,19 +182,6 @@ function renderProjects(filter = "All") {
     if (e.target === peekModal) hidePreview();
   });
 
-  // ✅ Wire the unmute pill inside renderProjects, after unmuteHint exists
-  if (unmuteHint) {
-    unmuteHint.addEventListener("click", () => {
-      if (ytPlayer) {
-        ytPlayer.unMute();
-        unmuteHint.classList.add("fade-out");
-      }
-    });
-  }
-
-  //-----------------------------------
-  // Bind events for cards
-  //-----------------------------------
   document.querySelectorAll(".project-card").forEach(card => {
     let pressTimer;
     let startX, startY;
@@ -247,68 +212,41 @@ function renderProjects(filter = "All") {
   });
 }
 
-// =======================================
 // Initial Load
-// =======================================
-
 loadProjects();
 
-// =======================================
+// Global Unmute Pill Listener
+document.addEventListener("DOMContentLoaded", () => {
+  const unmuteHint = document.querySelector(".unmute-hint");
+  if (unmuteHint) {
+    unmuteHint.addEventListener("click", () => {
+      if (ytPlayer) {
+        ytPlayer.unMute();
+        unmuteHint.classList.add("fade-out");
+      }
+    });
+  }
+});
+
 // Global Click Events
-// =======================================
+document.addEventListener("click", (e) => {
+  // Filter Buttons
+  const filterBtn = e.target.closest(".filter-btn");
+  if (filterBtn) {
+    document.querySelectorAll(".filter-btn")
+      .forEach(btn => btn.classList.remove("active"));
+    filterBtn.classList.add("active");
+    renderProjects(filterBtn.dataset.filter);
+    return;
+  }
 
-document.addEventListener("click",(e)=>{
+  // Project Card
+  const card = e.target.closest(".project-card");
+  if (!card) return;
 
+  const projectId = card.dataset.project;
+  const project = allProjects.find(p => p.id === projectId);
+  if (!project) return;
 
-    //-----------------------------------
-    // Filter Buttons
-    //-----------------------------------
-
-    const filterBtn = e.target.closest(".filter-btn");
-
-    if(filterBtn){
-
-        document
-        .querySelectorAll(".filter-btn")
-        .forEach(btn=>btn.classList.remove("active"));
-
-        filterBtn.classList.add("active");
-
-        renderProjects(
-            filterBtn.dataset.filter
-        );
-
-        return;
-
-    }
-
-
-    //-----------------------------------
-    // Project Card
-    //-----------------------------------
-
-    const card = e.target.closest(".project-card");
-
-    if(!card) return;
-
-
-    const projectId = card.dataset.project;
-
-
-    const project = allProjects.find(
-
-        p => p.id === projectId
-
-    );
-
-
-    if(!project) return;
-
-
-    //-----------------------------------
-    // NEW
-    //-----------------------------------
-
-    openProject(project);
-
+  openProject(project);
 });
