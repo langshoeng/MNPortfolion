@@ -1843,10 +1843,12 @@ section {
   cursor: pointer;
 }
 
+/* Show pill when modal is open */
 .peek-modal.show .unmute-hint {
   opacity: 1;
 }
 
+/* Fade out only after user clicks */
 .peek-modal.show .unmute-hint.fade-out {
-  opacity: 0; /* ✅ ensures fade-out wins over show */
+  opacity: 0;
 }
