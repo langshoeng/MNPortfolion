@@ -28,7 +28,6 @@ async function loadProjects() {
 
 }
 
-
 // =======================================
 // Render Projects
 // =======================================
@@ -172,7 +171,6 @@ function renderProjects(filter = "All") {
     card.addEventListener("touchend", () => clearTimeout(pressTimer));
   });
 }
-
 
 // =======================================
 // Initial Load
