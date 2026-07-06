@@ -1800,20 +1800,24 @@ section {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 2rem;
+  font-size: 1.5rem;       /* adjust arrow size */
   color: #fff;
   background: none;
-  border: 2px solid transparent; /* default invisible border */
-  border-radius: 50%;            /* makes it circular */
-  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 50%;      /* ensures circle */
+  width: 40px;             /* fixed width */
+  height: 40px;            /* fixed height */
+  line-height: 40px;       /* vertically center arrow */
+  text-align: center;      /* horizontally center arrow */
   cursor: pointer;
   z-index: 10001;
   transition: all 0.3s ease;
 }
 
 .peek-nav:hover {
-  border-color: #fff;            /* show circle outline on hover */
-  background: rgba(255,255,255,0.1); /* subtle overlay */
+  border-color: #fff;
+  background: rgba(255,255,255,0.1);
 }
+
 #peekPrev { left: 20px; }
 #peekNext { right: 20px; }
