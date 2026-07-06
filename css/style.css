@@ -1829,3 +1829,24 @@ section {
 #peekPrev { left: 20px; }
 #peekNext { right: 20px; }
 
+.unmute-hint {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none; /* doesn’t block clicks */
+}
+
+.peek-modal.show .unmute-hint {
+  opacity: 1; /* show when modal opens */
+}
+
+.unmute-hint.fade-out {
+  opacity: 0;
+}
