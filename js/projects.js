@@ -1,4 +1,35 @@
 // =======================================
+// Global YouTube API setup
+// =======================================
+let ytPlayer;
+
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('peekVideo', {
+    videoId: '',
+    playerVars: {
+      autoplay: 1,
+      mute: 1,
+      controls: 1,
+      rel: 0
+    }
+  });
+}
+
+function ensureYTPlayer() {
+  if (!ytPlayer) {
+    ytPlayer = new YT.Player('peekVideo', {
+      videoId: '',
+      playerVars: {
+        autoplay: 1,
+        mute: 1,
+        controls: 1,
+        rel: 0
+      }
+    });
+  }
+}
+
+// =======================================
 // Project Loader
 // =======================================
 
@@ -26,23 +57,6 @@ async function loadProjects() {
 
     }
 
-}
-
-// =======================================
-// Global YouTube API setup
-// =======================================
-let ytPlayer;
-
-function onYouTubeIframeAPIReady() {
-  ytPlayer = new YT.Player('peekVideo', {
-    videoId: '',
-    playerVars: {
-      autoplay: 1,
-      mute: 1,
-      controls: 1,
-      rel: 0
-    }
-  });
 }
 
 // =======================================
@@ -128,7 +142,7 @@ function renderProjects(filter = "All") {
   function showPreview(card) {
     const video = card.dataset.video;
     const image = card.dataset.image;
-
+  
     if (video) {
       let videoId = "";
       if (video.includes("embed/")) {
@@ -136,21 +150,24 @@ function renderProjects(filter = "All") {
       } else if (video.includes("v=")) {
         videoId = video.split("v=")[1].split("&")[0];
       }
-
+  
       peekVideoWrapper.style.display = "block";
       peekImage.style.display = "none";
       currentGallery = [];
-
+  
+      // ✅ Ensure player exists before using it
+      ensureYTPlayer();
+  
       if (ytPlayer && videoId) {
         ytPlayer.loadVideoById({ videoId: videoId, startSeconds: 0 });
         ytPlayer.mute();
       }
-
+  
       if (unmuteHint) {
         unmuteHint.classList.remove("fade-out");
         setTimeout(() => unmuteHint.classList.add("fade-out"), 4000);
       }
-
+  
       if (peekPrev) peekPrev.style.display = "none";
       if (peekNext) peekNext.style.display = "none";
     } else if (image) {
@@ -158,15 +175,15 @@ function renderProjects(filter = "All") {
       const project = allProjects.find(p => p.id === projectId);
       currentGallery = project.gallery || [image];
       currentIndex = 0;
-
+  
       peekImage.src = currentGallery[currentIndex];
       peekImage.style.display = "block";
       peekVideoWrapper.style.display = "none";
-
+  
       if (peekPrev) peekPrev.style.display = "block";
       if (peekNext) peekNext.style.display = "block";
     }
-
+  
     peekModal.classList.add("show");
   }
 
