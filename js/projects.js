@@ -123,36 +123,36 @@ function renderProjects(filter = "All") {
   const peekPrev = document.getElementById("peekPrev");
   const peekNext = document.getElementById("peekNext");
   const peekVideoWrapper = document.getElementById("peekVideoWrapper");
-
+  const unmuteHint = document.querySelector(".unmute-hint");
+  
   let currentGallery = [];
   let currentIndex = 0;
-
+  
   function showPreview(card) {
     const video = card.dataset.video;
     const image = card.dataset.image;
-
+  
     if (video) {
-      // Add autoplay=1 when showing  
+      // Add autoplay=1 and mute=1 when showing
       let autoplayUrl = video.includes("?") 
         ? video + "&autoplay=1&mute=1" 
         : video + "?autoplay=1&mute=1";
-    
+  
       peekVideo.src = autoplayUrl;
       peekVideoWrapper.style.display = "block";   // ✅ show wrapper
       peekImage.style.display = "none";
       currentGallery = [];
-    
+  
       // Show unmute hint briefly
-      const unmuteHint = document.querySelector(".unmute-hint");
       if (unmuteHint) {
         unmuteHint.classList.remove("fade-out");
         setTimeout(() => unmuteHint.classList.add("fade-out"), 4000);
       }
-    
+  
       // Hide navigation arrows for video
       if (peekPrev) peekPrev.style.display = "none";
       if (peekNext) peekNext.style.display = "none";
-    
+  
       if (window.innerWidth > 768) {
         peekVideo.style.width = "80vw";
         peekVideo.style.height = "45vw";
@@ -165,32 +165,33 @@ function renderProjects(filter = "All") {
       const project = allProjects.find(p => p.id === projectId);
       currentGallery = project.gallery || [image];
       currentIndex = 0;
-    
+  
       peekImage.src = currentGallery[currentIndex];
       peekImage.style.display = "block";
-      peekVideo.style.display = "none";
-    
+      peekVideoWrapper.style.display = "none";   // ✅ hide wrapper
+      peekVideo.src = "";
+  
       // Show navigation arrows for image galleries
       if (peekPrev) peekPrev.style.display = "block";
       if (peekNext) peekNext.style.display = "block";
-    
+  
       if (window.innerWidth <= 768) {
         peekImage.style.width = "95%";
       } else {
         peekImage.style.width = "80%";
       }
     }
-
+  
     peekModal.classList.add("show");
   }
-
+  
   function showImageAt(index) {
     if (currentGallery.length > 0) {
       currentIndex = (index + currentGallery.length) % currentGallery.length;
       peekImage.src = currentGallery[currentIndex];
     }
   }
-
+  
   function hidePreview() {
     peekModal.classList.remove("show");
     peekVideo.src = "";
@@ -199,7 +200,7 @@ function renderProjects(filter = "All") {
     currentGallery = [];
     currentIndex = 0;
   }
-
+  
   if (peekClose) peekClose.addEventListener("click", hidePreview);
   if (peekPrev) peekPrev.addEventListener("click", () => showImageAt(currentIndex - 1));
   if (peekNext) peekNext.addEventListener("click", () => showImageAt(currentIndex + 1));
@@ -227,6 +228,17 @@ function renderProjects(filter = "All") {
       hidePreview();
     }
   });
+  
+  // ✅ Wire the unmute pill itself
+  if (unmuteHint) {
+    unmuteHint.addEventListener("click", () => {
+      if (peekVideo.src) {
+        // Reload video with autoplay but unmuted
+        let unmutedUrl = peekVideo.src.replace("&mute=1", "").replace("?mute=1", "");
+        peekVideo.src = unmutedUrl;
+      }
+    });
+  }
 
   //-----------------------------------
   // Bind events
