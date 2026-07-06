@@ -175,6 +175,22 @@ function renderProjects(filter = "All") {
     if (e.target === peekModal) hidePreview();
   });
 
+  // Keyboard navigation for gallery
+  document.addEventListener("keydown", (e) => {
+    if (!peekModal.classList.contains("show")) return;
+  
+    if (currentGallery.length > 0) {
+      if (e.key === "ArrowLeft") {
+        showImageAt(currentIndex - 1);
+      } else if (e.key === "ArrowRight") {
+        showImageAt(currentIndex + 1);
+      }
+    }
+    if (e.key === "Escape") {
+      hidePreview();
+    }
+  });
+
   //-----------------------------------
   // Bind events
   //-----------------------------------
