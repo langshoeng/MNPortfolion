@@ -28,6 +28,7 @@ async function loadProjects() {
 
 }
 
+
 // =======================================
 // Render Projects
 // =======================================
@@ -160,7 +161,6 @@ function renderProjects(filter = "All") {
   });
 
 }
-
 
 // =======================================
 // Initial Load
