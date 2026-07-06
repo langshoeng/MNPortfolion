@@ -118,32 +118,47 @@ function renderProjects(filter = "All") {
 
   document.querySelectorAll(".project-card").forEach(card => {
     let pressTimer;
-
-    // Desktop
+    let peekTriggered = false;
+  
     card.addEventListener("mousedown", () => {
-      pressTimer = setTimeout(() => showPreview(card), 500);
+      peekTriggered = false;
+      pressTimer = setTimeout(() => {
+        showPreview(card);
+        peekTriggered = true;
+      }, 500); // hold threshold
     });
-    card.addEventListener("mouseup", () => {
+  
+    card.addEventListener("mouseup", (e) => {
       clearTimeout(pressTimer);
-      if (peekModal.classList.contains("show")) hidePreview();
+      if (peekTriggered) {
+        // If peek was triggered, stop normal click
+        e.stopPropagation();
+        e.preventDefault();
+        hidePreview();
+      }
     });
+  
     card.addEventListener("mouseleave", () => {
       clearTimeout(pressTimer);
-      if (peekModal.classList.contains("show")) hidePreview();
+      if (peekTriggered) hidePreview();
     });
-
+  
     // Mobile
     card.addEventListener("touchstart", (e) => {
+      peekTriggered = false;
       pressTimer = setTimeout(() => {
         e.preventDefault(); // stop browser menu
         showPreview(card);
+        peekTriggered = true;
       }, 500);
     });
+  
     card.addEventListener("touchend", () => {
       clearTimeout(pressTimer);
-      if (peekModal.classList.contains("show")) hidePreview();
+      if (peekTriggered) hidePreview();
     });
   });
+
 }
 
 
