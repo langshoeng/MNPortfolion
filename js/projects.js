@@ -170,11 +170,11 @@ function renderProjects(filter = "All") {
   if (peekClose) peekClose.addEventListener("click", hidePreview);
   if (peekPrev) peekPrev.addEventListener("click", () => showImageAt(currentIndex - 1));
   if (peekNext) peekNext.addEventListener("click", () => showImageAt(currentIndex + 1));
-
+  
   peekModal.addEventListener("click", (e) => {
     if (e.target === peekModal) hidePreview();
   });
-
+  
   // Keyboard navigation for gallery
   document.addEventListener("keydown", (e) => {
     if (!peekModal.classList.contains("show")) return;
@@ -182,8 +182,12 @@ function renderProjects(filter = "All") {
     if (currentGallery.length > 0) {
       if (e.key === "ArrowLeft") {
         showImageAt(currentIndex - 1);
+        peekPrev.classList.add("active");
+        setTimeout(() => peekPrev.classList.remove("active"), 200);
       } else if (e.key === "ArrowRight") {
         showImageAt(currentIndex + 1);
+        peekNext.classList.add("active");
+        setTimeout(() => peekNext.classList.remove("active"), 200);
       }
     }
     if (e.key === "Escape") {
