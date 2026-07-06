@@ -1820,5 +1820,10 @@ section {
   background: rgba(255,255,255,0.1);
 }
 
+.peek-nav.active {
+  border-color: #fff;
+  background: rgba(255,255,255,0.2);
+}
+
 #peekPrev { left: 20px; }
 #peekNext { right: 20px; }
