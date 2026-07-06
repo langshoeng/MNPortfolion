@@ -28,6 +28,20 @@ async function loadProjects() {
 
 }
 
+let ytPlayer;
+
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('peekVideo', {
+    videoId: '',
+    playerVars: {
+      autoplay: 1,
+      mute: 1,
+      controls: 1,
+      rel: 0
+    }
+  });
+}
+
 // =======================================
 // Render Projects
 // =======================================
@@ -126,20 +140,6 @@ function renderProjects(filter = "All") {
   
   let currentGallery = [];
   let currentIndex = 0;
-  let ytPlayer;
-  
-  // YouTube API ready callback
-  function onYouTubeIframeAPIReady() {
-    ytPlayer = new YT.Player('peekVideo', {
-      videoId: '',
-      playerVars: {
-        autoplay: 1,
-        mute: 1,
-        controls: 1,
-        rel: 0
-      }
-    });
-  }
   
   function showPreview(card) {
     const video = card.dataset.video;
