@@ -28,7 +28,6 @@ async function loadProjects() {
 
 }
 
-
 // =======================================
 // Render Projects
 // =======================================
@@ -162,8 +161,6 @@ function renderProjects(filter = "All") {
 // =======================================
 
 loadProjects();
-
-
 
 // =======================================
 // Global Click Events
