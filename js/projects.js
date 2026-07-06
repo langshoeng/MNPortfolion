@@ -242,7 +242,6 @@ function renderProjects(filter = "All") {
       }
     });
   }
-
     
   //-----------------------------------
   // Bind events
