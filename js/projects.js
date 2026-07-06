@@ -39,7 +39,6 @@ function renderProjects(filter = "All") {
   grid.innerHTML = "";
 
   let projects = allProjects;
-
   if (filter !== "All") {
     projects = allProjects.filter(project =>
       project.categories.includes(filter)
@@ -50,9 +49,6 @@ function renderProjects(filter = "All") {
     const software = project.software ? project.software.join(" • ") : "";
     const category = project.categories ? project.categories.join(" / ") : "";
 
-    //-----------------------------------
-    // Badge
-    //-----------------------------------
     let mediaBadge = "";
     if (project.video && project.video.type !== "none") {
       mediaBadge = `
@@ -69,12 +65,8 @@ function renderProjects(filter = "All") {
       `;
     }
 
-    //-----------------------------------
-    // Card
-    //-----------------------------------
     let previewAttr = "";
     if (project.video && project.video.type !== "none") {
-      // convert YouTube watch link to embed and strip extra params
       const embedUrl = project.video.url.replace("watch?v=", "embed/").split("&")[0];
       previewAttr = `data-video="${embedUrl}"`;
     } else if (project.gallery && project.gallery.length) {
@@ -83,11 +75,7 @@ function renderProjects(filter = "All") {
 
     grid.innerHTML += `
       <div class="col-lg-4 col-md-6">
-        <div
-          class="project-card"
-          data-project="${project.id}"
-          ${previewAttr}
-        >
+        <div class="project-card" data-project="${project.id}" ${previewAttr}>
           <div class="project-thumb">
             <img src="${project.thumbnail}" alt="${project.title}">
             ${mediaBadge}
@@ -102,15 +90,12 @@ function renderProjects(filter = "All") {
     `;
   });
 
-  //-----------------------------------
-  // Bind peek preview events to new cards
-  //-----------------------------------
   const peekModal = document.getElementById("peekModal");
   const peekImage = document.getElementById("peekImage");
   const peekVideo = document.getElementById("peekVideo");
+  const peekClose = document.getElementById("peekClose");
 
   function showPreview(card) {
-    console.log("Peek triggered for:", card.dataset.project); // debug log
     const video = card.dataset.video;
     const image = card.dataset.image;
     if (video) {
@@ -131,28 +116,38 @@ function renderProjects(filter = "All") {
     peekImage.src = "";
   }
 
+  peekClose.addEventListener("click", hidePreview);
+
   document.querySelectorAll(".project-card").forEach(card => {
     let pressTimer;
+
+    // Desktop
     card.addEventListener("mousedown", () => {
-      pressTimer = setTimeout(() => showPreview(card), 300);
+      pressTimer = setTimeout(() => showPreview(card), 500);
     });
     card.addEventListener("mouseup", () => {
       clearTimeout(pressTimer);
-      hidePreview();
+      if (peekModal.classList.contains("show")) hidePreview();
     });
     card.addEventListener("mouseleave", () => {
       clearTimeout(pressTimer);
-      hidePreview();
+      if (peekModal.classList.contains("show")) hidePreview();
     });
-    card.addEventListener("touchstart", () => {
-      pressTimer = setTimeout(() => showPreview(card), 300);
+
+    // Mobile
+    card.addEventListener("touchstart", (e) => {
+      pressTimer = setTimeout(() => {
+        e.preventDefault(); // stop browser menu
+        showPreview(card);
+      }, 500);
     });
     card.addEventListener("touchend", () => {
       clearTimeout(pressTimer);
-      hidePreview();
+      if (peekModal.classList.contains("show")) hidePreview();
     });
   });
 }
+
 
 // =======================================
 // Initial Load
