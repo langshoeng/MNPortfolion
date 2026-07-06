@@ -107,100 +107,101 @@ function renderProjects(filter = "All") {
   });
 
   // Peek modal logic
-  const peekModal = document.getElementById("peekModal");
-  const peekImage = document.getElementById("peekImage");
-  const peekClose = document.getElementById("peekClose");
-  const peekPrev = document.getElementById("peekPrev");
-  const peekNext = document.getElementById("peekNext");
-  const peekVideoWrapper = document.getElementById("peekVideoWrapper");
-
-  let currentGallery = [];
-  let currentIndex = 0;
-
-  function showPreview(card) {
-    const video = card.dataset.video;
-    const image = card.dataset.image;
-
-    if (video) {
-      let videoId = "";
-      if (video.includes("embed/")) {
-        videoId = video.split("embed/")[1].split("?")[0];
-      } else if (video.includes("v=")) {
-        videoId = video.split("v=")[1].split("&")[0];
+    const peekModal = document.getElementById("peekModal");
+    const peekImage = document.getElementById("peekImage");
+    const peekClose = document.getElementById("peekClose");
+    const peekPrev = document.getElementById("peekPrev");
+    const peekNext = document.getElementById("peekNext");
+    const peekVideoWrapper = document.getElementById("peekVideoWrapper");
+  
+    let currentGallery = [];
+    let currentIndex = 0;
+  
+    // ✅ Define showImageAt BEFORE attaching listeners
+    function showImageAt(index) {
+      if (currentGallery.length > 0) {
+        currentIndex = (index + currentGallery.length) % currentGallery.length;
+        peekImage.src = currentGallery[currentIndex];
       }
-
-      peekVideoWrapper.style.display = "block";
-      peekImage.style.display = "none";
-      currentGallery = [];
-
-      ensureYTPlayer();
-
-      if (ytPlayer && videoId) {
-        ytPlayer.loadVideoById({ videoId: videoId, startSeconds: 0 });
-        ytPlayer.mute();
+    }
+  
+    function showPreview(card) {
+      const video = card.dataset.video;
+      const image = card.dataset.image;
+  
+      if (video) {
+        let videoId = "";
+        if (video.includes("embed/")) {
+          videoId = video.split("embed/")[1].split("?")[0];
+        } else if (video.includes("v=")) {
+          videoId = video.split("v=")[1].split("&")[0];
+        }
+  
+        peekVideoWrapper.style.display = "block";
+        peekImage.style.display = "none";
+        currentGallery = [];
+  
+        ensureYTPlayer();
+  
+        if (ytPlayer && videoId) {
+          ytPlayer.loadVideoById({ videoId: videoId, startSeconds: 0 });
+          ytPlayer.mute();
+        }
+  
+        const unmuteHint = document.querySelector(".unmute-hint");
+        if (unmuteHint) {
+          unmuteHint.classList.remove("fade-out");
+        }
+  
+        if (peekPrev) peekPrev.style.display = "none";
+        if (peekNext) peekNext.style.display = "none";
+      } else if (image) {
+        const projectId = card.dataset.project;
+        const project = allProjects.find(p => p.id === projectId);
+        currentGallery = project.gallery || [image];
+        currentIndex = 0;
+  
+        peekImage.src = currentGallery[currentIndex];
+        peekImage.style.display = "block";
+        peekVideoWrapper.style.display = "none";
+  
+        if (peekPrev) peekPrev.style.display = "block";
+        if (peekNext) peekNext.style.display = "block";
       }
-
-      const unmuteHint = document.querySelector(".unmute-hint");
-      if (unmuteHint) {
-        unmuteHint.classList.remove("fade-out");
-      }
-
-      if (peekPrev) peekPrev.style.display = "none";
-      if (peekNext) peekNext.style.display = "none";
-    } else if (image) {
-      const projectId = card.dataset.project;
-      const project = allProjects.find(p => p.id === projectId);
-      currentGallery = project.gallery || [image];
-      currentIndex = 0;
-
-      peekImage.src = currentGallery[currentIndex];
-      peekImage.style.display = "block";
+  
+      peekModal.classList.add("show");
+    }
+  
+    function hidePreview() {
+      peekModal.classList.remove("show");
+      peekImage.src = "";
       peekVideoWrapper.style.display = "none";
-
-      if (peekPrev) peekPrev.style.display = "block";
-      if (peekNext) peekNext.style.display = "block";
+      currentGallery = [];
+      currentIndex = 0;
+      if (ytPlayer) ytPlayer.stopVideo();
     }
-
-    peekModal.classList.add("show");
-  }
-
-  function hidePreview() {
-    peekModal.classList.remove("show");
-    peekImage.src = "";
-    peekVideoWrapper.style.display = "none";
-    currentGallery = [];
-    currentIndex = 0;
-    if (ytPlayer) ytPlayer.stopVideo();
-  }
-
-  // ✅ Added back: image navigation helper
-  function showImageAt(index) {
-    if (currentGallery.length > 0) {
-      currentIndex = (index + currentGallery.length) % currentGallery.length;
-      peekImage.src = currentGallery[currentIndex];
-    }
-  }
-
-  if (peekClose) peekClose.addEventListener("click", hidePreview);
-  if (peekPrev) peekPrev.addEventListener("click", () => showImageAt(currentIndex - 1));
-  if (peekNext) peekNext.addEventListener("click", () => showImageAt(currentIndex + 1));
-
-  peekModal.addEventListener("click", (e) => {
-    if (e.target === peekModal) hidePreview();
-  });
-
-  // ✅ Added back: keyboard navigation
-  document.addEventListener("keydown", (e) => {
-    if (!peekModal.classList.contains("show")) return;
-
-    if (e.key === "ArrowLeft") {
-      showImageAt(currentIndex - 1);
-    } else if (e.key === "ArrowRight") {
-      showImageAt(currentIndex + 1);
-    } else if (e.key === "Escape") {
-      hidePreview();
-    }
-  });
+  
+    // ✅ Now listeners can safely call showImageAt
+    if (peekClose) peekClose.addEventListener("click", hidePreview);
+    if (peekPrev) peekPrev.addEventListener("click", () => showImageAt(currentIndex - 1));
+    if (peekNext) peekNext.addEventListener("click", () => showImageAt(currentIndex + 1));
+  
+    peekModal.addEventListener("click", (e) => {
+      if (e.target === peekModal) hidePreview();
+    });
+  
+    // ✅ Keyboard navigation restored
+    document.addEventListener("keydown", (e) => {
+      if (!peekModal.classList.contains("show")) return;
+  
+      if (e.key === "ArrowLeft") {
+        showImageAt(currentIndex - 1);
+      } else if (e.key === "ArrowRight") {
+        showImageAt(currentIndex + 1);
+      } else if (e.key === "Escape") {
+        hidePreview();
+      }
+    });
 
   // Bind events for cards
   document.querySelectorAll(".project-card").forEach(card => {
