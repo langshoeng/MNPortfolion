@@ -131,10 +131,22 @@ function renderProjects(filter = "All") {
     const image = card.dataset.image;
 
     if (video) {
-      peekVideo.src = video;
+      // Add autoplay=1 when showing  
+      let autoplayUrl = video.includes("?") 
+        ? video + "&autoplay=1&mute=1" 
+        : video + "?autoplay=1&mute=1";
+    
+      peekVideo.src = autoplayUrl;
       peekVideo.style.display = "block";
       peekImage.style.display = "none";
       currentGallery = [];
+    
+      // Show unmute hint briefly
+      const unmuteHint = document.querySelector(".unmute-hint");
+      if (unmuteHint) {
+        unmuteHint.classList.remove("fade-out");
+        setTimeout(() => unmuteHint.classList.add("fade-out"), 4000); // fade out after 4s
+      }
     
       // Hide navigation arrows for video
       if (peekPrev) peekPrev.style.display = "none";
