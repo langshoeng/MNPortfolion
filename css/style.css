@@ -282,7 +282,7 @@ body.viewer-open {
    PROJECTS
 =========================================== */
 
-.project-card{
+.project-card {
     background:#1b1b1b;
     border-radius:18px;
     overflow:hidden;
@@ -290,68 +290,70 @@ body.viewer-open {
     transition:.35s;
     height:100%;
     cursor:pointer;
+    position: relative; /* needed for tooltip positioning */
 }
 
-.project-card:hover{
-
+.project-card:hover {
     transform:translateY(-10px);
-
     box-shadow:0 20px 50px rgba(0,0,0,.35);
-
 }
 
-.project-card img{
-
+.project-card img {
     width:100%;
-
     height:230px;
-
     object-fit:cover;
-
 }
 
-.project-info{
-
+.project-info {
     padding:22px;
-
 }
 
-.project-category{
-
+.project-category {
     display:inline-block;
-
     color:#8aaeff;
-
     font-size:13px;
-
     letter-spacing:1px;
-
     text-transform:uppercase;
-
     margin-bottom:10px;
-
 }
 
-.project-info h4{
-
+.project-info h4 {
     margin-bottom:10px;
-
 }
 
-.project-info p{
-
+.project-info p {
     color:#bbb;
-
     font-size:14px;
-
 }
 
-.view-project{
-
+.view-project {
     border-radius:30px;
-
     padding:8px 22px;
+}
 
+/* -------------------------------------------
+   Peek Hint Tooltip
+------------------------------------------- */
+.peek-hint {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;       /* pill shape */
+    border: 1px solid rgba(255,255,255,0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+}
+
+/* Show hint on hover (desktop) */
+.project-card:hover .peek-hint {
+    opacity: 1;
 }
 
 /* ===========================================
@@ -1827,3 +1829,4 @@ section {
 
 #peekPrev { left: 20px; }
 #peekNext { right: 20px; }
+
