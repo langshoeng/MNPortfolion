@@ -74,7 +74,8 @@ function renderProjects(filter = "All") {
     //-----------------------------------
     let previewAttr = "";
     if (project.video && project.video.type !== "none") {
-      const embedUrl = project.video.url.replace("watch?v=", "embed/");
+      // convert YouTube watch link to embed and strip extra params
+      const embedUrl = project.video.url.replace("watch?v=", "embed/").split("&")[0];
       previewAttr = `data-video="${embedUrl}"`;
     } else if (project.gallery && project.gallery.length) {
       previewAttr = `data-image="${project.gallery[0]}"`;
@@ -109,6 +110,7 @@ function renderProjects(filter = "All") {
   const peekVideo = document.getElementById("peekVideo");
 
   function showPreview(card) {
+    console.log("Peek triggered for:", card.dataset.project); // debug log
     const video = card.dataset.video;
     const image = card.dataset.image;
     if (video) {
@@ -151,7 +153,6 @@ function renderProjects(filter = "All") {
     });
   });
 }
-
 
 // =======================================
 // Initial Load
