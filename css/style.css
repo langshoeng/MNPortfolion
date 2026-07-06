@@ -1850,3 +1850,7 @@ section {
 .unmute-hint.fade-out {
   opacity: 0;
 }
+
+.peek-modal.show .unmute-hint.fade-out {
+  opacity: 0; /* ✅ overrides the show rule */
+}
