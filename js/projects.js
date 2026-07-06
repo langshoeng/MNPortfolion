@@ -83,6 +83,7 @@ function renderProjects(filter = "All") {
           <div class="project-thumb">
             <img src="${project.thumbnail}" alt="${project.title}">
             ${mediaBadge}
+            <span class="peek-hint">Hold to Peek</span>
           </div>
           <div class="project-info">
             <span class="project-category">${category}</span>
@@ -92,6 +93,7 @@ function renderProjects(filter = "All") {
         </div>
       </div>
     `;
+
   });
 
   //-----------------------------------
