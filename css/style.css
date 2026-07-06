@@ -1740,3 +1740,13 @@ section {
   height: auto;
   max-height: 80vh;
 }
+.peek-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  font-size: 2rem;
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10000;
+}
