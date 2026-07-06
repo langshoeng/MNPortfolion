@@ -461,15 +461,18 @@
     <button id="peekPrev" class="peek-nav">&#10094;</button>
     <img id="peekImage" src="" alt="Preview" style="display:none;">
 
-    <!-- Video wrapper with unmute hint -->
+    <!-- Video wrapper with YouTube API player -->
     <div id="peekVideoWrapper" style="position:relative; display:none;">
-      <iframe id="peekVideo" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <div id="peekVideo"></div>
       <div class="unmute-hint">🔊 Tap to Unmute</div>
     </div>
 
     <button id="peekNext" class="peek-nav">&#10095;</button>
   </div>
 </div>
+
+<!-- Load YouTube API once -->
+<script src="https://www.youtube.com/iframe_api"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
