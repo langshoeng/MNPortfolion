@@ -93,7 +93,12 @@ function renderProjects(filter = "All") {
         </div>
       </div>
     `;
-
+  });
+  
+  // 👉 Insert the auto-show snippet here, right after all cards are added
+  document.querySelectorAll(".peek-hint").forEach(hint => {
+    hint.style.opacity = "1";
+    setTimeout(() => hint.style.opacity = "0", 3000); // show for 3s
   });
 
   //-----------------------------------
