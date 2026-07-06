@@ -122,6 +122,7 @@ function renderProjects(filter = "All") {
   const peekClose = document.getElementById("peekClose");
   const peekPrev = document.getElementById("peekPrev");
   const peekNext = document.getElementById("peekNext");
+  const peekVideoWrapper = document.getElementById("peekVideoWrapper");
 
   let currentGallery = [];
   let currentIndex = 0;
@@ -137,7 +138,7 @@ function renderProjects(filter = "All") {
         : video + "?autoplay=1&mute=1";
     
       peekVideo.src = autoplayUrl;
-      peekVideo.style.display = "block";
+      peekVideoWrapper.style.display = "block";   // ✅ show wrapper
       peekImage.style.display = "none";
       currentGallery = [];
     
@@ -145,7 +146,7 @@ function renderProjects(filter = "All") {
       const unmuteHint = document.querySelector(".unmute-hint");
       if (unmuteHint) {
         unmuteHint.classList.remove("fade-out");
-        setTimeout(() => unmuteHint.classList.add("fade-out"), 4000); // fade out after 4s
+        setTimeout(() => unmuteHint.classList.add("fade-out"), 4000);
       }
     
       // Hide navigation arrows for video
@@ -194,6 +195,7 @@ function renderProjects(filter = "All") {
     peekModal.classList.remove("show");
     peekVideo.src = "";
     peekImage.src = "";
+    peekVideoWrapper.style.display = "none";   // ✅ hide wrapper
     currentGallery = [];
     currentIndex = 0;
   }
