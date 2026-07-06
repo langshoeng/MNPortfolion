@@ -28,6 +28,7 @@ async function loadProjects() {
 
 }
 
+
 // =======================================
 // Render Projects
 // =======================================
@@ -71,7 +72,6 @@ function renderProjects(filter = "All") {
     //-----------------------------------
     let previewAttr = "";
     if (project.video && project.video.type !== "none") {
-      // convert YouTube watch link to embed and strip extra params
       const embedUrl = project.video.url.replace("watch?v=", "embed/").split("&")[0];
       previewAttr = `data-video="${embedUrl}"`;
     } else if (project.gallery && project.gallery.length) {
@@ -109,10 +109,14 @@ function renderProjects(filter = "All") {
     if (video) {
       peekVideo.src = video;
       peekVideo.style.display = "block";
+      peekVideo.style.width = "90%";   // bigger video on desktop
+      peekVideo.style.height = "70vh"; // taller video
       peekImage.style.display = "none";
     } else if (image) {
       peekImage.src = image;
       peekImage.style.display = "block";
+      peekImage.style.width = "80%";
+      peekImage.style.height = "auto";
       peekVideo.style.display = "none";
     }
     peekModal.classList.add("show");
@@ -127,7 +131,6 @@ function renderProjects(filter = "All") {
   if (peekClose) {
     peekClose.addEventListener("click", hidePreview);
   }
-  // Optional: close when clicking overlay
   peekModal.addEventListener("click", (e) => {
     if (e.target === peekModal) hidePreview();
   });
@@ -137,6 +140,8 @@ function renderProjects(filter = "All") {
   //-----------------------------------
   document.querySelectorAll(".project-card").forEach(card => {
     let pressTimer;
+    let startX, startY;
+    const threshold = 10; // px movement allowed before treating as scroll
 
     // Desktop
     card.addEventListener("mousedown", () => {
@@ -147,14 +152,27 @@ function renderProjects(filter = "All") {
 
     // Mobile
     card.addEventListener("touchstart", (e) => {
+      const touch = e.touches[0];
+      startX = touch.clientX;
+      startY = touch.clientY;
+
       pressTimer = setTimeout(() => {
-        e.preventDefault(); // stop browser menu
         showPreview(card);
       }, 500);
     });
+
+    card.addEventListener("touchmove", (e) => {
+      const touch = e.touches[0];
+      if (Math.abs(touch.clientX - startX) > threshold ||
+          Math.abs(touch.clientY - startY) > threshold) {
+        clearTimeout(pressTimer); // cancel peek if scrolling
+      }
+    });
+
     card.addEventListener("touchend", () => clearTimeout(pressTimer));
   });
 }
+
 
 // =======================================
 // Initial Load
