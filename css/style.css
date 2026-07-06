@@ -1847,10 +1847,6 @@ section {
   opacity: 1;
 }
 
-.peek-modal.show .unmute-hint {
-  opacity: 1;
-}
-
-.unmute-hint.fade-out {
-  opacity: 0;
+.peek-modal.show .unmute-hint.fade-out {
+  opacity: 0; /* ✅ ensures fade-out wins over show */
 }
