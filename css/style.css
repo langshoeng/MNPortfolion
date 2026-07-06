@@ -335,25 +335,24 @@ body.viewer-open {
    Peek Hint Tooltip
 ------------------------------------------- */
 .peek-hint {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 20px;       /* pill shape */
-    border: 1px solid rgba(255,255,255,0.25);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    white-space: nowrap;
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;       /* pill shape */
+  border: 1px solid rgba(255,255,255,0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
 }
 
-/* Show hint on hover (desktop) */
 .project-card:hover .peek-hint {
-    opacity: 1;
+  opacity: 1; /* show on hover (desktop) */
 }
 
 /* ===========================================
