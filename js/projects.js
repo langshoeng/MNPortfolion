@@ -35,110 +35,74 @@ async function loadProjects() {
 // =======================================
 
 function renderProjects(filter = "All") {
+  const grid = document.getElementById("projectsGrid");
+  grid.innerHTML = "";
 
-    const grid = document.getElementById("projectsGrid");
+  let projects = allProjects;
 
-    grid.innerHTML = "";
+  if (filter !== "All") {
+    projects = allProjects.filter(project =>
+      project.categories.includes(filter)
+    );
+  }
 
-    let projects = allProjects;
+  projects.forEach(project => {
+    const software = project.software ? project.software.join(" • ") : "";
+    const category = project.categories ? project.categories.join(" / ") : "";
 
-    if (filter !== "All") {
-
-        projects = allProjects.filter(project =>
-            project.categories.includes(filter)
-        );
-
+    //-----------------------------------
+    // Badge
+    //-----------------------------------
+    let mediaBadge = "";
+    if (project.video && project.video.type !== "none") {
+      mediaBadge = `
+        <span class="project-badge video">
+          ${project.video.duration ? project.video.duration + " | " : ""}
+          ▶
+        </span>
+      `;
+    } else if (project.gallery && project.gallery.length) {
+      mediaBadge = `
+        <span class="project-badge image">
+          🖼 ${project.gallery.length} Images
+        </span>
+      `;
     }
 
-    projects.forEach(project => {
+    //-----------------------------------
+    // Card
+    //-----------------------------------
+    // Decide preview source
+    let previewAttr = "";
+    if (project.video && project.video.type !== "none") {
+      // convert YouTube watch link to embed
+      const embedUrl = project.video.url.replace("watch?v=", "embed/");
+      previewAttr = `data-video="${embedUrl}"`;
+    } else if (project.gallery && project.gallery.length) {
+      previewAttr = `data-image="${project.gallery[0]}"`;
+    }
 
-        const software = project.software
-            ? project.software.join(" • ")
-            : "";
-
-        const category = project.categories
-            ? project.categories.join(" / ")
-            : "";
-
-        //-----------------------------------
-        // Badge
-        //-----------------------------------
-        
-        let mediaBadge = "";
-        
-        if (project.video && project.video.type !== "none") {
-          mediaBadge = `
-            <span class="project-badge video">
-              ${project.video.duration ? project.video.duration + " | " : ""}
-              ▶
-            </span>
-          `;
-        }
-        else if (project.gallery && project.gallery.length) {
-          mediaBadge = `
-            <span class="project-badge image">
-              🖼 ${project.gallery.length} Images
-            </span>
-          `;
-        }
-
-
-        //-----------------------------------
-        // Card
-        //-----------------------------------
-
-        grid.innerHTML += `
-
-        <div class="col-lg-4 col-md-6">
-
-            <div
-                class="project-card"
-                data-project="${project.id}"
-            >
-
-                <div class="project-thumb">
-
-                    <img
-                        src="${project.thumbnail}"
-                        alt="${project.title}"
-                    >
-
-                    ${mediaBadge}
-
-                </div>
-
-                <div class="project-info">
-
-                    <span class="project-category">
-
-                        ${category}
-
-                    </span>
-
-                    <h4>
-
-                        ${project.title}
-
-                    </h4>
-
-                    <p>
-
-                        ${software}
-
-                    </p>
-
-                </div>
-
-            </div>
-
+    grid.innerHTML += `
+      <div class="col-lg-4 col-md-6">
+        <div
+          class="project-card"
+          data-project="${project.id}"
+          ${previewAttr}
+        >
+          <div class="project-thumb">
+            <img src="${project.thumbnail}" alt="${project.title}">
+            ${mediaBadge}
+          </div>
+          <div class="project-info">
+            <span class="project-category">${category}</span>
+            <h4>${project.title}</h4>
+            <p>${software}</p>
+          </div>
         </div>
-
-        `;
-
-    });
-
+      </div>
+    `;
+  });
 }
-
 
 
 // =======================================
