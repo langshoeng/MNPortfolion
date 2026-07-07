@@ -3,6 +3,9 @@
 // =======================================
 let ytPlayer;
 
+// Track currently active inline video card
+let activeInlineVideo = null;
+
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('peekVideo', {
     videoId: '',
@@ -239,6 +242,26 @@ function renderProjects(filter = "All") {
       const videoUrl = card.dataset.video;
       if (!videoUrl) return;
   
+      // 🔹 Stop previous inline video if one is active
+      if (activeInlineVideo && activeInlineVideo !== card) {
+        const prevThumb = activeInlineVideo.querySelector(".project-thumb");
+        const prevProject = activeInlineVideo.dataset.project;
+        const prevData = allProjects.find(p => p.id === prevProject);
+  
+        // Restore thumbnail for the previous card
+        prevThumb.innerHTML = `
+          <img src="${prevData.thumbnail}" alt="${prevData.title}">
+          ${prevData.video && prevData.video.type !== "none" ? `
+            <button class="inline-play-btn">
+              <span class="play-icon">▶</span>
+              <span class="play-text">Play</span>
+            </button>
+          ` : ""}
+          <span class="peek-hint">Hold to Peek</span>
+        `;
+      }
+  
+      // 🔹 Replace thumbnail with new iframe
       const thumb = card.querySelector(".project-thumb");
       thumb.innerHTML = `
         <iframe src="${videoUrl}?autoplay=1&mute=1&rel=0"
@@ -248,6 +271,9 @@ function renderProjects(filter = "All") {
                 style="width:100%; height:200px; border-radius:8px;">
         </iframe>
       `;
+  
+      // 🔹 Update active video reference
+      activeInlineVideo = card;
     });
   });
 
