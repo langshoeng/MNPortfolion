@@ -226,6 +226,27 @@ function renderProjects(filter = "All") {
       }
     });
 
+  // ✅ Add inline play button listeners
+
+  document.querySelectorAll(".inline-play-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation(); // prevent opening full project
+      const card = e.target.closest(".project-card");
+      const videoUrl = card.dataset.video;
+      if (!videoUrl) return;
+  
+      const thumb = card.querySelector(".project-thumb");
+      thumb.innerHTML = `
+        <iframe src="${videoUrl}?autoplay=1&mute=1&rel=0"
+                frameborder="0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+                style="width:100%; height:200px; border-radius:8px;">
+        </iframe>
+      `;
+    });
+  });
+
   // Bind events for cards
   document.querySelectorAll(".project-card").forEach(card => {
     let pressTimer;
