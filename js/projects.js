@@ -193,13 +193,33 @@ function renderProjects(filter = "All") {
     // ✅ Keyboard navigation restored
     document.addEventListener("keydown", (e) => {
       if (!peekModal.classList.contains("show")) return;
-  
+    
       if (e.key === "ArrowLeft") {
         showImageAt(currentIndex - 1);
       } else if (e.key === "ArrowRight") {
         showImageAt(currentIndex + 1);
       } else if (e.key === "Escape") {
         hidePreview();
+      }
+    });
+    
+    // ✅ Swipe gesture navigation
+    let touchStartX = 0;
+    
+    peekModal.addEventListener("touchstart", (e) => {
+      touchStartX = e.touches[0].clientX;
+    });
+    
+    peekModal.addEventListener("touchend", (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diffX = touchEndX - touchStartX;
+    
+      if (Math.abs(diffX) > 50) { // threshold
+        if (diffX > 0) {
+          showImageAt(currentIndex - 1); // swipe right → previous
+        } else {
+          showImageAt(currentIndex + 1); // swipe left → next
+        }
       }
     });
 
