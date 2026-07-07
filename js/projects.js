@@ -95,7 +95,10 @@ function renderProjects(filter = "All") {
             <img src="${project.thumbnail}" alt="${project.title}">
             ${mediaBadge}
             ${project.video && project.video.type !== "none" ? `
-              <button class="inline-play-btn">▶ Play</button>
+              <button class="inline-play-btn">
+                <span class="play-icon">▶</span>
+                <span class="play-text">Play</span>
+              </button>
             ` : ""}
             <span class="peek-hint">Hold to Peek</span>
           </div>
@@ -107,6 +110,7 @@ function renderProjects(filter = "All") {
         </div>
       </div>
     `;
+
   });
 
   // Peek modal logic
