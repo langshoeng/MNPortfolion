@@ -242,13 +242,12 @@ function renderProjects(filter = "All") {
       const videoUrl = card.dataset.video;
       if (!videoUrl) return;
   
-      // 🔹 Stop previous inline video if one is active
+      // 🔹 Stop any currently active video (even if it's not the same card)
       if (activeInlineVideo && activeInlineVideo !== card) {
         const prevThumb = activeInlineVideo.querySelector(".project-thumb");
         const prevProject = activeInlineVideo.dataset.project;
         const prevData = allProjects.find(p => p.id === prevProject);
   
-        // Restore thumbnail for the previous card
         prevThumb.innerHTML = `
           <img src="${prevData.thumbnail}" alt="${prevData.title}">
           ${prevData.video && prevData.video.type !== "none" ? `
