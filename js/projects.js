@@ -94,6 +94,9 @@ function renderProjects(filter = "All") {
           <div class="project-thumb">
             <img src="${project.thumbnail}" alt="${project.title}">
             ${mediaBadge}
+            ${project.video && project.video.type !== "none" ? `
+              <button class="inline-play-btn">▶ Play</button>
+            ` : ""}
             <span class="peek-hint">Hold to Peek</span>
           </div>
           <div class="project-info">
