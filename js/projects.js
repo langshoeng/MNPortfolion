@@ -113,7 +113,6 @@ function renderProjects(filter = "All") {
         </div>
       </div>
     `;
-
   });
 
   // Peek modal logic
@@ -235,45 +234,43 @@ function renderProjects(filter = "All") {
 
   // ✅ Add inline play button listeners
 
-  document.querySelectorAll(".inline-play-btn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation(); // prevent opening full project
-      const card = e.target.closest(".project-card");
-      const videoUrl = card.dataset.video;
-      if (!videoUrl) return;
+  grid.addEventListener("click", (e) => {
+    const btn = e.target.closest(".inline-play-btn");
+    if (!btn) return;
   
-      // 🔹 Stop any currently active video (even if it's not the same card)
-      if (activeInlineVideo && activeInlineVideo !== card) {
-        const prevThumb = activeInlineVideo.querySelector(".project-thumb");
-        const prevProject = activeInlineVideo.dataset.project;
-        const prevData = allProjects.find(p => p.id === prevProject);
+    e.stopPropagation();
+    const card = btn.closest(".project-card");
+    const videoUrl = card.dataset.video;
+    if (!videoUrl) return;
   
-        prevThumb.innerHTML = `
-          <img src="${prevData.thumbnail}" alt="${prevData.title}">
-          ${prevData.video && prevData.video.type !== "none" ? `
-            <button class="inline-play-btn">
-              <span class="play-icon">▶</span>
-              <span class="play-text">Play</span>
-            </button>
-          ` : ""}
-          <span class="peek-hint">Hold to Peek</span>
-        `;
-      }
-  
-      // 🔹 Replace thumbnail with new iframe
-      const thumb = card.querySelector(".project-thumb");
-      thumb.innerHTML = `
-        <iframe src="${videoUrl}?autoplay=1&mute=1&rel=0"
-                frameborder="0"
-                allow="autoplay; encrypted-media"
-                allowfullscreen
-                style="width:100%; height:200px; border-radius:8px;">
-        </iframe>
+    // Stop previous video if active
+    if (activeInlineVideo && activeInlineVideo !== card) {
+      const prevProject = allProjects.find(p => p.id === activeInlineVideo.dataset.project);
+      const prevThumb = activeInlineVideo.querySelector(".project-thumb");
+      prevThumb.innerHTML = `
+        <img src="${prevProject.thumbnail}" alt="${prevProject.title}">
+        ${prevProject.video && prevProject.video.type !== "none" ? `
+          <button class="inline-play-btn">
+            <span class="play-icon">▶</span>
+            <span class="play-text">Play</span>
+          </button>
+        ` : ""}
+        <span class="peek-hint">Hold to Peek</span>
       `;
+    }
   
-      // 🔹 Update active video reference
-      activeInlineVideo = card;
-    });
+    // Replace with iframe
+    const thumb = card.querySelector(".project-thumb");
+    thumb.innerHTML = `
+      <iframe src="${videoUrl}?autoplay=1&mute=1&rel=0"
+              frameborder="0"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+              style="width:100%; height:200px; border-radius:8px;">
+      </iframe>
+    `;
+  
+    activeInlineVideo = card;
   });
 
   // Bind events for cards
