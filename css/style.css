@@ -1898,7 +1898,7 @@ section {
 .quick-preview-btn,
 .metadata-btn {
   background: #000;        /* solid black background */
-  color: #fff;             /* white text */
+  color: #f0f0f0;             /* white text */
   border: none;
   border-radius: 20px;
   padding: 6px 14px;
