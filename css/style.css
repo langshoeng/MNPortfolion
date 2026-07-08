@@ -1895,30 +1895,19 @@ section {
   margin: 8px 0;
 }
 
-.quick-preview-btn {
-  background: #000;
-  color: #fff;
+.quick-preview-btn,
+.metadata-btn {
+  background: #000;        /* solid black background */
+  color: #fff;             /* white text */
   border: none;
   border-radius: 20px;
   padding: 6px 14px;
   font-size: 14px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-.quick-preview-btn:hover {
-  background: #333;
-}
-
-.metadata-btn {
-  background: #f8f9fa; /* light gray fill */
-  color: #333;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 14px;
-  cursor: pointer;
-}
+.quick-preview-btn:hover,
 .metadata-btn:hover {
-  background: #e2e6ea;
-  color: #000;
+  background: #333;        /* slightly lighter on hover */
 }
