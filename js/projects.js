@@ -97,13 +97,17 @@ function renderProjects(filter = "All") {
           <div class="project-thumb">
             <img src="${project.thumbnail}" alt="${project.title}">
             ${mediaBadge}
+            <span class="peek-hint">Hold to Peek</span>
+          </div>
+          <div class="project-actions">
             ${project.video && project.video.type !== "none" ? `
-              <button class="inline-play-btn">
-                <span class="play-icon">▶</span>
-                <span class="play-text">Play</span>
+              <button class="quick-preview-btn" title="Plays video directly here, small view, no detail info">
+                ▶ Quick Preview
+              </button>
+              <button class="metadata-btn" title="Open full project view with details, gallery, fullscreen">
+                View Details
               </button>
             ` : ""}
-            <span class="peek-hint">Hold to Peek</span>
           </div>
           <div class="project-info">
             <span class="project-category">${category}</span>
@@ -113,6 +117,7 @@ function renderProjects(filter = "All") {
         </div>
       </div>
     `;
+
   });
 
   // Peek modal logic
@@ -234,8 +239,9 @@ function renderProjects(filter = "All") {
 
   // ✅ Add inline play button listeners
 
+  // Handle Quick Preview
   grid.addEventListener("click", (e) => {
-    const btn = e.target.closest(".inline-play-btn");
+    const btn = e.target.closest(".quick-preview-btn");
     if (!btn) return;
   
     e.stopPropagation();
@@ -249,12 +255,7 @@ function renderProjects(filter = "All") {
       const prevThumb = activeInlineVideo.querySelector(".project-thumb");
       prevThumb.innerHTML = `
         <img src="${prevProject.thumbnail}" alt="${prevProject.title}">
-        ${prevProject.video && prevProject.video.type !== "none" ? `
-          <button class="inline-play-btn">
-            <span class="play-icon">▶</span>
-            <span class="play-text">Play</span>
-          </button>
-        ` : ""}
+        ${prevProject.video && prevProject.video.type !== "none" ? "" : ""}
         <span class="peek-hint">Hold to Peek</span>
       `;
     }
@@ -271,6 +272,20 @@ function renderProjects(filter = "All") {
     `;
   
     activeInlineVideo = card;
+  });
+  
+  // Handle Metadata Mode button
+  grid.addEventListener("click", (e) => {
+    const btn = e.target.closest(".metadata-btn");
+    if (!btn) return;
+  
+    e.stopPropagation();
+    const card = btn.closest(".project-card");
+    const projectId = card.dataset.project;
+    const project = allProjects.find(p => p.id === projectId);
+    if (!project) return;
+  
+    openProject(project); // your existing metadata modal function
   });
 
   // Bind events for cards
