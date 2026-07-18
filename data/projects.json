@@ -1,46 +1,45 @@
 [
     {
-        "id": "toyota-launch",
+        "id": "youtube-course-2026-pov",
 
-        "title": "Toyota Launch Campaign",
+        "title": "YouTube Course 2026",
 
         "featured": true,
 
         "categories": [
             "Motion Graphics",
-            "Video Editing"
+            "Video Editing",
+            "Camera Shooting"
         ],
 
-        "client": "Toyota Cambodia",
+        "client": "Rean with Pech",
 
-        "year": "2025",
+        "year": "Jun 2026",
 
         "role": [
             "Motion Graphics",
+            "Designing",
             "Video Editing"
         ],
 
         "software": [
             "After Effects",
             "Premiere Pro",
-            "Photoshop"
+            "Photoshop",
+            "Camera"
         ],
 
-        "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, and commercial editing.",
+        "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
 
-        "thumbnail": "images/projects/toyota/cover.jpg",
+        "thumbnail": "images/projects/youtube-course/coverpov026.jpg",
 
         "video": {
             "type": "youtube",
-            "url": "https://www.youtube.com/watch?v=RgevLkpw7iA",
-            "duration": "01:23:45"
+            "url": "https://youtube.com/shorts/-dUJAq8fKuU?si=mcbsOOknYGf8xhqC",
+            "duration": "00:01:19"
         },
 
-        "gallery": [
-            "images/projects/toyota/01.jpg",
-            "images/projects/toyota/02.jpg",
-            "images/projects/toyota/03.jpg"
-        ]
+        "gallery": []
     },
 
     {
