@@ -31,11 +31,11 @@
 
         "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
 
-        "thumbnail": "images/projects/youtube-course/coverpov026.jpg",
+        "thumbnail": "images/projects/youtube-course/coverpov026.png",
 
         "video": {
             "type": "youtube",
-            "url": "https://youtube.com/shorts/-dUJAq8fKuU?si=mcbsOOknYGf8xhqC",
+            "url": "https://www.youtube.com/shorts/-dUJAq8fKuU",
             "duration": "00:01:19"
         },
 
