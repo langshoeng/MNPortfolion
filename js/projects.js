@@ -105,7 +105,7 @@ function renderProjects(filter = "All") {
                 ▶ Quick Preview
               </button>
               <button class="metadata-btn" title="Open full project view with details, gallery, fullscreen">
-                View Details
+                ▶ View Details
               </button>
             ` : ""}
           </div>
