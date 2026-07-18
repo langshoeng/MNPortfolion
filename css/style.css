@@ -1897,7 +1897,7 @@ section {
 
 .quick-preview-btn,
 .metadata-btn {
-  background: #000;        /* solid black background */
+  background: #2B2B2B;        /* solid black background */
   color: #f0f0f0;             /* white text */
   border: none;
   border-radius: 20px;
@@ -1909,5 +1909,5 @@ section {
 
 .quick-preview-btn:hover,
 .metadata-btn:hover {
-  background: #333;        /* slightly lighter on hover */
+  background: #182E3E;        /* slightly lighter on hover */
 }
