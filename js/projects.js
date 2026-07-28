@@ -446,6 +446,7 @@ function renderProjects(filter = "All") {
     // ✅ Stop Quick Preview playback
     if (activeInlinePlayer) {
       activeInlinePlayer.stopVideo();
+      activeInlinePlayer.destroy();   // <-- fully remove iframe/player
       activeInlinePlayer = null;
     }
     if (activeInlineVideo) {
@@ -465,7 +466,6 @@ function renderProjects(filter = "All") {
   
     openProject(project);
   });
-
 
   // Bind events for cards
   document.querySelectorAll(".project-card").forEach(card => {
