@@ -9,14 +9,13 @@ function enforceCutoff(player, startTime, endTime) {
       player.seekTo(startTime, true);
     }
 
-    // Stop at cutoff
-    if (current >= endTime) {
+    // Stop at cutoff OR if user scrubs past end backwards
+    if (current >= endTime || current > endTime - 0.5) {
       player.stopVideo();
       clearInterval(interval);
     }
-  }, 500); // check twice per second
+  }, 500);
 }
-
 
 // =======================================
 // Global YouTube API setup
