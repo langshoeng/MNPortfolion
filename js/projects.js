@@ -1,3 +1,23 @@
+function enforceCutoff(player, startTime, endTime) {
+  const interval = setInterval(() => {
+    if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
+
+    const current = player.getCurrentTime();
+
+    // Prevent rewinding before start
+    if (current < startTime) {
+      player.seekTo(startTime, true);
+    }
+
+    // Stop at cutoff
+    if (current >= endTime) {
+      player.stopVideo();
+      clearInterval(interval);
+    }
+  }, 500); // check twice per second
+}
+
+
 // =======================================
 // Global YouTube API setup
 // =======================================
@@ -162,23 +182,15 @@ function renderProjects(filter = "All") {
         if (ytPlayer && videoId) {
           ytPlayer.loadVideoById({
             videoId: videoId,
-            startSeconds: project?.video?.start || 0,
-            endSeconds: project?.video?.end || undefined
+            startSeconds: project?.video?.start || 0
           });
           ytPlayer.mute();
-    
-          // 🔹 Strict cutoff enforcement
+        
           if (project?.video?.end !== undefined) {
-            const cutoff = project.video.end;
-            const interval = setInterval(() => {
-              if (ytPlayer.getCurrentTime() >= cutoff) {
-                ytPlayer.stopVideo();
-                clearInterval(interval);
-              }
-            }, 500); // check twice per second
+            enforceCutoff(ytPlayer, project.video.start || 0, project.video.end);
           }
         }
-    
+   
         const unmuteHint = document.querySelector(".unmute-hint");
         if (unmuteHint) {
           unmuteHint.classList.remove("fade-out");
@@ -298,29 +310,24 @@ function renderProjects(filter = "All") {
               style="width:100%; height:200px; border-radius:8px;">
       </iframe>
     `;
-  
+    
     activeInlineVideo = card;
-  
-    // 🔹 Strict cutoff enforcement using YouTube API
+    
+    // Strict cutoff enforcement
     if (project.video.end !== undefined) {
-      // Load API player for inline iframe
       const inlinePlayer = new YT.Player(`inlinePlayer-${projectId}`, {
         events: {
-          'onStateChange': function(e) {
+          'onReady': () => {
+            inlinePlayer.seekTo(project.video.start || 0);
+          },
+          'onStateChange': (e) => {
             if (e.data === YT.PlayerState.PLAYING) {
-              const cutoff = project.video.end;
-              const interval = setInterval(() => {
-                if (inlinePlayer.getCurrentTime() >= cutoff) {
-                  inlinePlayer.stopVideo();
-                  clearInterval(interval);
-                }
-              }, 500);
+              enforceCutoff(inlinePlayer, project.video.start || 0, project.video.end);
             }
           }
         }
       });
     }
-  });
   
   // Handle Metadata Mode button
   grid.addEventListener("click", (e) => {
