@@ -30,7 +30,7 @@ function onYouTubeIframeAPIReady() {
     videoId: '',
     playerVars: {
       autoplay: 1,
-      mute: 0,
+      mute: 1,
       controls: 0,
       rel: 0
     }
@@ -43,7 +43,7 @@ function ensureYTPlayer() {
       videoId: '',
       playerVars: {
         autoplay: 1,
-        mute: 0,
+        mute: 1,
         controls: 0,
         rel: 0
       }
@@ -338,7 +338,7 @@ function renderProjects(filter = "All") {
       videoId: videoId,
       playerVars: {
         autoplay: 1,
-        mute: 0,
+        mute: 1,
         rel: 0,
         controls: 0,   // hide native controls
         start: project.video.start || 0
