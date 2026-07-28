@@ -257,7 +257,6 @@ function renderProjects(filter = "All") {
       peekModal.classList.add("show");
     }
 
-  
     function hidePreview() {
       peekModal.classList.remove("show");
       peekImage.src = "";
@@ -459,8 +458,14 @@ function renderProjects(filter = "All") {
       activeInlineVideo = null;
     }
   
+    // ✅ Stop Peek playback too
+    if (ytPlayer) {
+      ytPlayer.stopVideo();
+    }
+  
     openProject(project);
   });
+
 
   // Bind events for cards
   document.querySelectorAll(".project-card").forEach(card => {
