@@ -412,7 +412,6 @@ function renderProjects(filter = "All") {
       timerEl.textContent = formatTime(current - startTime);
     }, 500);
   }
-
   
   // Handle Metadata Mode button
   grid.addEventListener("click", (e) => {
@@ -427,6 +426,13 @@ function renderProjects(filter = "All") {
   
     // ✅ Stop any active Quick Preview playback before opening metadata
     if (activeInlineVideo) {
+      const inlineIframe = activeInlineVideo.querySelector("iframe[id^='inlinePlayer-']");
+      if (inlineIframe && inlineIframe.id) {
+        // Create a temporary YT.Player reference to stop playback
+        const tempPlayer = new YT.Player(inlineIframe.id);
+        tempPlayer.stopVideo();
+      }
+  
       const prevProject = allProjects.find(p => p.id === activeInlineVideo.dataset.project);
       const prevThumb = activeInlineVideo.querySelector(".project-thumb");
       prevThumb.innerHTML = `
