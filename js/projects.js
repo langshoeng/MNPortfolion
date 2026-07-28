@@ -310,9 +310,9 @@ function renderProjects(filter = "All") {
               style="width:100%; height:200px; border-radius:8px;">
       </iframe>
     `;
-    
+  
     activeInlineVideo = card;
-    
+  
     // Strict cutoff enforcement
     if (project.video.end !== undefined) {
       const inlinePlayer = new YT.Player(`inlinePlayer-${projectId}`, {
@@ -328,6 +328,7 @@ function renderProjects(filter = "All") {
         }
       });
     }
+  }); // ✅ properly closes Quick Preview handler
   
   // Handle Metadata Mode button
   grid.addEventListener("click", (e) => {
