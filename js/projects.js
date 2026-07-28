@@ -363,6 +363,9 @@ function renderProjects(filter = "All") {
       events: {
         'onReady': () => {
           inlinePlayer.seekTo(project.video.start || 0);
+          // ✅ Track globally
+          activeInlineVideo = card;
+          activeInlinePlayer = inlinePlayer;    
         },
         'onStateChange': (e) => {
           if (e.data === YT.PlayerState.PLAYING && project.video.end !== undefined) {
@@ -375,11 +378,7 @@ function renderProjects(filter = "All") {
         }
       }
     });
-
-    // ✅ Track globally
-    activeInlineVideo = card;
-    activeInlinePlayer = inlinePlayer;
-  
+ 
     // ✅ Add click-to-seek on custom progress bar
     const progressTrack = thumb.querySelector(".custom-progress");
     progressTrack.addEventListener("click", (ev) => {
