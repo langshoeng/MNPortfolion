@@ -446,12 +446,15 @@ function renderProjects(filter = "All") {
     // ✅ Stop Quick Preview playback
     if (activeInlinePlayer) {
       activeInlinePlayer.stopVideo();
-      activeInlinePlayer.destroy();   // <-- fully remove iframe/player
+      activeInlinePlayer.destroy();   // fully remove iframe/player
       activeInlinePlayer = null;
     }
+  
     if (activeInlineVideo) {
       const prevProject = allProjects.find(p => p.id === activeInlineVideo.dataset.project);
       const prevThumb = activeInlineVideo.querySelector(".project-thumb");
+  
+      // ✅ Reset thumbnail AFTER destroying player
       prevThumb.innerHTML = `
         <img src="${prevProject.thumbnail}" alt="${prevProject.title}">
         <span class="peek-hint">Hold to Peek</span>
