@@ -15,7 +15,7 @@
       "url": "https://www.youtube.com/watch?v=bcqSKxTRwSY",
       "duration": "00:01:19",
       "start": 0,
-      "end": 79
+      "end": 81
     },
     "gallery": []
   },
@@ -35,7 +35,7 @@
       "url": "https://www.youtube.com/watch?v=QixxBRXrXvg",
       "duration": "00:01:39",
       "start": 0,
-      "end": 99
+      "end": 101
     },
     "gallery": []
   },
@@ -55,7 +55,7 @@
       "url": "https://www.youtube.com/watch?v=hpf46EnEIX8",
       "duration": "00:01:28",
       "start": 0,
-      "end": 88
+      "end": 90
     },
     "gallery": []
   },
@@ -75,7 +75,7 @@
       "url": "https://www.youtube.com/watch?v=P-dTlq7NREw",
       "duration": "00:01:04",
       "start": 0,
-      "end": 64
+      "end": 66
     },
     "gallery": []
   },
@@ -95,7 +95,7 @@
       "url": "https://www.youtube.com/watch?v=Hb2qUFAW4mo",
       "duration": "00:00:50",
       "start": 0,
-      "end": 50
+      "end": 52
     },
     "gallery": []
   },
@@ -103,7 +103,7 @@
     "id": "recieve-big-gift",
     "title": "ទទួលបានកាដូធំ (Big Gift)",
     "featured": true,
-    "categories": ["Video Editing","Motion Graphic","Shorts"],
+    "categories": ["Video Editing","Motion Graphics","Shorts"],
     "client": "Sea Sambath",
     "year": "Dec 2024",
     "role": ["Motion Graphics","Video Editing"],
@@ -115,10 +115,114 @@
       "url": "https://www.youtube.com/watch?v=ghVnfNNxJ4A",
       "duration": "00:00:20",
       "start": 0,
-      "end": 20
+      "end": 22
     },
     "gallery": []
   },
+  {
+    "id": "2025-new-year-countdown",
+    "title": "2025's Count Down New Year",
+    "featured": true,
+    "categories": ["Video Editing","Motion Graphics","Shorts"],
+    "client": "Sea Sambath & Cambo Car",
+    "year": "Dec 2024",
+    "role": ["Motion Graphics","Video Editing"],
+    "software": ["After Effects","Element 3D","Photoshop"],
+    "description": "New Year's Celebration video featuring cinematic motion graphics, typography animation, 3d compositing and commercial editing.",
+    "thumbnail": "images/projects/dis/cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=l_ArC6-ceMU",
+      "duration": "00:00:50",
+      "start": 0,
+      "end": 52
+    },
+    "gallery": []
+  },
+  {
+    "id": "giftbox-be-ready",
+    "title": "(GiftBOX) ត្រៀមៗ Be Ready!",
+    "featured": true,
+    "categories": ["Video Editing","Motion Graphics","Shorts"],
+    "client": "BTB បង់រំលោះ",
+    "year": "Nov 2024",
+    "role": ["Motion Graphics","Video Editing"],
+    "software": ["After Effects","Element 3D","Photoshop"],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, 3D compositing, and commercial editing.",
+    "thumbnail": "images/projects/dis/cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=CL-gsKcsweM",
+      "duration": "00:00:20",
+      "start": 0,
+      "end": 22
+    },
+    "gallery": []
+  },
+
+  {
+    "id": "new-promotion-from-partner",
+    "title": "ប្រម៉ូសិនថ្មីពីដៃគូសហការ",
+    "featured": true,
+    "categories": ["Video Editing","Motion Graphics","Shorts"],
+    "client": "Sea Sambath",
+    "year": "May 2024",
+    "role": ["Motion Graphics","Video Editing"],
+    "software": ["After Effects","Element 3D","Photoshop"],
+    "description": "Motor Shop's Promotional launch campaign featuring cinematic motion graphics, typography animation, and commercial editing.",
+    "thumbnail": "images/projects/dis/cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=Ok--iL3UyAQ",
+      "duration": "00:00:30",
+      "start": 0,
+      "end": 32
+    },
+    "gallery": []
+  },
+
+  {
+    "id": "matey-shampoo",
+    "title": "Matey Shampoo",
+    "featured": true,
+    "categories": ["Video Editing","Motion Graphics","3D"],
+    "client": "Matey",
+    "year": "Dec 2023",
+    "role": ["Motion Graphics","Video Editing", "3D Modeling"],
+    "software": ["After Effects", "Premiere Pro", "Cinema 4D","Photoshop"],
+    "description": "Hair Shampoo's Promotional launch campaign featuring cinematic motion graphics, typography animation, 3d products, and commercial editing.",
+    "thumbnail": "images/projects/dis/cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=SR-7iNFiBa4",
+      "duration": "00:00:51",
+      "start": 0,
+      "end": 53
+    },
+    "gallery": []
+  },
+
+  {
+    "id": "cambocar-outro",
+    "title": "CamboCar Outro",
+    "featured": true,
+    "categories": ["Video Editing","Motion Graphics"],
+    "client": "CamboCar",
+    "year": "2023",
+    "role": ["Motion Graphics","Video Editing"],
+    "software": ["After Effects","Photoshop"],
+    "description": "Outro Reveal Animation featuring motion graphics, typography animation,",
+    "thumbnail": "images/projects/dis/cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=z5ubZRESQo4",
+      "duration": "00:00:04",
+      "start": 0,
+      "end": 6
+    },
+    "gallery": []
+  },
+  
   {
     "id": "coffee-brand",
     "title": "Coffee Brand Identity",
