@@ -17,6 +17,7 @@
         "year": "Jun 2026",
 
         "role": [
+            "Cameraman",
             "Motion Graphics",
             "Designing",
             "Video Editing"
@@ -35,7 +36,7 @@
 
         "video": {
             "type": "youtube",
-            "url": "https://www.youtube.com/embed/-dUJAq8fKuU",
+            "url": "https://www.youtube.com/watch?v=bcqSKxTRwSY",
             "duration": "00:01:19"
         },
 
@@ -43,9 +44,9 @@
     },
 
     {
-        "id": "dis-event",
+        "id": "distro-kid-course-2026",
 
-        "title": "DIS Opening Ceremony",
+        "title": "DistroKid Course 2026",
 
         "featured": true,
 
@@ -53,16 +54,22 @@
             "Video Editing"
         ],
 
-        "client": "Digital Innovation School",
+        "client": "V-Mission Media",
 
-        "year": "2024",
+        "year": "May 2026",
 
         "role": [
+            "Cameraman",
+            "Motion Graphics",
+            "Designing",
             "Video Editing"
         ],
 
         "software": [
-            "Premiere Pro"
+            "After Effects",
+            "Premiere Pro",
+            "Photoshop",
+            "Camera"
         ],
 
         "description": "Highlight video showcasing the opening ceremony with dynamic editing and event coverage.",
@@ -71,13 +78,57 @@
 
         "video": {
             "type": "youtube",
-            "url": "https://www.youtube.com/watch?v=T__tIIyhH1Y&t=260s",
-            "duration": "01:32:15"
+            "url": "https://www.youtube.com/watch?v=QixxBRXrXvg",
+            "duration": "00:01:39"
         },
 
         "gallery": []
     },
 
+    
+    {
+        "id": "youtube-course-v.mission",
+
+        "title": "V-Mission's Youtube Course",
+
+        "featured": true,
+
+        "categories": [
+            "Video Editing"
+        ],
+
+        "client": "V-Mission Media",
+
+        "year": "May 2026",
+
+        "role": [
+            "Cameraman",
+            "Motion Graphics",
+            "Designing",
+            "Video Editing"
+        ],
+
+        "software": [
+            "After Effects",
+            "Premiere Pro",
+            "Photoshop",
+            "Camera"
+        ],
+
+        "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
+
+        "thumbnail": "images/projects/dis/cover.jpg",
+
+        "video": {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=hpf46EnEIX8",
+            "duration": "00:01:28"
+        },
+
+        "gallery": []
+    },
+
+    
     {
         "id": "coffee-brand",
 
