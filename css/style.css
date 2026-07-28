@@ -1911,3 +1911,19 @@ section {
 .metadata-btn:hover {
   background: #182E3E;        /* slightly lighter on hover */
 }
+
+.quick-preview-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.quick-preview-wrapper iframe,
+.quick-preview-wrapper div {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+}
