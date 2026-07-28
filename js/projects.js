@@ -325,6 +325,7 @@ function renderProjects(filter = "All") {
     // ✅ Add click-to-seek on custom progress bar
     const progressTrack = thumb.querySelector(".custom-progress");
     progressTrack.addEventListener("click", (ev) => {
+      ev.stopPropagation(); // ✅ prevent card click from firing
       const rect = progressTrack.getBoundingClientRect();
       const clickX = ev.clientX - rect.left;
       const percent = clickX / rect.width;
@@ -334,7 +335,6 @@ function renderProjects(filter = "All") {
     });
   });
 
-  
   // Custom progress updater
   function updateProgress(player, startTime, endTime) {
     const duration = endTime - startTime;
