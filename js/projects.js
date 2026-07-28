@@ -445,16 +445,24 @@ function renderProjects(filter = "All") {
   
     // ✅ Stop Quick Preview playback
     if (activeInlinePlayer) {
-      activeInlinePlayer.stopVideo();
-      activeInlinePlayer.destroy();   // fully remove iframe/player
+      try {
+        activeInlinePlayer.stopVideo();
+        activeInlinePlayer.destroy();   // fully remove iframe/player
+      } catch (err) {
+        console.warn("Inline player already gone:", err);
+      }
       activeInlinePlayer = null;
     }
   
     if (activeInlineVideo) {
+      // ✅ Extra safety: remove any leftover inline iframe
+      const inlineIframe = activeInlineVideo.querySelector("iframe[id^='inlinePlayer-']");
+      if (inlineIframe) {
+        inlineIframe.remove();
+      }
+  
       const prevProject = allProjects.find(p => p.id === activeInlineVideo.dataset.project);
       const prevThumb = activeInlineVideo.querySelector(".project-thumb");
-  
-      // ✅ Reset thumbnail AFTER destroying player
       prevThumb.innerHTML = `
         <img src="${prevProject.thumbnail}" alt="${prevProject.title}">
         <span class="peek-hint">Hold to Peek</span>
