@@ -1,339 +1,166 @@
 [
-    {
-        "id": "youtube-course-2026-pov",
-
-        "title": "YouTube Course 2026",
-
-        "featured": true,
-
-        "categories": [
-            "Motion Graphics",
-            "Video Editing",
-            "Camera Shooting"
-        ],
-
-        "client": "Rean with Pech",
-
-        "year": "Jun 2026",
-
-        "role": [
-            "Cameraman",
-            "Motion Graphics",
-            "Designing",
-            "Video Editing"
-        ],
-
-        "software": [
-            "After Effects",
-            "Premiere Pro",
-            "Photoshop",
-            "Camera"
-        ],
-
-        "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
-
-        "thumbnail": "images/projects/youtube-course/coverpov026.png",
-
-        "video": {
-            "type": "youtube",
-            "url": "https://www.youtube.com/watch?v=bcqSKxTRwSY",
-            "duration": "00:01:19"
-        },
-
-        "gallery": []
+  {
+    "id": "youtube-course-2026-pov",
+    "title": "YouTube Course 2026",
+    "featured": true,
+    "categories": ["Motion Graphics","Video Editing","Camera Shooting"],
+    "client": "Rean with Pech",
+    "year": "Jun 2026",
+    "role": ["Cameraman","Motion Graphics","Designing","Video Editing"],
+    "software": ["After Effects","Premiere Pro","Photoshop","Camera"],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
+    "thumbnail": "images/projects/youtube-course/coverpov026.png",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=bcqSKxTRwSY",
+      "duration": "00:01:19",
+      "start": 0,
+      "end": 79
     },
-
-    {
-        "id": "distro-kid-course-2026",
-
-        "title": "DistroKid Course 2026",
-
-        "featured": true,
-
-        "categories": [
-            "Video Editing"
-        ],
-
-        "client": "V-Mission Media",
-
-        "year": "May 2026",
-
-        "role": [
-            "Cameraman",
-            "Motion Graphics",
-            "Designing",
-            "Video Editing"
-        ],
-
-        "software": [
-            "After Effects",
-            "Premiere Pro",
-            "Photoshop",
-            "Camera"
-        ],
-
-        "description": "Highlight video showcasing the opening ceremony with dynamic editing and event coverage.",
-
-        "thumbnail": "images/projects/dis/cover.jpg",
-
-        "video": {
-            "type": "youtube",
-            "url": "https://www.youtube.com/watch?v=QixxBRXrXvg",
-            "duration": "00:01:39"
-        },
-
-        "gallery": []
+    "gallery": []
+  },
+  {
+    "id": "distro-kid-course-2026",
+    "title": "DistroKid Course 2026",
+    "featured": true,
+    "categories": ["Video Editing"],
+    "client": "V-Mission Media",
+    "year": "May 2026",
+    "role": ["Cameraman","Motion Graphics","Designing","Video Editing"],
+    "software": ["After Effects","Premiere Pro","Photoshop","Camera"],
+    "description": "Highlight video showcasing the opening ceremony with dynamic editing and event coverage.",
+    "thumbnail": "images/projects/dis/cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=QixxBRXrXvg",
+      "duration": "00:01:39",
+      "start": 0,
+      "end": 99
     },
-
-    
-    {
-        "id": "youtube-course-v.mission",
-
-        "title": "V-Mission's Youtube Course",
-
-        "featured": true,
-
-        "categories": [
-            "Video Editing"
-        ],
-
-        "client": "V-Mission Media",
-
-        "year": "May 2026",
-
-        "role": [
-            "Cameraman",
-            "Motion Graphics",
-            "Designing",
-            "Video Editing"
-        ],
-
-        "software": [
-            "After Effects",
-            "Premiere Pro",
-            "Photoshop",
-            "Camera"
-        ],
-
-        "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
-
-        "thumbnail": "images/projects/dis/cover.jpg",
-
-        "video": {
-            "type": "youtube",
-            "url": "https://www.youtube.com/watch?v=hpf46EnEIX8",
-            "duration": "00:01:28"
-        },
-
-        "gallery": []
+    "gallery": []
+  },
+  {
+    "id": "youtube-course-v.mission",
+    "title": "V-Mission's Youtube Course",
+    "featured": true,
+    "categories": ["Video Editing"],
+    "client": "V-Mission Media",
+    "year": "May 2026",
+    "role": ["Cameraman","Motion Graphics","Designing","Video Editing"],
+    "software": ["After Effects","Premiere Pro","Photoshop","Camera"],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
+    "thumbnail": "images/projects/dis/cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=hpf46EnEIX8",
+      "duration": "00:01:28",
+      "start": 0,
+      "end": 88
     },
-
-
-    {
-        "id": "ai-3d-cartoon-course",
-
-        "title": "AI 3D Animation Course",
-
-        "featured": true,
-
-        "categories": [
-            "Video Editing"
-        ],
-
-        "client": "V-Mission Media",
-
-        "year": "Apr 2026",
-
-        "role": [
-            "Cameraman",
-            "Motion Graphics",
-            "Designing",
-            "Video Editing"
-        ],
-
-        "software": [
-            "After Effects",
-            "Premiere Pro",
-            "Photoshop",
-            "Camera"
-        ],
-
-        "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation, and commercial editing.",
-
-        "thumbnail": "images/projects/dis/cover.jpg",
-
-        "video": {
-            "type": "youtube",
-            "url": "https://www.youtube.com/watch?v=P-dTlq7NREw",
-            "duration": "00:01:04"
-        },
-
-        "gallery": []
+    "gallery": []
+  },
+  {
+    "id": "ai-3d-cartoon-course",
+    "title": "AI 3D Animation Course",
+    "featured": true,
+    "categories": ["Video Editing"],
+    "client": "V-Mission Media",
+    "year": "Apr 2026",
+    "role": ["Cameraman","Motion Graphics","Designing","Video Editing"],
+    "software": ["After Effects","Premiere Pro","Photoshop","Camera"],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation, and commercial editing.",
+    "thumbnail": "images/projects/dis/cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=P-dTlq7NREw",
+      "duration": "00:01:04",
+      "start": 0,
+      "end": 64
     },
-
-    {
-        "id": "2026-new-year",
-
-        "title": "2026's New Year's Count Down",
-
-        "featured": true,
-
-        "categories": [
-            "Video Editing",
-            "Motion Graphic",
-            "Shorts"
-        ],
-
-        "client": "Cambo Car & Sea Sambatha",
-
-        "year": "Dec 2025",
-
-        "role": [
-            "Motion Graphics",
-            "Video Editing"
-        ],
-
-        "software": [
-            "After Effects",
-            "Element 3D",
-            "Photoshop"
-        ],
-
-        "description": "New Year's Celebration video featuring cinematic motion graphics, typography animation, 3d compositing.",
-
-        "thumbnail": "images/projects/dis/cover.jpg",
-
-        "video": {
-            "type": "youtube",
-            "url": "https://www.youtube.com/watch?v=Hb2qUFAW4mo",
-            "duration": "00:00:50"
-        },
-
-        "gallery": []
+    "gallery": []
+  },
+  {
+    "id": "2026-new-year",
+    "title": "2026's New Year's Count Down",
+    "featured": true,
+    "categories": ["Video Editing","Motion Graphic","Shorts"],
+    "client": "Cambo Car & Sea Sambatha",
+    "year": "Dec 2025",
+    "role": ["Motion Graphics","Video Editing"],
+    "software": ["After Effects","Element 3D","Photoshop"],
+    "description": "New Year's Celebration video featuring cinematic motion graphics, typography animation, 3d compositing.",
+    "thumbnail": "images/projects/dis/cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=Hb2qUFAW4mo",
+      "duration": "00:00:50",
+      "start": 0,
+      "end": 50
     },
-
-    {
-        "id": "recieve-big-gift",
-
-        "title": "ទទួលបានកាដូធំ (Big Gift)",
-
-        "featured": true,
-
-        "categories": [
-            "Video Editing",
-            "Motion Graphic",
-            "Shorts"
-        ],
-
-        "client": "Sea Sambath",
-
-        "year": "Dec 2024",
-
-        "role": [
-            "Motion Graphics",
-            "Video Editing"
-        ],
-
-        "software": [
-            "After Effects",
-            "Element 3D",
-            "Photoshop"
-        ],
-
-        "description": "New Year's Promotional Video Campaign featuring cinematic motion graphics, typography animation, 3d compositing, and commercial editing.",
-
-        "thumbnail": "images/projects/dis/cover.jpg",
-
-        "video": {
-            "type": "youtube",
-            "url": "https://www.youtube.com/watch?v=ghVnfNNxJ4A",
-            "duration": "00:00:20"
-        },
-
-        "gallery": []
+    "gallery": []
+  },
+  {
+    "id": "recieve-big-gift",
+    "title": "ទទួលបានកាដូធំ (Big Gift)",
+    "featured": true,
+    "categories": ["Video Editing","Motion Graphic","Shorts"],
+    "client": "Sea Sambath",
+    "year": "Dec 2024",
+    "role": ["Motion Graphics","Video Editing"],
+    "software": ["After Effects","Element 3D","Photoshop"],
+    "description": "New Year's Promotional Video Campaign featuring cinematic motion graphics, typography animation, 3d compositing, and commercial editing.",
+    "thumbnail": "images/projects/dis/cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=ghVnfNNxJ4A",
+      "duration": "00:00:20",
+      "start": 0,
+      "end": 20
     },
-
-    
-    {
-        "id": "coffee-brand",
-
-        "title": "Coffee Brand Identity",
-
-        "featured": true,
-
-        "categories": [
-            "Graphic Design"
-        ],
-
-        "client": "ABC Coffee",
-
-        "year": "2023",
-
-        "role": [
-            "Graphic Design"
-        ],
-
-        "software": [
-            "Illustrator",
-            "Photoshop"
-        ],
-
-        "description": "Complete branding package including logo, packaging, business cards, and social media assets.",
-
-        "thumbnail": "images/projects/coffee-brand/cover.jpg",
-
-        "video": {
-            "type": "none"
-        },
-
-        "gallery": [
-            "images/projects/coffee-brand/01.jpg",
-            "images/projects/coffee-brand/02.jpg",
-            "images/projects/coffee-brand/03.jpg",
-            "images/projects/coffee-brand/04.jpg"
-        ]
+    "gallery": []
+  },
+  {
+    "id": "coffee-brand",
+    "title": "Coffee Brand Identity",
+    "featured": true,
+    "categories": ["Graphic Design"],
+    "client": "ABC Coffee",
+    "year": "2023",
+    "role": ["Graphic Design"],
+    "software": ["Illustrator","Photoshop"],
+    "description": "Complete branding package including logo, packaging, business cards, and social media assets.",
+    "thumbnail": "images/projects/coffee-brand/cover.jpg",
+    "video": {
+      "type": "none"
     },
-
-    {
-        "id": "wedding-photography",
-
-        "title": "Wedding Photography",
-
-        "featured": false,
-
-        "categories": [
-            "Photography"
-        ],
-
-        "client": "Private Client",
-
-        "year": "2024",
-
-        "role": [
-            "Photography",
-            "Photo Retouching"
-        ],
-
-        "software": [
-            "Lightroom",
-            "Photoshop"
-        ],
-
-        "description": "Outdoor wedding photography with natural lighting and cinematic color grading.",
-
-        "thumbnail": "images/projects/wedding/cover.jpg",
-
-        "video": {
-            "type": "none"
-        },
-
-        "gallery": [
-            "images/projects/wedding/01.jpg",
-            "images/projects/wedding/02.jpg",
-            "images/projects/wedding/03.jpg",
-            "images/projects/wedding/04.jpg",
-            "images/projects/wedding/05.jpg",
-            "images/projects/wedding/06.jpg"
-        ]
-    }
+    "gallery": [
+      "images/projects/coffee-brand/01.jpg",
+      "images/projects/coffee-brand/02.jpg",
+      "images/projects/coffee-brand/03.jpg",
+      "images/projects/coffee-brand/04.jpg"
+    ]
+  },
+  {
+    "id": "wedding-photography",
+    "title": "Wedding Photography",
+    "featured": false,
+    "categories": ["Photography"],
+    "client": "Private Client",
+    "year": "2024",
+    "role": ["Photography","Photo Retouching"],
+    "software": ["Lightroom","Photoshop"],
+    "description": "Outdoor wedding photography with natural lighting and cinematic color grading.",
+    "thumbnail": "images/projects/wedding/cover.jpg",
+    "video": {
+      "type": "none"
+    },
+    "gallery": [
+      "images/projects/wedding/01.jpg",
+      "images/projects/wedding/02.jpg",
+      "images/projects/wedding/03.jpg",
+      "images/projects/wedding/04.jpg",
+      "images/projects/wedding/05.jpg",
+      "images/projects/wedding/06.jpg"
+    ]
+  }
 ]
