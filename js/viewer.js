@@ -382,12 +382,30 @@ function openProject(project){
 
     if (project.video && project.video.type === "youtube") {
         viewerWindow.classList.add("video-mode");
-        viewerMedia.innerHTML = `
-            <iframe src="${getYoutubeEmbed(project.video.url)}"
-                frameborder="0"
-                allow="autoplay; fullscreen; encrypted-media"
-                onerror="this.replaceWith(createMissingPlaceholder())"></iframe>
-        `;
+        viewerMedia.innerHTML = `<div id="metadataPlayer"></div>`;
+    
+        const videoId = project.video.url.split("v=")[1].split("&")[0];
+    
+        const metaPlayer = new YT.Player('metadataPlayer', {
+            videoId: videoId,
+            playerVars: {
+                autoplay: 1,
+                mute: 0,
+                controls: 1,
+                rel: 0,
+                start: project.video.start || 0
+            },
+            events: {
+                'onReady': () => {
+                    metaPlayer.seekTo(project.video.start || 0);
+                },
+                'onStateChange': (e) => {
+                    if (e.data === YT.PlayerState.PLAYING && project.video.end !== undefined) {
+                        enforceCutoff(metaPlayer, project.video.start || 0, project.video.end);
+                    }
+                }
+            }
+        });
         return;
     }
 
