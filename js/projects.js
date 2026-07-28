@@ -296,10 +296,9 @@ function renderProjects(filter = "All") {
         <div class="custom-progress-bar"></div>
       </div>
     `;
-
     activeInlineVideo = card;
   
-    // Build YT.Player directly
+    // ✅ Create the YouTube player
     const videoId = project.video.url.split("v=")[1].split("&")[0];
     const inlinePlayer = new YT.Player(`inlinePlayer-${projectId}`, {
       videoId: videoId,
@@ -307,7 +306,7 @@ function renderProjects(filter = "All") {
         autoplay: 1,
         mute: 1,
         rel: 0,
-        controls: 0,   // ✅ hide native controls
+        controls: 0,   // hide native controls
         start: project.video.start || 0
       },
       events: {
@@ -322,7 +321,19 @@ function renderProjects(filter = "All") {
         }
       }
     });
+  
+    // ✅ Add click-to-seek on custom progress bar
+    const progressTrack = thumb.querySelector(".custom-progress");
+    progressTrack.addEventListener("click", (ev) => {
+      const rect = progressTrack.getBoundingClientRect();
+      const clickX = ev.clientX - rect.left;
+      const percent = clickX / rect.width;
+      const duration = project.video.end - (project.video.start || 0);
+      const newTime = (project.video.start || 0) + percent * duration;
+      inlinePlayer.seekTo(newTime, true);
+    });
   });
+
   
   // Custom progress updater
   function updateProgress(player, startTime, endTime) {
