@@ -24,7 +24,6 @@ let ytPlayer;
 
 // Track currently active inline video card
 let activeInlineVideo = null;
-let activeInlinePlayer = null; // track the current inline YT.Player
 
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('peekVideo', {
@@ -160,21 +159,6 @@ function renderProjects(filter = "All") {
     }
   
     function showPreview(card) {
-      // ✅ Stop Quick Preview playback if active
-      if (activeInlinePlayer) {
-        activeInlinePlayer.stopVideo();
-        activeInlinePlayer = null;
-      }
-      if (activeInlineVideo) {
-        const prevProject = allProjects.find(p => p.id === activeInlineVideo.dataset.project);
-        const prevThumb = activeInlineVideo.querySelector(".project-thumb");
-        prevThumb.innerHTML = `
-          <img src="${prevProject.thumbnail}" alt="${prevProject.title}">
-          <span class="peek-hint">Hold to Peek</span>
-        `;
-        activeInlineVideo = null;
-      }
-    
       const projectId = card.dataset.project;
       const project = allProjects.find(p => p.id === projectId);
       const video = card.dataset.video;
@@ -256,7 +240,7 @@ function renderProjects(filter = "All") {
     
       peekModal.classList.add("show");
     }
-
+  
     function hidePreview() {
       peekModal.classList.remove("show");
       peekImage.src = "";
@@ -362,9 +346,6 @@ function renderProjects(filter = "All") {
       events: {
         'onReady': () => {
           inlinePlayer.seekTo(project.video.start || 0);
-          // ✅ Track globally
-          activeInlineVideo = card;
-          activeInlinePlayer = inlinePlayer;    
         },
         'onStateChange': (e) => {
           if (e.data === YT.PlayerState.PLAYING && project.video.end !== undefined) {
@@ -377,7 +358,7 @@ function renderProjects(filter = "All") {
         }
       }
     });
- 
+  
     // ✅ Add click-to-seek on custom progress bar
     const progressTrack = thumb.querySelector(".custom-progress");
     progressTrack.addEventListener("click", (ev) => {
@@ -405,17 +386,13 @@ function renderProjects(filter = "All") {
   });
   
   // Custom progress updater
-  let progressInterval = null;
-  let timerInterval = null;
-  
   function updateProgress(player, startTime, endTime, barEl) {
-    if (progressInterval) clearInterval(progressInterval);
     const duration = endTime - startTime;
-    progressInterval = setInterval(() => {
+    setInterval(() => {
       if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
       const current = player.getCurrentTime();
       const progress = ((current - startTime) / duration) * 100;
-      barEl.style.width = `${Math.min(Math.max(progress, 0), 100)}%`;
+      barEl.style.width = `${Math.min(progress, 100)}%`;
     }, 500);
   }
   
@@ -428,14 +405,14 @@ function renderProjects(filter = "All") {
   }
   
   function updateTimer(player, startTime, endTime, timerEl) {
-    if (timerInterval) clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
+    setInterval(() => {
       if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
       const current = player.getCurrentTime();
       if (current >= endTime) return;
       timerEl.textContent = formatTime(current - startTime);
     }, 500);
   }
+
   
   // Handle Metadata Mode button
   grid.addEventListener("click", (e) => {
@@ -448,41 +425,8 @@ function renderProjects(filter = "All") {
     const project = allProjects.find(p => p.id === projectId);
     if (!project) return;
   
-    // ✅ Stop Quick Preview playback
-    if (activeInlinePlayer) {
-      try {
-        activeInlinePlayer.stopVideo();
-        activeInlinePlayer.destroy();   // fully remove iframe/player
-      } catch (err) {
-        console.warn("Inline player already gone:", err);
-      }
-      activeInlinePlayer = null;
-    }
-  
-    if (activeInlineVideo) {
-      // ✅ Extra safety: remove any leftover inline iframe
-      const inlineIframe = activeInlineVideo.querySelector("iframe[id^='inlinePlayer-']");
-      if (inlineIframe) {
-        inlineIframe.remove();
-      }
-  
-      const prevProject = allProjects.find(p => p.id === activeInlineVideo.dataset.project);
-      const prevThumb = activeInlineVideo.querySelector(".project-thumb");
-      prevThumb.innerHTML = `
-        <img src="${prevProject.thumbnail}" alt="${prevProject.title}">
-        <span class="peek-hint">Hold to Peek</span>
-      `;
-      activeInlineVideo = null;
-    }
-  
-    // ✅ Stop Peek playback too
-    if (ytPlayer) {
-      ytPlayer.stopVideo();
-    }
-  
-    openProject(project);
+    openProject(project); // your existing metadata modal function
   });
-
 
   // Bind events for cards
   document.querySelectorAll(".project-card").forEach(card => {
