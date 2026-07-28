@@ -1935,7 +1935,7 @@ section {
   border-radius: 3px;
   overflow: hidden;
   margin-top: 4px;
-  cursor: pointer; /* ✅ makes it clickable */
+  cursor: pointer;
 }
 
 .custom-progress-bar {
@@ -1943,4 +1943,21 @@ section {
   height: 100%;
   background: #f00;
   transition: width 0.2s linear;
+}
+
+.playback-timer {
+  margin-top: 4px;
+  font-family: monospace;
+  font-size: 14px;
+  color: #333;
+}
+
+.mute-toggle {
+  margin-top: 6px;
+  padding: 4px 8px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  background: #eee;
+  border-radius: 4px;
 }
