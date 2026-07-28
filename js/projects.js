@@ -31,7 +31,7 @@ function onYouTubeIframeAPIReady() {
     playerVars: {
       autoplay: 1,
       mute: 1,
-      controls: 1,
+      controls: 0,
       rel: 0
     }
   });
@@ -44,7 +44,7 @@ function ensureYTPlayer() {
       playerVars: {
         autoplay: 1,
         mute: 1,
-        controls: 1,
+        controls: 0,
         rel: 0
       }
     });
@@ -175,17 +175,11 @@ function renderProjects(filter = "All") {
         peekVideoWrapper.style.display = "block";
         peekImage.style.display = "none";
         currentGallery = [];
-
-        peekVideoWrapper.innerHTML = `
-          <div id="peekVideo"></div>
-          <div class="custom-controls">
-            <div class="custom-progress">
-              <div class="custom-progress-bar"></div>
-            </div>
-            <div class="playback-timer">00:00:00</div>
-            <button class="mute-toggle">🔇 Unmute</button>
-          </div>
-        `;
+    
+        // Reset controls
+        peekVideoWrapper.querySelector(".custom-progress-bar").style.width = "0%";
+        peekVideoWrapper.querySelector(".playback-timer").textContent = "00:00:00";
+        peekVideoWrapper.querySelector(".mute-toggle").textContent = "🔇 Unmute";
     
         ensureYTPlayer();
     
@@ -195,7 +189,7 @@ function renderProjects(filter = "All") {
             startSeconds: project?.video?.start || 0
           });
           ytPlayer.mute();
-
+    
           if (project?.video?.end !== undefined) {
             enforceCutoff(ytPlayer, project.video.start || 0, project.video.end);
             updateProgress(ytPlayer, project.video.start || 0, project.video.end,
@@ -203,10 +197,10 @@ function renderProjects(filter = "All") {
             updateTimer(ytPlayer, project.video.start || 0, project.video.end,
                         peekVideoWrapper.querySelector(".playback-timer"));
           }
-          
+    
           // ✅ Mute/Unmute toggle
           const muteBtn = peekVideoWrapper.querySelector(".mute-toggle");
-          muteBtn.addEventListener("click", (ev) => {
+          muteBtn.onclick = (ev) => {
             ev.stopPropagation();
             if (ytPlayer.isMuted()) {
               ytPlayer.unMute();
@@ -215,11 +209,11 @@ function renderProjects(filter = "All") {
               ytPlayer.mute();
               muteBtn.textContent = "🔇 Unmute";
             }
-          });
-          
+          };
+    
           // ✅ Click-to-seek on custom progress bar
           const progressTrack = peekVideoWrapper.querySelector(".custom-progress");
-          progressTrack.addEventListener("click", (ev) => {
+          progressTrack.onclick = (ev) => {
             ev.stopPropagation();
             const rect = progressTrack.getBoundingClientRect();
             const clickX = ev.clientX - rect.left;
@@ -227,13 +221,7 @@ function renderProjects(filter = "All") {
             const duration = project.video.end - (project.video.start || 0);
             const newTime = (project.video.start || 0) + percent * duration;
             ytPlayer.seekTo(newTime, true);
-          });
-
-        }
-   
-        const unmuteHint = document.querySelector(".unmute-hint");
-        if (unmuteHint) {
-          unmuteHint.classList.remove("fade-out");
+          };
         }
     
         if (peekPrev) peekPrev.style.display = "none";
