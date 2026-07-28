@@ -286,7 +286,7 @@ function renderProjects(filter = "All") {
       `;
     }
   
-    // Replace with player + custom progress bar
+    // Replace with player + custom UI
     const thumb = card.querySelector(".project-thumb");
     thumb.innerHTML = `
       <div id="inlinePlayer-${projectId}" 
@@ -295,6 +295,8 @@ function renderProjects(filter = "All") {
       <div class="custom-progress">
         <div class="custom-progress-bar"></div>
       </div>
+      <div class="playback-timer">00:00:00</div>
+      <button class="mute-toggle">🔇 Unmute</button>
     `;
     activeInlineVideo = card;
   
@@ -317,6 +319,8 @@ function renderProjects(filter = "All") {
           if (e.data === YT.PlayerState.PLAYING && project.video.end !== undefined) {
             enforceCutoff(inlinePlayer, project.video.start || 0, project.video.end);
             updateProgress(inlinePlayer, project.video.start || 0, project.video.end);
+            const timerEl = thumb.querySelector(".playback-timer");
+            updateTimer(inlinePlayer, project.video.start || 0, project.video.end, timerEl);
           }
         }
       }
@@ -325,7 +329,7 @@ function renderProjects(filter = "All") {
     // ✅ Add click-to-seek on custom progress bar
     const progressTrack = thumb.querySelector(".custom-progress");
     progressTrack.addEventListener("click", (ev) => {
-      ev.stopPropagation(); // ✅ prevent card click from firing
+      ev.stopPropagation();
       const rect = progressTrack.getBoundingClientRect();
       const clickX = ev.clientX - rect.left;
       const percent = clickX / rect.width;
@@ -333,8 +337,21 @@ function renderProjects(filter = "All") {
       const newTime = (project.video.start || 0) + percent * duration;
       inlinePlayer.seekTo(newTime, true);
     });
+  
+    // ✅ Mute/Unmute toggle
+    const muteBtn = thumb.querySelector(".mute-toggle");
+    muteBtn.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      if (inlinePlayer.isMuted()) {
+        inlinePlayer.unMute();
+        muteBtn.textContent = "🔊 Mute";
+      } else {
+        inlinePlayer.mute();
+        muteBtn.textContent = "🔇 Unmute";
+      }
+    });
   });
-
+  
   // Custom progress updater
   function updateProgress(player, startTime, endTime) {
     const duration = endTime - startTime;
@@ -346,6 +363,24 @@ function renderProjects(filter = "All") {
       bar.style.width = `${Math.min(progress, 100)}%`;
     }, 500);
   }
+  
+  // Custom timer updater
+  function formatTime(seconds) {
+    const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+    const s = String(Math.floor(seconds % 60)).padStart(2, '0');
+    return `${h}:${m}:${s}`;
+  }
+  
+  function updateTimer(player, startTime, endTime, timerEl) {
+    setInterval(() => {
+      if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
+      const current = player.getCurrentTime();
+      if (current >= endTime) return;
+      timerEl.textContent = formatTime(current - startTime);
+    }, 500);
+  }
+
   
   // Handle Metadata Mode button
   grid.addEventListener("click", (e) => {
