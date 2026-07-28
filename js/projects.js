@@ -175,6 +175,17 @@ function renderProjects(filter = "All") {
         peekVideoWrapper.style.display = "block";
         peekImage.style.display = "none";
         currentGallery = [];
+
+        peekVideoWrapper.innerHTML = `
+          <div id="peekVideo"></div>
+          <div class="custom-controls">
+            <div class="custom-progress">
+              <div class="custom-progress-bar"></div>
+            </div>
+            <div class="playback-timer">00:00:00</div>
+            <button class="mute-toggle">🔇 Unmute</button>
+          </div>
+        `;
     
         ensureYTPlayer();
     
@@ -184,10 +195,40 @@ function renderProjects(filter = "All") {
             startSeconds: project?.video?.start || 0
           });
           ytPlayer.mute();
-        
+
           if (project?.video?.end !== undefined) {
             enforceCutoff(ytPlayer, project.video.start || 0, project.video.end);
+            updateProgress(ytPlayer, project.video.start || 0, project.video.end,
+                           peekVideoWrapper.querySelector(".custom-progress-bar"));
+            updateTimer(ytPlayer, project.video.start || 0, project.video.end,
+                        peekVideoWrapper.querySelector(".playback-timer"));
           }
+          
+          // ✅ Mute/Unmute toggle
+          const muteBtn = peekVideoWrapper.querySelector(".mute-toggle");
+          muteBtn.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            if (ytPlayer.isMuted()) {
+              ytPlayer.unMute();
+              muteBtn.textContent = "🔊 Mute";
+            } else {
+              ytPlayer.mute();
+              muteBtn.textContent = "🔇 Unmute";
+            }
+          });
+          
+          // ✅ Click-to-seek on custom progress bar
+          const progressTrack = peekVideoWrapper.querySelector(".custom-progress");
+          progressTrack.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            const rect = progressTrack.getBoundingClientRect();
+            const clickX = ev.clientX - rect.left;
+            const percent = clickX / rect.width;
+            const duration = project.video.end - (project.video.start || 0);
+            const newTime = (project.video.start || 0) + percent * duration;
+            ytPlayer.seekTo(newTime, true);
+          });
+
         }
    
         const unmuteHint = document.querySelector(".unmute-hint");
@@ -356,14 +397,13 @@ function renderProjects(filter = "All") {
   });
   
   // Custom progress updater
-  function updateProgress(player, startTime, endTime) {
+  function updateProgress(player, startTime, endTime, barEl) {
     const duration = endTime - startTime;
-    const bar = document.querySelector(".custom-progress-bar");
     setInterval(() => {
       if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
       const current = player.getCurrentTime();
       const progress = ((current - startTime) / duration) * 100;
-      bar.style.width = `${Math.min(progress, 100)}%`;
+      barEl.style.width = `${Math.min(progress, 100)}%`;
     }, 500);
   }
   
