@@ -405,13 +405,17 @@ function renderProjects(filter = "All") {
   });
   
   // Custom progress updater
+  let progressInterval = null;
+  let timerInterval = null;
+  
   function updateProgress(player, startTime, endTime, barEl) {
+    if (progressInterval) clearInterval(progressInterval);
     const duration = endTime - startTime;
-    setInterval(() => {
+    progressInterval = setInterval(() => {
       if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
       const current = player.getCurrentTime();
       const progress = ((current - startTime) / duration) * 100;
-      barEl.style.width = `${Math.min(progress, 100)}%`;
+      barEl.style.width = `${Math.min(Math.max(progress, 0), 100)}%`;
     }, 500);
   }
   
@@ -424,7 +428,8 @@ function renderProjects(filter = "All") {
   }
   
   function updateTimer(player, startTime, endTime, timerEl) {
-    setInterval(() => {
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
       if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
       const current = player.getCurrentTime();
       if (current >= endTime) return;
@@ -477,6 +482,7 @@ function renderProjects(filter = "All") {
   
     openProject(project);
   });
+
 
   // Bind events for cards
   document.querySelectorAll(".project-card").forEach(card => {
