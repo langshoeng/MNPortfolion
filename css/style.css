@@ -1920,10 +1920,27 @@ section {
   overflow: hidden;
 }
 
-.quick-preview-wrapper iframe,
-.quick-preview-wrapper div {
+.quick-preview-wrapper > div:first-child {
   position: absolute;
   top: 0; left: 0;
   width: 100%;
   height: 100%;
+}
+
+.custom-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: #ccc;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.custom-progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #f00;
+  transition: width 0.2s linear;
 }
