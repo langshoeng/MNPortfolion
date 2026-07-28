@@ -286,48 +286,34 @@ function renderProjects(filter = "All") {
       `;
     }
   
-    // Build embed URL
-    let embedUrl = project.video.url.replace("watch?v=", "embed/").split("&")[0];
-    embedUrl += "?autoplay=1&mute=1&rel=0";
-  
-    // Apply start & end if defined
-    if (project.video.start !== undefined) {
-      embedUrl += `&start=${project.video.start}`;
-    }
-    if (project.video.end !== undefined) {
-      embedUrl += `&end=${project.video.end}`;
-    }
-  
-    // Replace with iframe
+    // Replace with player container
     const thumb = card.querySelector(".project-thumb");
-    thumb.innerHTML = `
-      <iframe id="inlinePlayer-${projectId}"
-              src="${embedUrl}"
-              frameborder="0"
-              allow="autoplay; encrypted-media"
-              allowfullscreen
-              style="width:100%; height:200px; border-radius:8px;">
-      </iframe>
-    `;
-  
+    thumb.innerHTML = `<div id="inlinePlayer-${projectId}"></div>`;
     activeInlineVideo = card;
   
-    // Strict cutoff enforcement
-    if (project.video.end !== undefined) {
-      const inlinePlayer = new YT.Player(`inlinePlayer-${projectId}`, {
-        events: {
-          'onReady': () => {
-            inlinePlayer.seekTo(project.video.start || 0);
-          },
-          'onStateChange': (e) => {
-            if (e.data === YT.PlayerState.PLAYING) {
-              enforceCutoff(inlinePlayer, project.video.start || 0, project.video.end);
-            }
+    // Build YT.Player directly
+    const videoId = project.video.url.split("v=")[1].split("&")[0];
+    const inlinePlayer = new YT.Player(`inlinePlayer-${projectId}`, {
+      videoId: videoId,
+      playerVars: {
+        autoplay: 1,
+        mute: 1,
+        rel: 0,
+        controls: 1,
+        start: project.video.start || 0
+      },
+      events: {
+        'onReady': () => {
+          inlinePlayer.seekTo(project.video.start || 0);
+        },
+        'onStateChange': (e) => {
+          if (e.data === YT.PlayerState.PLAYING && project.video.end !== undefined) {
+            enforceCutoff(inlinePlayer, project.video.start || 0, project.video.end);
           }
         }
-      });
-    }
-  }); // ✅ properly closes Quick Preview handler
+      }
+    });
+  });
   
   // Handle Metadata Mode button
   grid.addEventListener("click", (e) => {
