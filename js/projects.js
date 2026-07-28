@@ -425,6 +425,17 @@ function renderProjects(filter = "All") {
     const project = allProjects.find(p => p.id === projectId);
     if (!project) return;
   
+    // ✅ Stop any active Quick Preview playback before opening metadata
+    if (activeInlineVideo) {
+      const prevProject = allProjects.find(p => p.id === activeInlineVideo.dataset.project);
+      const prevThumb = activeInlineVideo.querySelector(".project-thumb");
+      prevThumb.innerHTML = `
+        <img src="${prevProject.thumbnail}" alt="${prevProject.title}">
+        <span class="peek-hint">Hold to Peek</span>
+      `;
+      activeInlineVideo = null;
+    }
+  
     openProject(project); // your existing metadata modal function
   });
 
