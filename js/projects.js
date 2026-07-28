@@ -286,14 +286,16 @@ function renderProjects(filter = "All") {
       `;
     }
   
-    // Replace with player container
+    // Replace with player + custom progress bar
     const thumb = card.querySelector(".project-thumb");
     thumb.innerHTML = `
       <div class="quick-preview-wrapper">
         <div id="inlinePlayer-${projectId}"></div>
+        <div class="custom-progress">
+          <div class="custom-progress-bar"></div>
+        </div>
       </div>
     `;
-
     activeInlineVideo = card;
   
     // Build YT.Player directly
@@ -304,7 +306,7 @@ function renderProjects(filter = "All") {
         autoplay: 1,
         mute: 1,
         rel: 0,
-        controls: 1,
+        controls: 0,   // ✅ hide native controls
         start: project.video.start || 0
       },
       events: {
@@ -314,11 +316,24 @@ function renderProjects(filter = "All") {
         'onStateChange': (e) => {
           if (e.data === YT.PlayerState.PLAYING && project.video.end !== undefined) {
             enforceCutoff(inlinePlayer, project.video.start || 0, project.video.end);
+            updateProgress(inlinePlayer, project.video.start || 0, project.video.end);
           }
         }
       }
     });
   });
+  
+  // Custom progress updater
+  function updateProgress(player, startTime, endTime) {
+    const duration = endTime - startTime;
+    const bar = document.querySelector(".custom-progress-bar");
+    setInterval(() => {
+      if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
+      const current = player.getCurrentTime();
+      const progress = ((current - startTime) / duration) * 100;
+      bar.style.width = `${Math.min(progress, 100)}%`;
+    }, 500);
+  }
   
   // Handle Metadata Mode button
   grid.addEventListener("click", (e) => {
