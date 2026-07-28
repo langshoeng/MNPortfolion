@@ -362,9 +362,10 @@ function renderProjects(filter = "All") {
         'onStateChange': (e) => {
           if (e.data === YT.PlayerState.PLAYING && project.video.end !== undefined) {
             enforceCutoff(inlinePlayer, project.video.start || 0, project.video.end);
-            updateProgress(inlinePlayer, project.video.start || 0, project.video.end);
-            const timerEl = thumb.querySelector(".playback-timer");
-            updateTimer(inlinePlayer, project.video.start || 0, project.video.end, timerEl);
+            updateProgress(inlinePlayer, project.video.start || 0, project.video.end,
+                           thumb.querySelector(".custom-progress-bar"));
+            updateTimer(inlinePlayer, project.video.start || 0, project.video.end,
+                        thumb.querySelector(".playback-timer"));
           }
         }
       }
