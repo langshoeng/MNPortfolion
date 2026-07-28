@@ -288,7 +288,11 @@ function renderProjects(filter = "All") {
   
     // Replace with player container
     const thumb = card.querySelector(".project-thumb");
-    thumb.innerHTML = `<div id="inlinePlayer-${projectId}"></div>`;
+    thumb.innerHTML = `
+      <div style="display:flex; justify-content:center; align-items:center; width:100%; height:200px; border-radius:8px; overflow:hidden;">
+        <div id="inlinePlayer-${projectId}" style="flex:1;"></div>
+      </div>
+    `;
     activeInlineVideo = card;
   
     // Build YT.Player directly
