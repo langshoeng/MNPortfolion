@@ -160,7 +160,6 @@ function renderProjects(filter = "All") {
     }
   
     function showPreview(card) {
-
       // ✅ Stop Quick Preview playback if active
       if (activeInlinePlayer) {
         activeInlinePlayer.stopVideo();
@@ -175,7 +174,7 @@ function renderProjects(filter = "All") {
         `;
         activeInlineVideo = null;
       }
-      
+    
       const projectId = card.dataset.project;
       const project = allProjects.find(p => p.id === projectId);
       const video = card.dataset.video;
@@ -257,6 +256,7 @@ function renderProjects(filter = "All") {
     
       peekModal.classList.add("show");
     }
+
   
     function hidePreview() {
       peekModal.classList.remove("show");
