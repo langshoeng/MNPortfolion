@@ -289,13 +289,14 @@ function renderProjects(filter = "All") {
     // Replace with player + custom progress bar
     const thumb = card.querySelector(".project-thumb");
     thumb.innerHTML = `
-      <div class="quick-preview-wrapper">
-        <div id="inlinePlayer-${projectId}"></div>
-        <div class="custom-progress">
-          <div class="custom-progress-bar"></div>
-        </div>
+      <div id="inlinePlayer-${projectId}" 
+           style="width:100%; height:200px; border-radius:8px; overflow:hidden;">
+      </div>
+      <div class="custom-progress">
+        <div class="custom-progress-bar"></div>
       </div>
     `;
+
     activeInlineVideo = card;
   
     // Build YT.Player directly
