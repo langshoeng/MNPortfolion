@@ -128,6 +128,131 @@
         "gallery": []
     },
 
+
+    {
+        "id": "ai-3d-cartoon-course",
+
+        "title": "AI 3D Animation Course",
+
+        "featured": true,
+
+        "categories": [
+            "Video Editing"
+        ],
+
+        "client": "V-Mission Media",
+
+        "year": "Apr 2026",
+
+        "role": [
+            "Cameraman",
+            "Motion Graphics",
+            "Designing",
+            "Video Editing"
+        ],
+
+        "software": [
+            "After Effects",
+            "Premiere Pro",
+            "Photoshop",
+            "Camera"
+        ],
+
+        "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation, and commercial editing.",
+
+        "thumbnail": "images/projects/dis/cover.jpg",
+
+        "video": {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=P-dTlq7NREw",
+            "duration": "00:01:04"
+        },
+
+        "gallery": []
+    },
+
+    {
+        "id": "2026-new-year",
+
+        "title": "2026's New Year's Count Down",
+
+        "featured": true,
+
+        "categories": [
+            "Video Editing",
+            "Motion Graphic",
+            "Shorts"
+        ],
+
+        "client": "Cambo Car & Sea Sambatha",
+
+        "year": "Dec 2025",
+
+        "role": [
+            "Motion Graphics",
+            "Video Editing"
+        ],
+
+        "software": [
+            "After Effects",
+            "Element 3D",
+            "Photoshop"
+        ],
+
+        "description": "New Year's Celebration video featuring cinematic motion graphics, typography animation, 3d compositing.",
+
+        "thumbnail": "images/projects/dis/cover.jpg",
+
+        "video": {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=Hb2qUFAW4mo",
+            "duration": "00:00:50"
+        },
+
+        "gallery": []
+    },
+
+    {
+        "id": "recieve-big-gift",
+
+        "title": "ទទួលបានកាដូធំ (Big Gift)",
+
+        "featured": true,
+
+        "categories": [
+            "Video Editing",
+            "Motion Graphic",
+            "Shorts"
+        ],
+
+        "client": "Sea Sambath",
+
+        "year": "Dec 2024",
+
+        "role": [
+            "Motion Graphics",
+            "Video Editing"
+        ],
+
+        "software": [
+            "After Effects",
+            "Element 3D",
+            "Photoshop"
+        ],
+
+        "description": "New Year's Promotional Video Campaign featuring cinematic motion graphics, typography animation, 3d compositing, and commercial editing.",
+
+        "thumbnail": "images/projects/dis/cover.jpg",
+
+        "video": {
+            "type": "youtube",
+            "url": "https://www.youtube.com/watch?v=ghVnfNNxJ4A",
+            "duration": "00:00:20"
+        },
+
+        "gallery": []
+    },
+
     
     {
         "id": "coffee-brand",
