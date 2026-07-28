@@ -292,12 +292,15 @@ function renderProjects(filter = "All") {
       <div id="inlinePlayer-${projectId}" 
            style="width:100%; height:200px; border-radius:8px; overflow:hidden;">
       </div>
-      <div class="custom-progress">
-        <div class="custom-progress-bar"></div>
+      <div class="custom-controls">
+        <div class="custom-progress">
+          <div class="custom-progress-bar"></div>
+        </div>
+        <div class="playback-timer">00:00:00</div>
+        <button class="mute-toggle">🔇 Unmute</button>
       </div>
-      <div class="playback-timer">00:00:00</div>
-      <button class="mute-toggle">🔇 Unmute</button>
     `;
+
     activeInlineVideo = card;
   
     // ✅ Create the YouTube player
