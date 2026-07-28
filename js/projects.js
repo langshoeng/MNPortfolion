@@ -140,9 +140,11 @@ function renderProjects(filter = "All") {
     }
   
     function showPreview(card) {
+      const projectId = card.dataset.project;
+      const project = allProjects.find(p => p.id === projectId);
       const video = card.dataset.video;
       const image = card.dataset.image;
-  
+    
       if (video) {
         let videoId = "";
         if (video.includes("embed/")) {
@@ -150,39 +152,52 @@ function renderProjects(filter = "All") {
         } else if (video.includes("v=")) {
           videoId = video.split("v=")[1].split("&")[0];
         }
-  
+    
         peekVideoWrapper.style.display = "block";
         peekImage.style.display = "none";
         currentGallery = [];
-  
+    
         ensureYTPlayer();
-  
+    
         if (ytPlayer && videoId) {
-          ytPlayer.loadVideoById({ videoId: videoId, startSeconds: 0 });
+          ytPlayer.loadVideoById({
+            videoId: videoId,
+            startSeconds: project?.video?.start || 0,
+            endSeconds: project?.video?.end || undefined
+          });
           ytPlayer.mute();
+    
+          // 🔹 Strict cutoff enforcement
+          if (project?.video?.end !== undefined) {
+            const cutoff = project.video.end;
+            const interval = setInterval(() => {
+              if (ytPlayer.getCurrentTime() >= cutoff) {
+                ytPlayer.stopVideo();
+                clearInterval(interval);
+              }
+            }, 500); // check twice per second
+          }
         }
-  
+    
         const unmuteHint = document.querySelector(".unmute-hint");
         if (unmuteHint) {
           unmuteHint.classList.remove("fade-out");
         }
-  
+    
         if (peekPrev) peekPrev.style.display = "none";
         if (peekNext) peekNext.style.display = "none";
       } else if (image) {
-        const projectId = card.dataset.project;
-        const project = allProjects.find(p => p.id === projectId);
         currentGallery = project.gallery || [image];
         currentIndex = 0;
-  
+    
         peekImage.src = currentGallery[currentIndex];
         peekImage.style.display = "block";
         peekVideoWrapper.style.display = "none";
-  
+    
         if (peekPrev) peekPrev.style.display = "block";
         if (peekNext) peekNext.style.display = "block";
       }
-  
+    
       peekModal.classList.add("show");
     }
   
@@ -246,8 +261,9 @@ function renderProjects(filter = "All") {
   
     e.stopPropagation();
     const card = btn.closest(".project-card");
-    const videoUrl = card.dataset.video;
-    if (!videoUrl) return;
+    const projectId = card.dataset.project;
+    const project = allProjects.find(p => p.id === projectId);
+    if (!project || !project.video || project.video.type !== "youtube") return;
   
     // Stop previous video if active
     if (activeInlineVideo && activeInlineVideo !== card) {
@@ -255,15 +271,27 @@ function renderProjects(filter = "All") {
       const prevThumb = activeInlineVideo.querySelector(".project-thumb");
       prevThumb.innerHTML = `
         <img src="${prevProject.thumbnail}" alt="${prevProject.title}">
-        ${prevProject.video && prevProject.video.type !== "none" ? "" : ""}
         <span class="peek-hint">Hold to Peek</span>
       `;
+    }
+  
+    // Build embed URL
+    let embedUrl = project.video.url.replace("watch?v=", "embed/").split("&")[0];
+    embedUrl += "?autoplay=1&mute=1&rel=0";
+  
+    // Apply start & end if defined
+    if (project.video.start !== undefined) {
+      embedUrl += `&start=${project.video.start}`;
+    }
+    if (project.video.end !== undefined) {
+      embedUrl += `&end=${project.video.end}`;
     }
   
     // Replace with iframe
     const thumb = card.querySelector(".project-thumb");
     thumb.innerHTML = `
-      <iframe src="${videoUrl}?autoplay=1&mute=1&rel=0"
+      <iframe id="inlinePlayer-${projectId}"
+              src="${embedUrl}"
               frameborder="0"
               allow="autoplay; encrypted-media"
               allowfullscreen
@@ -272,6 +300,26 @@ function renderProjects(filter = "All") {
     `;
   
     activeInlineVideo = card;
+  
+    // 🔹 Strict cutoff enforcement using YouTube API
+    if (project.video.end !== undefined) {
+      // Load API player for inline iframe
+      const inlinePlayer = new YT.Player(`inlinePlayer-${projectId}`, {
+        events: {
+          'onStateChange': function(e) {
+            if (e.data === YT.PlayerState.PLAYING) {
+              const cutoff = project.video.end;
+              const interval = setInterval(() => {
+                if (inlinePlayer.getCurrentTime() >= cutoff) {
+                  inlinePlayer.stopVideo();
+                  clearInterval(interval);
+                }
+              }, 500);
+            }
+          }
+        }
+      });
+    }
   });
   
   // Handle Metadata Mode button
