@@ -464,7 +464,11 @@
     <!-- Video wrapper with YouTube API player -->
     <div id="peekVideoWrapper" style="position:relative; display:none;">
       <div id="peekVideo"></div>
-      <div class="unmute-hint">🔊 Tap to Unmute</div>
+      <div class="custom-controls">
+        <div class="custom-progress"><div class="custom-progress-bar"></div></div>
+        <div class="playback-timer">00:00:00</div>
+        <button class="mute-toggle">🔇 Unmute</button>
+      </div>
     </div>
 
     <button id="peekNext" class="peek-nav">&#10095;</button>
