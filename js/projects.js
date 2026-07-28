@@ -24,6 +24,7 @@ let ytPlayer;
 
 // Track currently active inline video card
 let activeInlineVideo = null;
+let activeInlinePlayer = null; // track the current inline YT.Player
 
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('peekVideo', {
@@ -159,6 +160,22 @@ function renderProjects(filter = "All") {
     }
   
     function showPreview(card) {
+
+      // ✅ Stop Quick Preview playback if active
+      if (activeInlinePlayer) {
+        activeInlinePlayer.stopVideo();
+        activeInlinePlayer = null;
+      }
+      if (activeInlineVideo) {
+        const prevProject = allProjects.find(p => p.id === activeInlineVideo.dataset.project);
+        const prevThumb = activeInlineVideo.querySelector(".project-thumb");
+        prevThumb.innerHTML = `
+          <img src="${prevProject.thumbnail}" alt="${prevProject.title}">
+          <span class="peek-hint">Hold to Peek</span>
+        `;
+        activeInlineVideo = null;
+      }
+      
       const projectId = card.dataset.project;
       const project = allProjects.find(p => p.id === projectId);
       const video = card.dataset.video;
@@ -358,6 +375,10 @@ function renderProjects(filter = "All") {
         }
       }
     });
+
+    // ✅ Track globally
+    activeInlineVideo = card;
+    activeInlinePlayer = inlinePlayer;
   
     // ✅ Add click-to-seek on custom progress bar
     const progressTrack = thumb.querySelector(".custom-progress");
@@ -424,15 +445,12 @@ function renderProjects(filter = "All") {
     const project = allProjects.find(p => p.id === projectId);
     if (!project) return;
   
-    // ✅ Stop any active Quick Preview playback before opening metadata
+    // ✅ Stop Quick Preview playback
+    if (activeInlinePlayer) {
+      activeInlinePlayer.stopVideo();
+      activeInlinePlayer = null;
+    }
     if (activeInlineVideo) {
-      const inlineIframe = activeInlineVideo.querySelector("iframe[id^='inlinePlayer-']");
-      if (inlineIframe && inlineIframe.id) {
-        // Create a temporary YT.Player reference to stop playback
-        const tempPlayer = new YT.Player(inlineIframe.id);
-        tempPlayer.stopVideo();
-      }
-  
       const prevProject = allProjects.find(p => p.id === activeInlineVideo.dataset.project);
       const prevThumb = activeInlineVideo.querySelector(".project-thumb");
       prevThumb.innerHTML = `
@@ -442,7 +460,7 @@ function renderProjects(filter = "All") {
       activeInlineVideo = null;
     }
   
-    openProject(project); // your existing metadata modal function
+    openProject(project);
   });
 
   // Bind events for cards
