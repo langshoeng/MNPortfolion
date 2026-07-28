@@ -1,4 +1,4 @@
-function enforceCutoff(player, startTime, endTime) {
+function enforceCutoff(player, startTime, endTime, store) {
   const interval = setInterval(() => {
     if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
 
@@ -15,6 +15,8 @@ function enforceCutoff(player, startTime, endTime) {
       clearInterval(interval);
     }
   }, 500);
+  if (store) store.push(interval); // NEW: track so we can clean this up later
+  return interval;
 }
 
 // =======================================
@@ -24,6 +26,53 @@ let ytPlayer;
 
 // Track currently active inline video card
 let activeInlineVideo = null;
+let activeInlinePlayer = null; // NEW: reference to the live Quick Preview YT.Player instance
+
+// NEW: interval ids driving each preview surface, tracked separately so
+// clearing one never accidentally kills the other's progress bar/timer
+let peekIntervals = [];
+let inlineIntervals = [];
+
+// NEW: small helper to clear a batch of intervals and empty the array
+function clearIntervals(store) {
+  store.forEach(id => clearInterval(id));
+  store.length = 0;
+}
+
+// NEW: fully stop whatever inline Quick Preview is playing (if any) and
+// revert that card back to its static thumbnail.
+function stopInlinePreview() {
+  if (!activeInlineVideo) return;
+
+  const project = allProjects.find(p => p.id === activeInlineVideo.dataset.project);
+  const thumb = activeInlineVideo.querySelector(".project-thumb");
+
+  if (thumb) {
+    thumb.innerHTML = `
+      <img src="${project ? project.thumbnail : ""}" alt="${project ? project.title : ""}">
+      <span class="peek-hint">Hold to Peek</span>
+    `;
+  }
+
+  clearIntervals(inlineIntervals);
+  activeInlinePlayer = null;
+  activeInlineVideo = null;
+}
+
+// NEW: pause the Peek modal's video without closing the modal
+function pausePeekPlayback() {
+  if (ytPlayer && typeof ytPlayer.pauseVideo === "function") {
+    try { ytPlayer.pauseVideo(); } catch (e) {}
+  }
+}
+
+// NEW: single entry point — call this before opening ANY preview surface
+// (Peek modal, Quick Preview, or full metadata view) so only one video can
+// ever be playing at a time.
+function pauseAllPreviews() {
+  stopInlinePreview();
+  pausePeekPlayback();
+}
 
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('peekVideo', {
@@ -159,6 +208,8 @@ function renderProjects(filter = "All") {
     }
   
     function showPreview(card) {
+      pauseAllPreviews(); // NEW: stop any Quick Preview / pause peek video before opening
+
       const projectId = card.dataset.project;
       const project = allProjects.find(p => p.id === projectId);
       const video = card.dataset.video;
@@ -191,11 +242,12 @@ function renderProjects(filter = "All") {
           ytPlayer.mute();
     
           if (project?.video?.end !== undefined) {
-            enforceCutoff(ytPlayer, project.video.start || 0, project.video.end);
+            clearIntervals(peekIntervals); // NEW: drop any stale peek intervals first
+            enforceCutoff(ytPlayer, project.video.start || 0, project.video.end, peekIntervals);
             updateProgress(ytPlayer, project.video.start || 0, project.video.end,
-                           peekVideoWrapper.querySelector(".custom-progress-bar"));
+                           peekVideoWrapper.querySelector(".custom-progress-bar"), peekIntervals);
             updateTimer(ytPlayer, project.video.start || 0, project.video.end,
-                        peekVideoWrapper.querySelector(".playback-timer"));
+                        peekVideoWrapper.querySelector(".playback-timer"), peekIntervals);
           }
     
           // ✅ Mute/Unmute toggle
@@ -247,6 +299,7 @@ function renderProjects(filter = "All") {
       peekVideoWrapper.style.display = "none";
       currentGallery = [];
       currentIndex = 0;
+      clearIntervals(peekIntervals); // NEW: stop the peek progress/timer loops
       if (ytPlayer) ytPlayer.stopVideo();
     }
   
@@ -305,15 +358,9 @@ function renderProjects(filter = "All") {
     const project = allProjects.find(p => p.id === projectId);
     if (!project || !project.video || project.video.type !== "youtube") return;
   
-    // Stop previous video if active
-    if (activeInlineVideo && activeInlineVideo !== card) {
-      const prevProject = allProjects.find(p => p.id === activeInlineVideo.dataset.project);
-      const prevThumb = activeInlineVideo.querySelector(".project-thumb");
-      prevThumb.innerHTML = `
-        <img src="${prevProject.thumbnail}" alt="${prevProject.title}">
-        <span class="peek-hint">Hold to Peek</span>
-      `;
-    }
+    // NEW: stop whatever else is playing (previous Quick Preview card,
+    // and/or the Peek modal video) before starting this one
+    pauseAllPreviews();
   
     // Replace with player + custom UI
     const thumb = card.querySelector(".project-thumb");
@@ -349,15 +396,18 @@ function renderProjects(filter = "All") {
         },
         'onStateChange': (e) => {
           if (e.data === YT.PlayerState.PLAYING && project.video.end !== undefined) {
-            enforceCutoff(inlinePlayer, project.video.start || 0, project.video.end);
+            clearIntervals(inlineIntervals); // NEW: avoid stacking duplicate loops
+            enforceCutoff(inlinePlayer, project.video.start || 0, project.video.end, inlineIntervals);
             updateProgress(inlinePlayer, project.video.start || 0, project.video.end,
-                           thumb.querySelector(".custom-progress-bar"));
+                           thumb.querySelector(".custom-progress-bar"), inlineIntervals);
             updateTimer(inlinePlayer, project.video.start || 0, project.video.end,
-                        thumb.querySelector(".playback-timer"));
+                        thumb.querySelector(".playback-timer"), inlineIntervals);
           }
         }
       }
     });
+
+    activeInlinePlayer = inlinePlayer; // NEW: expose the live player so other code can pause it
   
     // ✅ Add click-to-seek on custom progress bar
     const progressTrack = thumb.querySelector(".custom-progress");
@@ -386,14 +436,16 @@ function renderProjects(filter = "All") {
   });
   
   // Custom progress updater
-  function updateProgress(player, startTime, endTime, barEl) {
+  function updateProgress(player, startTime, endTime, barEl, store) {
     const duration = endTime - startTime;
-    setInterval(() => {
+    const interval = setInterval(() => {
       if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
       const current = player.getCurrentTime();
       const progress = ((current - startTime) / duration) * 100;
       barEl.style.width = `${Math.min(progress, 100)}%`;
     }, 500);
+    if (store) store.push(interval); // NEW
+    return interval;
   }
   
   // Custom timer updater
@@ -404,13 +456,15 @@ function renderProjects(filter = "All") {
     return `${h}:${m}:${s}`;
   }
   
-  function updateTimer(player, startTime, endTime, timerEl) {
-    setInterval(() => {
+  function updateTimer(player, startTime, endTime, timerEl, store) {
+    const interval = setInterval(() => {
       if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
       const current = player.getCurrentTime();
       if (current >= endTime) return;
       timerEl.textContent = formatTime(current - startTime);
     }, 500);
+    if (store) store.push(interval); // NEW
+    return interval;
   }
 
   
@@ -425,6 +479,7 @@ function renderProjects(filter = "All") {
     const project = allProjects.find(p => p.id === projectId);
     if (!project) return;
   
+    pauseAllPreviews(); // NEW: stop any playing preview before opening full detail view
     openProject(project); // your existing metadata modal function
   });
 
@@ -495,5 +550,6 @@ document.addEventListener("click", (e) => {
   const project = allProjects.find(p => p.id === projectId);
   if (!project) return;
 
+  pauseAllPreviews(); // NEW: stop any playing preview before opening full detail view
   openProject(project);
 });
