@@ -400,6 +400,7 @@ function openProject(project){
         // so the progress bar / timer / mute button look and behave the same
         viewerMedia.innerHTML = `
             <div id="metadataPlayer"></div>
+            <div class="yt-click-shield"></div>
             <div class="custom-controls">
               <div class="custom-progress">
                 <div class="custom-progress-bar"></div>
@@ -422,9 +423,14 @@ function openProject(project){
             videoId: videoId,
             playerVars: {
                 autoplay: 1,
-                mute: 1,        // NEW: start muted, same as Quick Preview / Peek
-                controls: 0,    // NEW: hide native controls, use the custom bar instead
+                mute: 1,             // start muted, same as Quick Preview / Peek
+                controls: 0,         // hide native controls, use the custom bar instead
                 rel: 0,
+                modestbranding: 1,   // NEW: trims YouTube logo where still honored
+                iv_load_policy: 3,   // NEW: suppress video annotations
+                disablekb: 1,        // NEW: no keyboard shortcuts on the iframe
+                playsinline: 1,      // NEW: avoid iOS forcing native fullscreen
+                fs: 0,               // NEW: no native fullscreen button
                 start: startTime
             },
             events: {
