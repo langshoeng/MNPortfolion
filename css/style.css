@@ -1989,3 +1989,30 @@ section {
 .viewer-window.video-mode .playback-timer {
   color: #fff;
 }
+
+/* ==========================================
+   YouTube click-shield — swallows clicks on
+   YouTube's own hover title bar / channel link /
+   logo watermark so users can't accidentally
+   leave the site. Playback is fully driven by
+   our own custom-controls, which sit above this.
+========================================== */
+.yt-click-shield {
+  position: absolute;
+  z-index: 2;
+  background: transparent;
+}
+
+/* Metadata modal: shield covers the full 16:9 video box */
+.viewer-window.video-mode .yt-click-shield {
+  inset: 0;
+}
+
+/* Quick Preview: shield covers just the 200px video area,
+   not the custom-controls row that sits below it */
+.project-thumb .yt-click-shield {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+}
