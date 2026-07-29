@@ -470,7 +470,12 @@
       <div class="custom-controls">
         <div class="custom-progress"><div class="custom-progress-bar"></div></div>
         <div class="playback-timer">00:00:00</div>
-        <button class="mute-toggle">🔇 Unmute</button>
+        <div class="volume-control">
+          <button class="mute-toggle" aria-label="Mute">🔇</button>
+          <div class="volume-popup">
+            <input type="range" class="volume-slider" min="0" max="100" value="100">
+          </div>
+        </div>
       </div>
     </div>
 
