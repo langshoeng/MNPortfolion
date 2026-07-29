@@ -1751,13 +1751,20 @@ section {
   max-height: 80vh;
 }
 
-/* Videos default */
-.peek-content iframe {
+/* Video box (replaces old ".peek-content iframe" sizing —
+   moved here so the yt-click-shield has a sized box to fill) */
+.peek-video-box {
+  position: relative;
   display: block;
   margin: auto;
   width: 100%;
   height: auto;
   max-height: 80vh;
+}
+.peek-video-box iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .peek-close {
@@ -1777,7 +1784,7 @@ section {
     width: 95%;
     max-height: 85vh;
   }
-  .peek-content iframe {
+  .peek-video-box {
     width: 95%;
     height: 50vh;
   }
@@ -1785,7 +1792,7 @@ section {
 
 /* Desktop: make videos wide and cinematic, images wider */
 @media (min-width: 769px) {
-  .peek-content iframe {
+  .peek-video-box {
     width: 80vw;
     height: 45vw; /* 16:9 aspect ratio */
     max-height: 80vh;
@@ -2015,4 +2022,9 @@ section {
   left: 0;
   right: 0;
   height: 200px;
+}
+
+/* Peek modal: shield covers the full peek-video-box */
+.peek-video-box .yt-click-shield {
+  inset: 0;
 }
