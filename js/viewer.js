@@ -33,6 +33,10 @@ let currentProject = null;
 let currentGallery = [];
 let currentImage = 0;
 
+// NEW: metadata-modal video state, mirrors activeInlinePlayer / ytPlayer in projects.js
+let activeMetadataPlayer = null;
+let metadataIntervals = [];
+
 // ===========================================
 // Missing Image Placeholder
 // ===========================================
@@ -342,6 +346,10 @@ function getYoutubeEmbed(url){
 // ===========================================
 
 function openProject(project){
+    // NEW: stop Quick Preview / Peek playback (defined in projects.js) before
+    // this modal starts its own video, so nothing ever plays at once.
+    if (typeof pauseAllPreviews === "function") pauseAllPreviews();
+
     currentProject = project;
     currentGallery = [];
     currentImage = 0;
@@ -358,6 +366,11 @@ function openProject(project){
     viewerWindow.classList.remove("gallery-mode","video-mode");
     viewerPrev.style.display = "none";
     viewerNext.style.display = "none";
+
+    // NEW: drop any leftover progress/timer loops and player ref from a
+    // previously open project before wiping the media container
+    clearIntervals(metadataIntervals);
+    activeMetadataPlayer = null;
 
     viewerMedia.innerHTML = "";
     viewerDots.innerHTML = "";
@@ -382,30 +395,79 @@ function openProject(project){
 
     if (project.video && project.video.type === "youtube") {
         viewerWindow.classList.add("video-mode");
-        viewerMedia.innerHTML = `<div id="metadataPlayer"></div>`;
-    
+
+        // NEW: same custom-controls markup as Quick Preview / Peek modal,
+        // so the progress bar / timer / mute button look and behave the same
+        viewerMedia.innerHTML = `
+            <div id="metadataPlayer"></div>
+            <div class="custom-controls">
+              <div class="custom-progress">
+                <div class="custom-progress-bar"></div>
+              </div>
+              <div class="playback-timer">00:00:00</div>
+              <button class="mute-toggle">🔇 Unmute</button>
+            </div>
+        `;
+
+        const progressTrack = viewerMedia.querySelector(".custom-progress");
+        const progressBar = viewerMedia.querySelector(".custom-progress-bar");
+        const timerEl = viewerMedia.querySelector(".playback-timer");
+        const muteBtn = viewerMedia.querySelector(".mute-toggle");
+
         const videoId = project.video.url.split("v=")[1].split("&")[0];
-    
+        const startTime = project.video.start || 0;
+        const endTime = project.video.end;
+
         const metaPlayer = new YT.Player('metadataPlayer', {
             videoId: videoId,
             playerVars: {
                 autoplay: 1,
-                mute: 0,
-                controls: 1,
+                mute: 1,        // NEW: start muted, same as Quick Preview / Peek
+                controls: 0,    // NEW: hide native controls, use the custom bar instead
                 rel: 0,
-                start: project.video.start || 0
+                start: startTime
             },
             events: {
                 'onReady': () => {
-                    metaPlayer.seekTo(project.video.start || 0);
+                    metaPlayer.seekTo(startTime);
+                    metaPlayer.mute();
                 },
                 'onStateChange': (e) => {
-                    if (e.data === YT.PlayerState.PLAYING && project.video.end !== undefined) {
-                        enforceCutoff(metaPlayer, project.video.start || 0, project.video.end);
+                    if (e.data === YT.PlayerState.PLAYING && endTime !== undefined) {
+                        clearIntervals(metadataIntervals); // NEW: avoid stacking duplicate loops
+                        enforceCutoff(metaPlayer, startTime, endTime, metadataIntervals);
+                        updateProgress(metaPlayer, startTime, endTime, progressBar, metadataIntervals);
+                        updateTimer(metaPlayer, startTime, endTime, timerEl, metadataIntervals);
                     }
                 }
             }
         });
+
+        activeMetadataPlayer = metaPlayer; // NEW: expose so other code (or future cleanup) can reach it
+
+        // ✅ Mute/Unmute toggle (same pattern as Quick Preview / Peek)
+        muteBtn.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            if (metaPlayer.isMuted()) {
+                metaPlayer.unMute();
+                muteBtn.textContent = "🔊 Mute";
+            } else {
+                metaPlayer.mute();
+                muteBtn.textContent = "🔇 Unmute";
+            }
+        });
+
+        // ✅ Click-to-seek on custom progress bar
+        progressTrack.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            const rect = progressTrack.getBoundingClientRect();
+            const clickX = ev.clientX - rect.left;
+            const percent = clickX / rect.width;
+            const duration = (endTime !== undefined ? endTime : metaPlayer.getDuration()) - startTime;
+            const newTime = startTime + percent * duration;
+            metaPlayer.seekTo(newTime, true);
+        });
+
         return;
     }
 
@@ -605,6 +667,10 @@ function closeProject() {
     viewerMedia.innerHTML = "";
     viewerDots.innerHTML = "";
     viewerCounter.textContent = "";
+
+    // NEW: stop the metadata player's progress/timer loops and drop the reference
+    clearIntervals(metadataIntervals);
+    activeMetadataPlayer = null;
 
     currentGallery = [];
     currentImage = 0;
