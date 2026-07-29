@@ -1968,3 +1968,24 @@ section {
   background: #eee;
   border-radius: 4px;
 }
+
+/* ==========================================
+   Metadata Modal — overlay the custom controls
+   on top of the 16:9 video instead of stacking
+   below it (there's no spare height in that box)
+========================================== */
+.viewer-window.video-mode .custom-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 10px 16px;
+  background: linear-gradient(to top, rgba(0,0,0,.75), rgba(0,0,0,0));
+  z-index: 5;
+}
+
+/* .playback-timer's default color:#333 is unreadable over video */
+.viewer-window.video-mode .playback-timer {
+  color: #fff;
+}
