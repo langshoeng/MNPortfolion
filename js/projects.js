@@ -118,7 +118,12 @@ function onYouTubeIframeAPIReady() {
       autoplay: 1,
       mute: 1,
       controls: 0,
-      rel: 0
+      rel: 0,
+      modestbranding: 1,  // NEW: trims YouTube logo where still honored
+      iv_load_policy: 3,  // NEW: suppress video annotations
+      disablekb: 1,        // NEW: no keyboard shortcuts on the iframe
+      playsinline: 1,      // NEW: avoid iOS forcing native fullscreen
+      fs: 0                // NEW: no native fullscreen button
     }
   });
 }
@@ -131,7 +136,12 @@ function ensureYTPlayer() {
         autoplay: 1,
         mute: 1,
         controls: 0,
-        rel: 0
+        rel: 0,
+        modestbranding: 1,  // NEW: trims YouTube logo where still honored
+        iv_load_policy: 3,  // NEW: suppress video annotations
+        disablekb: 1,        // NEW: no keyboard shortcuts on the iframe
+        playsinline: 1,      // NEW: avoid iOS forcing native fullscreen
+        fs: 0                // NEW: no native fullscreen button
       }
     });
     console.log("YT player ensured");
@@ -405,6 +415,7 @@ function renderProjects(filter = "All") {
       <div id="inlinePlayer-${projectId}" 
            style="width:100%; height:200px; border-radius:8px; overflow:hidden;">
       </div>
+      <div class="yt-click-shield"></div>
       <div class="custom-controls">
         <div class="custom-progress">
           <div class="custom-progress-bar"></div>
@@ -424,7 +435,12 @@ function renderProjects(filter = "All") {
         autoplay: 1,
         mute: 1,
         rel: 0,
-        controls: 0,   // hide native controls
+        controls: 0,        // hide native controls
+        modestbranding: 1,  // NEW: trims YouTube logo where still honored
+        iv_load_policy: 3,  // NEW: suppress video annotations
+        disablekb: 1,       // NEW: no keyboard shortcuts on the iframe
+        playsinline: 1,     // NEW: avoid iOS forcing native fullscreen
+        fs: 0,              // NEW: no native fullscreen button
         start: project.video.start || 0
       },
       events: {
