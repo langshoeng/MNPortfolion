@@ -119,44 +119,46 @@ function setupVolumeControl(player, container) {
   const slider = container.querySelector(".volume-slider");
   if (!muteBtn || !slider) return;
 
+  // Track state locally instead of re-querying player.isMuted()/getVolume()
+  // right after changing them — those calls are asynchronous under the
+  // YouTube IFrame API (they post a message to the iframe), so reading them
+  // back immediately returns the OLD value and the icon ends up one click
+  // behind. We already know what we just told the player to do, so just
+  // remember it ourselves.
   let lastVolume = 100;
-  try { lastVolume = player.getVolume() || 100; } catch (e) {}
+  let muted = true; // every player in this project starts muted (autoplay policy)
 
-  function isEffectivelyMuted() {
-    try { return player.isMuted() || player.getVolume() === 0; } catch (e) { return true; }
-  }
-
-  function sync() {
-    const muted = isEffectivelyMuted();
+  function render() {
     muteBtn.textContent = muted ? "🔇" : "🔊";
-    try { slider.value = muted ? 0 : player.getVolume(); } catch (e) {}
+    slider.value = muted ? 0 : lastVolume;
   }
 
   muteBtn.onclick = (ev) => {
     ev.stopPropagation();
-    if (isEffectivelyMuted()) {
-      const restore = lastVolume > 0 ? lastVolume : 100;
-      player.setVolume(restore);
+    if (muted) {
+      player.setVolume(lastVolume);
       player.unMute();
+      muted = false;
     } else {
-      try { lastVolume = player.getVolume() || lastVolume; } catch (e) {}
-      player.setVolume(0);
       player.mute();
+      muted = true;
     }
-    sync();
+    render();
   };
 
   slider.oninput = (ev) => {
     ev.stopPropagation();
     const val = Number(slider.value);
-    player.setVolume(val);
     if (val > 0) {
-      player.unMute();
       lastVolume = val;
+      player.setVolume(val);
+      player.unMute();
+      muted = false;
     } else {
       player.mute();
+      muted = true;
     }
-    sync();
+    render();
   };
 
   // Don't let interacting with the slider trigger card hold-to-peek,
@@ -165,7 +167,7 @@ function setupVolumeControl(player, container) {
   container.ontouchstart = e => e.stopPropagation();
   container.onclick = e => e.stopPropagation();
 
-  sync();
+  render();
 }
 
 // Brief play/pause icon flash on the click-shield, purely visual
