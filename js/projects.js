@@ -15,7 +15,7 @@ function enforceCutoff(player, startTime, endTime, store) {
       clearInterval(interval);
     }
   }, 500);
-  if (store) store.push(interval); // NEW: track so we can clean this up later
+  if (store) store.push(interval);
   return interval;
 }
 
@@ -26,20 +26,20 @@ let ytPlayer;
 
 // Track currently active inline video card
 let activeInlineVideo = null;
-let activeInlinePlayer = null; // NEW: reference to the live Quick Preview YT.Player instance
+let activeInlinePlayer = null;
 
-// NEW: interval ids driving each preview surface, tracked separately so
+// Interval ids driving each preview surface, tracked separately so
 // clearing one never accidentally kills the other's progress bar/timer
 let peekIntervals = [];
 let inlineIntervals = [];
 
-// NEW: small helper to clear a batch of intervals and empty the array
+// Small helper to clear a batch of intervals and empty the array
 function clearIntervals(store) {
   store.forEach(id => clearInterval(id));
   store.length = 0;
 }
 
-// NEW: fully stop whatever inline Quick Preview is playing (if any) and
+// Fully stop whatever inline Quick Preview is playing (if any) and
 // revert that card back to its static thumbnail.
 function stopInlinePreview() {
   if (!activeInlineVideo) return;
@@ -59,25 +59,20 @@ function stopInlinePreview() {
   activeInlineVideo = null;
 }
 
-// NEW: pause the Peek modal's video without closing the modal
+// Pause the Peek modal's video without closing the modal
 function pausePeekPlayback() {
   if (ytPlayer && typeof ytPlayer.pauseVideo === "function") {
     try { ytPlayer.pauseVideo(); } catch (e) {}
   }
 }
 
-// NEW: single entry point — call this before opening ANY preview surface
+// Single entry point — call this before opening ANY preview surface
 // (Peek modal, Quick Preview, or full metadata view) so only one video can
 // ever be playing at a time.
 function pauseAllPreviews() {
   stopInlinePreview();
   pausePeekPlayback();
 }
-
-// MOVED: these three used to be nested inside renderProjects(), which meant
-// viewer.js (a separate script) couldn't see them — that's what caused the
-// metadata modal's progress bar/timer to silently fail and stay at 00:00:00.
-// They're now top-level, same as enforceCutoff, so any script can call them.
 
 // Custom progress updater
 function updateProgress(player, startTime, endTime, barEl, store) {
@@ -111,6 +106,101 @@ function updateTimer(player, startTime, endTime, timerEl, store) {
   return interval;
 }
 
+// Wires up the mute/volume combo button — click toggles mute (drops to 0 /
+// restores last non-zero value), hover reveals a vertical slider for manual
+// volume control. Uses property assignment (onclick/oninput, not
+// addEventListener) throughout so it's always safe to call again on a
+// container that already had it wired — matters for Peek, whose DOM is
+// static and reused across opens, unlike Quick Preview/metadata modal
+// whose containers are rebuilt fresh every time.
+function setupVolumeControl(player, container) {
+  if (!player || !container) return;
+  const muteBtn = container.querySelector(".mute-toggle");
+  const slider = container.querySelector(".volume-slider");
+  if (!muteBtn || !slider) return;
+
+  let lastVolume = 100;
+  try { lastVolume = player.getVolume() || 100; } catch (e) {}
+
+  function isEffectivelyMuted() {
+    try { return player.isMuted() || player.getVolume() === 0; } catch (e) { return true; }
+  }
+
+  function sync() {
+    const muted = isEffectivelyMuted();
+    muteBtn.textContent = muted ? "🔇" : "🔊";
+    try { slider.value = muted ? 0 : player.getVolume(); } catch (e) {}
+  }
+
+  muteBtn.onclick = (ev) => {
+    ev.stopPropagation();
+    if (isEffectivelyMuted()) {
+      const restore = lastVolume > 0 ? lastVolume : 100;
+      player.setVolume(restore);
+      player.unMute();
+    } else {
+      try { lastVolume = player.getVolume() || lastVolume; } catch (e) {}
+      player.setVolume(0);
+      player.mute();
+    }
+    sync();
+  };
+
+  slider.oninput = (ev) => {
+    ev.stopPropagation();
+    const val = Number(slider.value);
+    player.setVolume(val);
+    if (val > 0) {
+      player.unMute();
+      lastVolume = val;
+    } else {
+      player.mute();
+    }
+    sync();
+  };
+
+  // Don't let interacting with the slider trigger card hold-to-peek,
+  // card click-through, or bubble into anything else behind it
+  container.onmousedown = e => e.stopPropagation();
+  container.ontouchstart = e => e.stopPropagation();
+  container.onclick = e => e.stopPropagation();
+
+  sync();
+}
+
+// Brief play/pause icon flash on the click-shield, purely visual
+function flashPlayPauseIcon(shieldEl, willPlay) {
+  if (!shieldEl) return;
+  let flash = shieldEl.querySelector(".play-pause-flash");
+  if (!flash) {
+    flash = document.createElement("div");
+    flash.className = "play-pause-flash";
+    shieldEl.appendChild(flash);
+  }
+  flash.textContent = willPlay ? "▶" : "⏸";
+  flash.classList.remove("show");
+  void flash.offsetWidth; // restart the CSS transition
+  flash.classList.add("show");
+  clearTimeout(flash._hideTimer);
+  flash._hideTimer = setTimeout(() => flash.classList.remove("show"), 500);
+}
+
+// The click-shield blocks clicks from reaching YouTube's iframe (that's the
+// point — no accidental navigation), which also means it swallows the click
+// a user would normally use to pause/resume. This restores that on the
+// shield itself instead.
+function toggleShieldPlayback(shieldEl, player) {
+  if (!player || typeof player.getPlayerState !== "function") return;
+  let isPlaying = false;
+  try { isPlaying = player.getPlayerState() === YT.PlayerState.PLAYING; } catch (e) {}
+  if (isPlaying) {
+    player.pauseVideo();
+  } else {
+    player.playVideo();
+  }
+  flashPlayPauseIcon(shieldEl, !isPlaying);
+}
+
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('peekVideo', {
     videoId: '',
@@ -119,11 +209,11 @@ function onYouTubeIframeAPIReady() {
       mute: 1,
       controls: 0,
       rel: 0,
-      modestbranding: 1,  // NEW: trims YouTube logo where still honored
-      iv_load_policy: 3,  // NEW: suppress video annotations
-      disablekb: 1,        // NEW: no keyboard shortcuts on the iframe
-      playsinline: 1,      // NEW: avoid iOS forcing native fullscreen
-      fs: 0                // NEW: no native fullscreen button
+      modestbranding: 1,
+      iv_load_policy: 3,
+      disablekb: 1,
+      playsinline: 1,
+      fs: 0
     }
   });
 }
@@ -137,11 +227,11 @@ function ensureYTPlayer() {
         mute: 1,
         controls: 0,
         rel: 0,
-        modestbranding: 1,  // NEW: trims YouTube logo where still honored
-        iv_load_policy: 3,  // NEW: suppress video annotations
-        disablekb: 1,        // NEW: no keyboard shortcuts on the iframe
-        playsinline: 1,      // NEW: avoid iOS forcing native fullscreen
-        fs: 0                // NEW: no native fullscreen button
+        modestbranding: 1,
+        iv_load_policy: 3,
+        disablekb: 1,
+        playsinline: 1,
+        fs: 0
       }
     });
     console.log("YT player ensured");
@@ -255,7 +345,7 @@ function renderProjects(filter = "All") {
     }
   
     function showPreview(card) {
-      pauseAllPreviews(); // NEW: stop any Quick Preview / pause peek video before opening
+      pauseAllPreviews(); // stop any Quick Preview / pause peek video before opening
 
       const projectId = card.dataset.project;
       const project = allProjects.find(p => p.id === projectId);
@@ -277,7 +367,6 @@ function renderProjects(filter = "All") {
         // Reset controls
         peekVideoWrapper.querySelector(".custom-progress-bar").style.width = "0%";
         peekVideoWrapper.querySelector(".playback-timer").textContent = "00:00:00";
-        peekVideoWrapper.querySelector(".mute-toggle").textContent = "🔇 Unmute";
     
         ensureYTPlayer();
     
@@ -289,26 +378,18 @@ function renderProjects(filter = "All") {
           ytPlayer.mute();
     
           if (project?.video?.end !== undefined) {
-            clearIntervals(peekIntervals); // NEW: drop any stale peek intervals first
+            clearIntervals(peekIntervals); // drop any stale peek intervals first
             enforceCutoff(ytPlayer, project.video.start || 0, project.video.end, peekIntervals);
             updateProgress(ytPlayer, project.video.start || 0, project.video.end,
                            peekVideoWrapper.querySelector(".custom-progress-bar"), peekIntervals);
             updateTimer(ytPlayer, project.video.start || 0, project.video.end,
                         peekVideoWrapper.querySelector(".playback-timer"), peekIntervals);
           }
-    
-          // ✅ Mute/Unmute toggle
-          const muteBtn = peekVideoWrapper.querySelector(".mute-toggle");
-          muteBtn.onclick = (ev) => {
-            ev.stopPropagation();
-            if (ytPlayer.isMuted()) {
-              ytPlayer.unMute();
-              muteBtn.textContent = "🔊 Mute";
-            } else {
-              ytPlayer.mute();
-              muteBtn.textContent = "🔇 Unmute";
-            }
-          };
+
+          // Mute/volume combo button + play-pause on the click-shield
+          setupVolumeControl(ytPlayer, peekVideoWrapper.querySelector(".volume-control"));
+          const peekShield = peekVideoWrapper.querySelector(".yt-click-shield");
+          if (peekShield) peekShield.onclick = () => toggleShieldPlayback(peekShield, ytPlayer);
     
           // ✅ Click-to-seek on custom progress bar
           const progressTrack = peekVideoWrapper.querySelector(".custom-progress");
@@ -346,7 +427,7 @@ function renderProjects(filter = "All") {
       peekVideoWrapper.style.display = "none";
       currentGallery = [];
       currentIndex = 0;
-      clearIntervals(peekIntervals); // NEW: stop the peek progress/timer loops
+      clearIntervals(peekIntervals);
       if (ytPlayer) ytPlayer.stopVideo();
     }
   
@@ -405,7 +486,7 @@ function renderProjects(filter = "All") {
     const project = allProjects.find(p => p.id === projectId);
     if (!project || !project.video || project.video.type !== "youtube") return;
   
-    // NEW: stop whatever else is playing (previous Quick Preview card,
+    // Stop whatever else is playing (previous Quick Preview card,
     // and/or the Peek modal video) before starting this one
     pauseAllPreviews();
   
@@ -421,7 +502,12 @@ function renderProjects(filter = "All") {
           <div class="custom-progress-bar"></div>
         </div>
         <div class="playback-timer">00:00:00</div>
-        <button class="mute-toggle">🔇 Unmute</button>
+        <div class="volume-control">
+          <button class="mute-toggle" aria-label="Mute">🔇</button>
+          <div class="volume-popup">
+            <input type="range" class="volume-slider" min="0" max="100" value="100">
+          </div>
+        </div>
       </div>
     `;
 
@@ -435,12 +521,12 @@ function renderProjects(filter = "All") {
         autoplay: 1,
         mute: 1,
         rel: 0,
-        controls: 0,        // hide native controls
-        modestbranding: 1,  // NEW: trims YouTube logo where still honored
-        iv_load_policy: 3,  // NEW: suppress video annotations
-        disablekb: 1,       // NEW: no keyboard shortcuts on the iframe
-        playsinline: 1,     // NEW: avoid iOS forcing native fullscreen
-        fs: 0,              // NEW: no native fullscreen button
+        controls: 0,
+        modestbranding: 1,
+        iv_load_policy: 3,
+        disablekb: 1,
+        playsinline: 1,
+        fs: 0,
         start: project.video.start || 0
       },
       events: {
@@ -449,7 +535,7 @@ function renderProjects(filter = "All") {
         },
         'onStateChange': (e) => {
           if (e.data === YT.PlayerState.PLAYING && project.video.end !== undefined) {
-            clearIntervals(inlineIntervals); // NEW: avoid stacking duplicate loops
+            clearIntervals(inlineIntervals); // avoid stacking duplicate loops
             enforceCutoff(inlinePlayer, project.video.start || 0, project.video.end, inlineIntervals);
             updateProgress(inlinePlayer, project.video.start || 0, project.video.end,
                            thumb.querySelector(".custom-progress-bar"), inlineIntervals);
@@ -460,7 +546,12 @@ function renderProjects(filter = "All") {
       }
     });
 
-    activeInlinePlayer = inlinePlayer; // NEW: expose the live player so other code can pause it
+    activeInlinePlayer = inlinePlayer; // expose the live player so other code can pause it
+
+    // Mute/volume combo button + play-pause on the click-shield
+    setupVolumeControl(inlinePlayer, thumb.querySelector(".volume-control"));
+    const inlineShield = thumb.querySelector(".yt-click-shield");
+    if (inlineShield) inlineShield.onclick = () => toggleShieldPlayback(inlineShield, inlinePlayer);
   
     // ✅ Add click-to-seek on custom progress bar
     const progressTrack = thumb.querySelector(".custom-progress");
@@ -472,19 +563,6 @@ function renderProjects(filter = "All") {
       const duration = project.video.end - (project.video.start || 0);
       const newTime = (project.video.start || 0) + percent * duration;
       inlinePlayer.seekTo(newTime, true);
-    });
-  
-    // ✅ Mute/Unmute toggle
-    const muteBtn = thumb.querySelector(".mute-toggle");
-    muteBtn.addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      if (inlinePlayer.isMuted()) {
-        inlinePlayer.unMute();
-        muteBtn.textContent = "🔊 Mute";
-      } else {
-        inlinePlayer.mute();
-        muteBtn.textContent = "🔇 Unmute";
-      }
     });
   });
   
@@ -499,7 +577,7 @@ function renderProjects(filter = "All") {
     const project = allProjects.find(p => p.id === projectId);
     if (!project) return;
   
-    pauseAllPreviews(); // NEW: stop any playing preview before opening full detail view
+    pauseAllPreviews(); // stop any playing preview before opening full detail view
     openProject(project); // your existing metadata modal function
   });
 
@@ -570,6 +648,6 @@ document.addEventListener("click", (e) => {
   const project = allProjects.find(p => p.id === projectId);
   if (!project) return;
 
-  pauseAllPreviews(); // NEW: stop any playing preview before opening full detail view
+  pauseAllPreviews(); // stop any playing preview before opening full detail view
   openProject(project);
 });
