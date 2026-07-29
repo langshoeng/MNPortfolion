@@ -2055,7 +2055,6 @@ section {
 .volume-slider {
   writing-mode: vertical-lr;
   direction: rtl;
-  -webkit-appearance: slider-vertical;
   width: 4px;
   height: 70px;
   cursor: pointer;
