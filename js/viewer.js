@@ -406,14 +406,18 @@ function openProject(project){
                 <div class="custom-progress-bar"></div>
               </div>
               <div class="playback-timer">00:00:00</div>
-              <button class="mute-toggle">🔇 Unmute</button>
+              <div class="volume-control">
+                <button class="mute-toggle" aria-label="Mute">🔇</button>
+                <div class="volume-popup">
+                  <input type="range" class="volume-slider" min="0" max="100" value="100">
+                </div>
+              </div>
             </div>
         `;
 
         const progressTrack = viewerMedia.querySelector(".custom-progress");
         const progressBar = viewerMedia.querySelector(".custom-progress-bar");
         const timerEl = viewerMedia.querySelector(".playback-timer");
-        const muteBtn = viewerMedia.querySelector(".mute-toggle");
 
         const videoId = project.video.url.split("v=")[1].split("&")[0];
         const startTime = project.video.start || 0;
@@ -449,19 +453,13 @@ function openProject(project){
             }
         });
 
-        activeMetadataPlayer = metaPlayer; // NEW: expose so other code (or future cleanup) can reach it
+        activeMetadataPlayer = metaPlayer; // expose so other code (or future cleanup) can reach it
 
-        // ✅ Mute/Unmute toggle (same pattern as Quick Preview / Peek)
-        muteBtn.addEventListener("click", (ev) => {
-            ev.stopPropagation();
-            if (metaPlayer.isMuted()) {
-                metaPlayer.unMute();
-                muteBtn.textContent = "🔊 Mute";
-            } else {
-                metaPlayer.mute();
-                muteBtn.textContent = "🔇 Unmute";
-            }
-        });
+        // Mute/volume combo button + play-pause on the click-shield
+        // (both defined in projects.js, reused here across the whole modal)
+        setupVolumeControl(metaPlayer, viewerMedia.querySelector(".volume-control"));
+        const metaShield = viewerMedia.querySelector(".yt-click-shield");
+        if (metaShield) metaShield.onclick = () => toggleShieldPlayback(metaShield, metaPlayer);
 
         // ✅ Click-to-seek on custom progress bar
         progressTrack.addEventListener("click", (ev) => {
