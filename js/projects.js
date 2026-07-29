@@ -74,6 +74,43 @@ function pauseAllPreviews() {
   pausePeekPlayback();
 }
 
+// MOVED: these three used to be nested inside renderProjects(), which meant
+// viewer.js (a separate script) couldn't see them — that's what caused the
+// metadata modal's progress bar/timer to silently fail and stay at 00:00:00.
+// They're now top-level, same as enforceCutoff, so any script can call them.
+
+// Custom progress updater
+function updateProgress(player, startTime, endTime, barEl, store) {
+  const duration = endTime - startTime;
+  const interval = setInterval(() => {
+    if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
+    const current = player.getCurrentTime();
+    const progress = ((current - startTime) / duration) * 100;
+    barEl.style.width = `${Math.min(progress, 100)}%`;
+  }, 500);
+  if (store) store.push(interval);
+  return interval;
+}
+
+// Custom timer updater
+function formatTime(seconds) {
+  const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+  const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+  const s = String(Math.floor(seconds % 60)).padStart(2, '0');
+  return `${h}:${m}:${s}`;
+}
+
+function updateTimer(player, startTime, endTime, timerEl, store) {
+  const interval = setInterval(() => {
+    if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
+    const current = player.getCurrentTime();
+    if (current >= endTime) return;
+    timerEl.textContent = formatTime(current - startTime);
+  }, 500);
+  if (store) store.push(interval);
+  return interval;
+}
+
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('peekVideo', {
     videoId: '',
@@ -434,39 +471,6 @@ function renderProjects(filter = "All") {
       }
     });
   });
-  
-  // Custom progress updater
-  function updateProgress(player, startTime, endTime, barEl, store) {
-    const duration = endTime - startTime;
-    const interval = setInterval(() => {
-      if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
-      const current = player.getCurrentTime();
-      const progress = ((current - startTime) / duration) * 100;
-      barEl.style.width = `${Math.min(progress, 100)}%`;
-    }, 500);
-    if (store) store.push(interval); // NEW
-    return interval;
-  }
-  
-  // Custom timer updater
-  function formatTime(seconds) {
-    const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
-    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
-    const s = String(Math.floor(seconds % 60)).padStart(2, '0');
-    return `${h}:${m}:${s}`;
-  }
-  
-  function updateTimer(player, startTime, endTime, timerEl, store) {
-    const interval = setInterval(() => {
-      if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
-      const current = player.getCurrentTime();
-      if (current >= endTime) return;
-      timerEl.textContent = formatTime(current - startTime);
-    }, 500);
-    if (store) store.push(interval); // NEW
-    return interval;
-  }
-
   
   // Handle Metadata Mode button
   grid.addEventListener("click", (e) => {
