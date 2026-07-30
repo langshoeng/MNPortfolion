@@ -459,7 +459,7 @@ function openProject(project){
         // (both defined in projects.js, reused here across the whole modal)
         setupVolumeControl(metaPlayer, viewerMedia.querySelector(".volume-control"));
         const metaShield = viewerMedia.querySelector(".yt-click-shield");
-        if (metaShield) metaShield.onclick = () => toggleShieldPlayback(metaShield, metaPlayer);
+        if (metaShield) metaShield.onclick = (ev) => { ev.stopPropagation(); toggleShieldPlayback(metaShield, metaPlayer); };
 
         // ✅ Click-to-seek on custom progress bar
         progressTrack.addEventListener("click", (ev) => {
