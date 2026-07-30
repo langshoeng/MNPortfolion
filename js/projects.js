@@ -39,6 +39,33 @@ function clearIntervals(store) {
   store.length = 0;
 }
 
+// Rebuilds a project card's default thumbnail markup exactly as
+// renderProjects() first creates it (image + media badge + peek hint) — used
+// whenever a preview surface (Quick Preview, hover preview) reverts, so the
+// badge doesn't disappear the way it used to.
+function buildThumbMarkup(project) {
+  let mediaBadge = "";
+  if (project.video && project.video.type !== "none") {
+    mediaBadge = `
+      <span class="project-badge video">
+        ${project.video.duration ? project.video.duration + " | " : ""}
+        ▶
+      </span>
+    `;
+  } else if (project.gallery && project.gallery.length) {
+    mediaBadge = `
+      <span class="project-badge image">
+        🖼 ${project.gallery.length} Images
+      </span>
+    `;
+  }
+  return `
+    <img src="${project.thumbnail}" alt="${project.title}">
+    ${mediaBadge}
+    <span class="peek-hint">Hold to Peek</span>
+  `;
+}
+
 // Fully stop whatever inline Quick Preview is playing (if any) and
 // revert that card back to its static thumbnail.
 function stopInlinePreview() {
@@ -47,11 +74,8 @@ function stopInlinePreview() {
   const project = allProjects.find(p => p.id === activeInlineVideo.dataset.project);
   const thumb = activeInlineVideo.querySelector(".project-thumb");
 
-  if (thumb) {
-    thumb.innerHTML = `
-      <img src="${project ? project.thumbnail : ""}" alt="${project ? project.title : ""}">
-      <span class="peek-hint">Hold to Peek</span>
-    `;
+  if (thumb && project) {
+    thumb.innerHTML = buildThumbMarkup(project);
   }
 
   clearIntervals(inlineIntervals);
@@ -72,6 +96,163 @@ function pausePeekPlayback() {
 function pauseAllPreviews() {
   stopInlinePreview();
   pausePeekPlayback();
+  stopHoverPreview();
+  stopHoverGallery();
+}
+
+function peekModalIsOpen() {
+  const el = document.getElementById("peekModal");
+  return !!(el && el.classList.contains("show"));
+}
+
+function metadataModalIsOpen() {
+  return typeof viewer !== "undefined" && !!(viewer && viewer.classList.contains("show"));
+}
+
+// =======================================
+// Hover Preview — video projects
+// Silently auto-plays the trimmed clip while the mouse rests on the card;
+// unlike Quick Preview (which stops at the end), this loops back to the
+// start so it keeps going for as long as the hover lasts.
+// =======================================
+let hoverPreviewCard = null;
+let hoverPreviewPlayer = null;
+let hoverPreviewIntervals = [];
+
+function enforceLoopingCutoff(player, startTime, endTime, store) {
+  const interval = setInterval(() => {
+    if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
+    const current = player.getCurrentTime();
+    if (current < startTime) {
+      player.seekTo(startTime, true);
+    }
+    if (current >= endTime || current > endTime - 0.3) {
+      player.seekTo(startTime, true);
+    }
+  }, 400);
+  if (store) store.push(interval);
+  return interval;
+}
+
+function startHoverPreview(card, project) {
+  if (!project.video || project.video.type !== "youtube") return;
+  if (activeInlineVideo === card) return; // Quick Preview already owns this thumb
+  if (peekModalIsOpen() || metadataModalIsOpen()) return;
+
+  pauseAllPreviews();
+
+  const thumb = card.querySelector(".project-thumb");
+  if (!thumb) return;
+
+  const videoId = project.video.url.split("v=")[1].split("&")[0];
+  const startTime = project.video.start || 0;
+  const endTime = project.video.end;
+
+  // Sized to match the default thumbnail image (230px) so hovering doesn't
+  // shift the card's height. Shield gets explicit inline positioning so it
+  // sizes to THIS box, independent of Quick Preview's 200px CSS rule.
+  thumb.innerHTML = `
+    <div style="position:relative; width:100%; height:230px; border-radius:8px; overflow:hidden;">
+      <div id="hoverPlayer-${project.id}" style="width:100%; height:100%;"></div>
+      <div class="yt-click-shield" style="top:0; left:0; right:0; bottom:0;"></div>
+    </div>
+  `;
+
+  hoverPreviewCard = card;
+
+  const hoverPlayer = new YT.Player(`hoverPlayer-${project.id}`, {
+    videoId: videoId,
+    playerVars: {
+      autoplay: 1,
+      mute: 1,
+      controls: 0,
+      rel: 0,
+      modestbranding: 1,
+      iv_load_policy: 3,
+      disablekb: 1,
+      playsinline: 1,
+      fs: 0,
+      start: startTime
+    },
+    events: {
+      'onReady': () => {
+        hoverPlayer.seekTo(startTime);
+      },
+      'onStateChange': (e) => {
+        if (e.data === YT.PlayerState.PLAYING) {
+          clearIntervals(hoverPreviewIntervals);
+          if (endTime !== undefined) {
+            enforceLoopingCutoff(hoverPlayer, startTime, endTime, hoverPreviewIntervals);
+          }
+        }
+      }
+    }
+  });
+
+  hoverPreviewPlayer = hoverPlayer;
+}
+
+function stopHoverPreview() {
+  if (!hoverPreviewCard) return;
+
+  const project = allProjects.find(p => p.id === hoverPreviewCard.dataset.project);
+  const thumb = hoverPreviewCard.querySelector(".project-thumb");
+  if (thumb && project) {
+    thumb.innerHTML = buildThumbMarkup(project);
+  }
+
+  clearIntervals(hoverPreviewIntervals);
+  hoverPreviewPlayer = null;
+  hoverPreviewCard = null;
+}
+
+// =======================================
+// Hover Preview — gallery projects
+// Cross-fades through project.gallery images while the mouse rests on the
+// card, reverts to project.thumbnail the moment it leaves.
+// =======================================
+let hoverGalleryCard = null;
+let hoverGalleryTimer = null;
+
+function startHoverGallery(card, project) {
+  if (!project.gallery || project.gallery.length < 2) return;
+  if (peekModalIsOpen() || metadataModalIsOpen()) return;
+
+  const img = card.querySelector(".project-thumb img");
+  if (!img) return;
+
+  hoverGalleryCard = card;
+  img.style.transition = "opacity 0.25s ease";
+
+  let index = 0;
+  hoverGalleryTimer = setInterval(() => {
+    index = (index + 1) % project.gallery.length;
+    img.style.opacity = "0";
+    setTimeout(() => {
+      if (hoverGalleryCard !== card) return; // hover ended mid-fade, bail out
+      img.src = project.gallery[index];
+      img.style.opacity = "1";
+    }, 250);
+  }, 1100);
+}
+
+function stopHoverGallery() {
+  if (hoverGalleryTimer) {
+    clearInterval(hoverGalleryTimer);
+    hoverGalleryTimer = null;
+  }
+  if (hoverGalleryCard) {
+    const project = allProjects.find(p => p.id === hoverGalleryCard.dataset.project);
+    const img = hoverGalleryCard.querySelector(".project-thumb img");
+    if (img && project) {
+      img.style.opacity = "0";
+      setTimeout(() => {
+        img.src = project.thumbnail;
+        img.style.opacity = "1";
+      }, 150);
+    }
+    hoverGalleryCard = null;
+  }
 }
 
 // Custom progress updater
@@ -391,7 +572,7 @@ function renderProjects(filter = "All") {
           // Mute/volume combo button + play-pause on the click-shield
           setupVolumeControl(ytPlayer, peekVideoWrapper.querySelector(".volume-control"));
           const peekShield = peekVideoWrapper.querySelector(".yt-click-shield");
-          if (peekShield) peekShield.onclick = () => toggleShieldPlayback(peekShield, ytPlayer);
+          if (peekShield) peekShield.onclick = (ev) => { ev.stopPropagation(); toggleShieldPlayback(peekShield, ytPlayer); };
     
           // ✅ Click-to-seek on custom progress bar
           const progressTrack = peekVideoWrapper.querySelector(".custom-progress");
@@ -553,7 +734,7 @@ function renderProjects(filter = "All") {
     // Mute/volume combo button + play-pause on the click-shield
     setupVolumeControl(inlinePlayer, thumb.querySelector(".volume-control"));
     const inlineShield = thumb.querySelector(".yt-click-shield");
-    if (inlineShield) inlineShield.onclick = () => toggleShieldPlayback(inlineShield, inlinePlayer);
+    if (inlineShield) inlineShield.onclick = (ev) => { ev.stopPropagation(); toggleShieldPlayback(inlineShield, inlinePlayer); };
   
     // ✅ Add click-to-seek on custom progress bar
     const progressTrack = thumb.querySelector(".custom-progress");
@@ -611,6 +792,31 @@ function renderProjects(filter = "All") {
     });
 
     card.addEventListener("touchend", () => clearTimeout(pressTimer));
+
+    // Hover preview: auto-play video / cycle gallery images while the
+    // mouse rests on the card, revert the instant it leaves. Delayed
+    // slightly so it doesn't fire on quick mouse-passes over the grid.
+    const cardProjectId = card.dataset.project;
+    const cardProject = allProjects.find(p => p.id === cardProjectId);
+    let hoverDelayTimer = null;
+
+    if (cardProject) {
+      card.addEventListener("mouseenter", () => {
+        hoverDelayTimer = setTimeout(() => {
+          if (cardProject.video && cardProject.video.type === "youtube") {
+            startHoverPreview(card, cardProject);
+          } else if (cardProject.gallery && cardProject.gallery.length > 1) {
+            startHoverGallery(card, cardProject);
+          }
+        }, 350);
+      });
+
+      card.addEventListener("mouseleave", () => {
+        clearTimeout(hoverDelayTimer);
+        stopHoverPreview();
+        stopHoverGallery();
+      });
+    }
   });
 }
 
