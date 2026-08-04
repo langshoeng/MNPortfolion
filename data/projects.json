@@ -229,11 +229,11 @@
     "featured": true,
     "categories": ["Graphic Design"],
     "client": "Mémoire Polyclinic and Maternity",
-    "year": "2023",
+    "year": "2024",
     "role": ["Graphic Design"],
     "software": ["Illustrator","Photoshop"],
-    "description": "Complete branding package including logo, packaging, business cards, and social media assets.",
-    "thumbnail": "images/projects/coffee-brand/cover.jpg",
+    "description": "Collection of some design works with Mémoire Polyclinic and Maternity",
+    "thumbnail": "images/projects/memoire-hospital/memoire-hospital_cover.png",
     "video": {
       "type": "none"
     },
