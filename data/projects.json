@@ -224,11 +224,11 @@
   },
   
   {
-    "id": "coffee-brand",
-    "title": "Coffee Brand Identity",
+    "id": "memoire-hospital",
+    "title": "Designs for Mémoire Polyclinic and Maternity",
     "featured": true,
     "categories": ["Graphic Design"],
-    "client": "ABC Coffee",
+    "client": "Mémoire Polyclinic and Maternity",
     "year": "2023",
     "role": ["Graphic Design"],
     "software": ["Illustrator","Photoshop"],
@@ -238,10 +238,16 @@
       "type": "none"
     },
     "gallery": [
-      "images/projects/coffee-brand/01.jpg",
-      "images/projects/coffee-brand/02.jpg",
-      "images/projects/coffee-brand/03.jpg",
-      "images/projects/coffee-brand/04.jpg"
+      "images/projects/memoire-hospital/50% Off.jpg",
+      "images/projects/memoire-hospital/Discount 15% Down Syndrome.jpg",
+      "images/projects/memoire-hospital/Discount50%.jpg",
+      "images/projects/memoire-hospital/International Women's Right.jpg",
+      "images/projects/memoire-hospital/Job Announcement.jpg",
+      "images/projects/memoire-hospital/Kangaroo Care.jpg",
+      "images/projects/memoire-hospital/Khmer New Year.jpg",
+      "images/projects/memoire-hospital/Makha Boja.jpg",
+      "images/projects/memoire-hospital/Plastic-Surgery.jpg",
+      "images/projects/memoire-hospital/ចម្រើនព្រះជន្មព្រះមហាក្សត្រ.jpg"
     ]
   },
   {
