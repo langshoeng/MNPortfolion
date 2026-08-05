@@ -311,7 +311,7 @@
     "role": ["Graphic Design"],
     "software": ["Illustrator","Photoshop"],
     "description": "Collection of  design works include Photo Hand Props, Brochure and some video scene's design",
-    "thumbnail": "images/projects/ACES's/ACES_Cover.jpg",
+    "thumbnail": "images/projects/ThumbnailDesign/V-mission-Thumbnail_Cover.jpg",
     "video": {
       "type": "none"
     },
@@ -320,6 +320,7 @@
       "images/projects/ThumbnailDesign/Youtube-Thumbnail_2.jpg",
       "images/projects/ThumbnailDesign/YouTube-Thumbnail_1.jpg",
       "images/projects/ThumbnailDesign/YouTube-Thumbnail.jpg",
+      "images/projects/ThumbnailDesign/CTA5-Thumbnail.jpg",
       "images/projects/ThumbnailDesign/3D-AI-Animation-Thumbnail.jpg"
     ]
   },
