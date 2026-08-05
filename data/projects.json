@@ -250,6 +250,37 @@
       "images/projects/memoire-hospital/Kangaroo Care.jpg"
     ]
   },
+
+  {
+    "id": "ACES",
+    "title": "ACES's Design Works",
+    "featured": true,
+    "categories": ["Graphic Design"],
+    "client": "ACES",
+    "year": "2026",
+    "role": ["Graphic Design"],
+    "software": ["Illustrator","Photoshop"],
+    "description": "Collection of  design works include Photo Hand Props, Brochure and some video scene's design",
+    "thumbnail": "images/projects/ACES's/ACES_Cover.jpg",
+    "video": {
+      "type": "none"
+    },
+    "gallery": [
+      "images/projects/ACES's/Brochure ACES_Front Page.jpg",
+      "images/projects/ACES's/Brochure ACES_Back Page.jpg",
+      "images/projects/ACES's/New Weekend Class Open.jpg",
+      "images/projects/ACES's/Business Management.jpg",
+      "images/projects/ACES's/Contact.jpg",
+      "images/projects/ACES's/Highest TOEFL Score.jpg",
+      "images/projects/ACES's/TOEFL Service Provider.jpg",
+      "images/projects/ACES's/Red Eyeglasses (A4 Size).png",
+      "images/projects/ACES's/Blue Eyeglasses (A4 Size).png",
+      "images/projects/ACES's/Go Places with ACES.png",
+      "images/projects/ACES's/I Love ACES.png",
+      "images/projects/ACES's/Congratulations ACES Certificate Ceremony.png"
+    ]
+  },
+  
   {
     "id": "wedding-photography",
     "title": "Wedding Photography",
