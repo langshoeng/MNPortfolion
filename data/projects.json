@@ -280,6 +280,49 @@
       "images/projects/ACES's/Congratulations ACES Certificate Ceremony.png"
     ]
   },
+
+  {
+    "id": "PteasLokMjas",
+    "title": "ផ្ទះលោកម្ចាស់-Pteas Lok Mjas Design Works",
+    "featured": true,
+    "categories": ["Graphic Design"],
+    "client": "ផ្ទះលោកម្ចាស់-Pteas Lok Mjas",
+    "year": "2025",
+    "role": ["Graphic Design"],
+    "software": ["Illustrator","Photoshop"],
+    "description": "Banner, and Ticket Design for ផ្ទះលោកម្ចាស់-Pteas Lok Mjas",
+    "thumbnail": "images/projects/ACES's/ACES_Cover.jpg",
+    "video": {
+      "type": "none"
+    },
+    "gallery": [
+      "images/projects/PteasLokMjas/BATTAMBANG MINIGOLF.jpg",
+      "images/projects/PteasLokMjas/Front Side 1.png"
+    ]
+  },
+
+  {
+    "id": "VideoThumbnailDesign",
+    "title": "Video Thumbnail Design",
+    "featured": true,
+    "categories": ["Graphic Design"],
+    "client": "ACES",
+    "year": "2026",
+    "role": ["Graphic Design"],
+    "software": ["Illustrator","Photoshop"],
+    "description": "Collection of  design works include Photo Hand Props, Brochure and some video scene's design",
+    "thumbnail": "images/projects/ACES's/ACES_Cover.jpg",
+    "video": {
+      "type": "none"
+    },
+    "gallery": [
+      "images/projects/ThumbnailDesign/DistroKid-Thumbnail_1.jpg",
+      "images/projects/ThumbnailDesign/Youtube-Thumbnail_2.jpg",
+      "images/projects/ThumbnailDesign/YouTube-Thumbnail_1.jpg",
+      "images/projects/ThumbnailDesign/YouTube-Thumbnail.jpg",
+      "images/projects/ThumbnailDesign/3D-AI-Animation-Thumbnail.jpg"
+    ]
+  },
   
   {
     "id": "wedding-photography",
