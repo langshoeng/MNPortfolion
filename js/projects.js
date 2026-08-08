@@ -169,6 +169,7 @@ function startHoverPreview(card, project) {
       rel: 0,
       modestbranding: 1,
       iv_load_policy: 3,
+      cc_load_policy: 0,
       disablekb: 1,
       playsinline: 1,
       fs: 0,
@@ -177,9 +178,11 @@ function startHoverPreview(card, project) {
     events: {
       'onReady': () => {
         hoverPlayer.seekTo(startTime);
+        forceHighQuality(hoverPlayer);
       },
       'onStateChange': (e) => {
         if (e.data === YT.PlayerState.PLAYING) {
+          forceHighQuality(hoverPlayer);
           clearIntervals(hoverPreviewIntervals);
           if (endTime !== undefined) {
             enforceLoopingCutoff(hoverPlayer, startTime, endTime, hoverPreviewIntervals);
@@ -384,6 +387,16 @@ function toggleShieldPlayback(shieldEl, player) {
   flashPlayPauseIcon(shieldEl, !isPlaying);
 }
 
+// Best-effort request for the highest available resolution. YouTube's
+// embed player is largely adaptive-bitrate now and often overrides this
+// based on the viewer's actual bandwidth, so this nudges it rather than
+// guarantees it — still worth calling on every load since it costs nothing.
+function forceHighQuality(player) {
+  if (!player || typeof player.setPlaybackQuality !== "function") return;
+  try { player.setPlaybackQuality("hd1080"); } catch (e) {}
+}
+
+
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('peekVideo', {
     videoId: '',
@@ -394,6 +407,7 @@ function onYouTubeIframeAPIReady() {
       rel: 0,
       modestbranding: 1,
       iv_load_policy: 3,
+      cc_load_policy: 0,
       disablekb: 1,
       playsinline: 1,
       fs: 0
@@ -412,6 +426,7 @@ function ensureYTPlayer() {
         rel: 0,
         modestbranding: 1,
         iv_load_policy: 3,
+        cc_load_policy: 0,
         disablekb: 1,
         playsinline: 1,
         fs: 0
@@ -559,6 +574,7 @@ function renderProjects(filter = "All") {
             startSeconds: project?.video?.start || 0
           });
           ytPlayer.mute();
+          forceHighQuality(ytPlayer);
     
           if (project?.video?.end !== undefined) {
             clearIntervals(peekIntervals); // drop any stale peek intervals first
@@ -707,6 +723,7 @@ function renderProjects(filter = "All") {
         controls: 0,
         modestbranding: 1,
         iv_load_policy: 3,
+        cc_load_policy: 0,
         disablekb: 1,
         playsinline: 1,
         fs: 0,
@@ -715,9 +732,11 @@ function renderProjects(filter = "All") {
       events: {
         'onReady': () => {
           inlinePlayer.seekTo(project.video.start || 0);
+          forceHighQuality(inlinePlayer);
         },
         'onStateChange': (e) => {
           if (e.data === YT.PlayerState.PLAYING && project.video.end !== undefined) {
+            forceHighQuality(inlinePlayer);
             clearIntervals(inlineIntervals); // avoid stacking duplicate loops
             enforceCutoff(inlinePlayer, project.video.start || 0, project.video.end, inlineIntervals);
             updateProgress(inlinePlayer, project.video.start || 0, project.video.end,
