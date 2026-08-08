@@ -467,7 +467,32 @@ function openProject(project){
         // (both defined in projects.js, reused here across the whole modal)
         setupVolumeControl(metaPlayer, viewerMedia.querySelector(".volume-control"));
         const metaShield = viewerMedia.querySelector(".yt-click-shield");
-        if (metaShield) metaShield.onclick = (ev) => { ev.stopPropagation(); toggleShieldPlayback(metaShield, metaPlayer); };
+        if (metaShield) {
+            // Disambiguate single click (play/pause) from double click
+            // (fullscreen) — a double-click also fires two click events
+            // first, so a naive onclick would toggle play/pause twice with
+            // unpredictable timing against the async player state, then
+            // ALSO jump to fullscreen. Delay the single-click action briefly
+            // and cancel it if a second click arrives — same pattern every
+            // video player uses for this.
+            let metaShieldClickTimer = null;
+            metaShield.onclick = (ev) => {
+                ev.stopPropagation();
+                if (metaShieldClickTimer) {
+                    clearTimeout(metaShieldClickTimer);
+                    metaShieldClickTimer = null;
+                    return; // second click of a double-click — let dblclick handle it
+                }
+                metaShieldClickTimer = setTimeout(() => {
+                    metaShieldClickTimer = null;
+                    toggleShieldPlayback(metaShield, metaPlayer);
+                }, 250);
+            };
+            metaShield.ondblclick = (ev) => {
+                ev.stopPropagation();
+                toggleFullscreen();
+            };
+        }
 
         // ✅ Click-to-seek on custom progress bar
         progressTrack.addEventListener("click", (ev) => {
