@@ -430,24 +430,29 @@ function openProject(project){
                 mute: 1,             // start muted, same as Quick Preview / Peek
                 controls: 0,         // hide native controls, use the custom bar instead
                 rel: 0,
-                modestbranding: 1,   // NEW: trims YouTube logo where still honored
-                iv_load_policy: 3,   // NEW: suppress video annotations
-                disablekb: 1,        // NEW: no keyboard shortcuts on the iframe
-                playsinline: 1,      // NEW: avoid iOS forcing native fullscreen
-                fs: 0,               // NEW: no native fullscreen button
+                modestbranding: 1,   // trims YouTube logo where still honored
+                iv_load_policy: 3,   // suppress video annotations
+                cc_load_policy: 0,   // NEW: force auto-captions off
+                disablekb: 1,        // no keyboard shortcuts on the iframe
+                playsinline: 1,      // avoid iOS forcing native fullscreen
+                fs: 0,               // no native fullscreen button
                 start: startTime
             },
             events: {
                 'onReady': () => {
                     metaPlayer.seekTo(startTime);
                     metaPlayer.mute();
+                    forceHighQuality(metaPlayer); // NEW: best-effort request for hd1080
                 },
                 'onStateChange': (e) => {
-                    if (e.data === YT.PlayerState.PLAYING && endTime !== undefined) {
-                        clearIntervals(metadataIntervals); // NEW: avoid stacking duplicate loops
-                        enforceCutoff(metaPlayer, startTime, endTime, metadataIntervals);
-                        updateProgress(metaPlayer, startTime, endTime, progressBar, metadataIntervals);
-                        updateTimer(metaPlayer, startTime, endTime, timerEl, metadataIntervals);
+                    if (e.data === YT.PlayerState.PLAYING) {
+                        forceHighQuality(metaPlayer); // NEW: re-request once playback actually starts
+                        if (endTime !== undefined) {
+                            clearIntervals(metadataIntervals); // avoid stacking duplicate loops
+                            enforceCutoff(metaPlayer, startTime, endTime, metadataIntervals);
+                            updateProgress(metaPlayer, startTime, endTime, progressBar, metadataIntervals);
+                            updateTimer(metaPlayer, startTime, endTime, timerEl, metadataIntervals);
+                        }
                     }
                 }
             }
