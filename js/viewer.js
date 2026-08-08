@@ -444,6 +444,9 @@ function openProject(project){
                     metaPlayer.mute();
                     forceHighQuality(metaPlayer); // NEW: best-effort request for hd1080
                 },
+                'onApiChange': () => {
+                    disableCaptions(metaPlayer); // NEW: forcefully clear any active caption track
+                },
                 'onStateChange': (e) => {
                     if (e.data === YT.PlayerState.PLAYING) {
                         forceHighQuality(metaPlayer); // NEW: re-request once playback actually starts
