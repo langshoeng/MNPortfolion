@@ -176,7 +176,7 @@ document.querySelectorAll('.skill-wrapper').forEach(wrapper => {
 // Timeline Fade-in on Scroll (with staggered delay)
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  const items = document.querySelectorAll(".timeline li");
+  const items = document.querySelectorAll(".timeline > li");
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -187,6 +187,34 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }, { threshold: 0.2 });
   items.forEach(item => observer.observe(item));
+});
+
+// ===============================
+// Experience Timeline — Details Toggle
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".timeline-toggle").forEach(btn => {
+    const details = btn.nextElementSibling;
+    const label = btn.querySelector(".timeline-toggle-label");
+    if (!details || !details.classList.contains("timeline-details")) return;
+
+    btn.addEventListener("click", () => {
+      const isOpen = details.classList.contains("open");
+      if (isOpen) {
+        details.style.maxHeight = null;
+        details.classList.remove("open");
+        btn.classList.remove("open");
+        btn.setAttribute("aria-expanded", "false");
+        if (label) label.textContent = "Show Details";
+      } else {
+        details.classList.add("open");
+        details.style.maxHeight = details.scrollHeight + "px";
+        btn.classList.add("open");
+        btn.setAttribute("aria-expanded", "true");
+        if (label) label.textContent = "Hide Details";
+      }
+    });
+  });
 });
 
 // ===============================
