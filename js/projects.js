@@ -180,6 +180,9 @@ function startHoverPreview(card, project) {
         hoverPlayer.seekTo(startTime);
         forceHighQuality(hoverPlayer);
       },
+      'onApiChange': () => {
+        disableCaptions(hoverPlayer);
+      },
       'onStateChange': (e) => {
         if (e.data === YT.PlayerState.PLAYING) {
           forceHighQuality(hoverPlayer);
@@ -396,6 +399,19 @@ function forceHighQuality(player) {
   try { player.setPlaybackQuality("hd1080"); } catch (e) {}
 }
 
+// cc_load_policy:0 in playerVars only sets the DEFAULT caption state for a
+// viewer with no prior preference — if the browser/account has ever turned
+// captions on for any YouTube video, that preference is often stored at the
+// browser/account level and silently overrides cc_load_policy on every
+// embed. This clears the active caption track directly via the (undocumented
+// but widely relied-on) captions module, which is more reliable. Must be
+// called from the player's onApiChange event — calling it before the
+// captions module has loaded does nothing.
+function disableCaptions(player) {
+  if (!player || typeof player.setOption !== "function") return;
+  try { player.setOption("captions", "track", {}); } catch (e) {}
+}
+
 
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('peekVideo', {
@@ -411,6 +427,9 @@ function onYouTubeIframeAPIReady() {
       disablekb: 1,
       playsinline: 1,
       fs: 0
+    },
+    events: {
+      'onApiChange': () => disableCaptions(ytPlayer)
     }
   });
 }
@@ -430,6 +449,9 @@ function ensureYTPlayer() {
         disablekb: 1,
         playsinline: 1,
         fs: 0
+      },
+      events: {
+        'onApiChange': () => disableCaptions(ytPlayer)
       }
     });
     console.log("YT player ensured");
@@ -575,6 +597,7 @@ function renderProjects(filter = "All") {
           });
           ytPlayer.mute();
           forceHighQuality(ytPlayer);
+          disableCaptions(ytPlayer);
     
           if (project?.video?.end !== undefined) {
             clearIntervals(peekIntervals); // drop any stale peek intervals first
@@ -733,6 +756,9 @@ function renderProjects(filter = "All") {
         'onReady': () => {
           inlinePlayer.seekTo(project.video.start || 0);
           forceHighQuality(inlinePlayer);
+        },
+        'onApiChange': () => {
+          disableCaptions(inlinePlayer);
         },
         'onStateChange': (e) => {
           if (e.data === YT.PlayerState.PLAYING && project.video.end !== undefined) {
