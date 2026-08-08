@@ -1558,24 +1558,24 @@ footer{
   border-left: 2px solid #444;
 }
 
-.timeline li {
+.timeline > li {
   position: relative;
   margin-bottom: 30px;
 }
 
 /* Timeline fade-in animation with stagger */
-.timeline li {
+.timeline > li {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.timeline li.visible {
+.timeline > li.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.timeline li::before {
+.timeline > li::before {
   content: "";
   position: absolute;
   left: -9px; /* adjust to center with border */
@@ -1603,6 +1603,74 @@ footer{
   color: #ff5722;
   text-shadow: 0 0 6px rgba(255, 87, 34, 0.6);
   transform: translateY(-2px);
+}
+
+/* ==========================================
+   Experience Timeline — Details Dropdown
+========================================== */
+.timeline-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 0 0 8px;
+  background: none;
+  border: none;
+  border-bottom: 1px dashed rgba(255,255,255,.15);
+  color: #4cafef;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.timeline-toggle:hover {
+  color: #6dc4ff;
+}
+
+.timeline-toggle-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.timeline-toggle.open .timeline-toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.timeline-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  color: #ccc;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.timeline-details-heading {
+  margin: 14px 0 6px;
+  font-weight: 600;
+  color: #fff;
+  font-size: 14px;
+}
+
+.timeline-details-heading:first-child {
+  margin-top: 12px;
+}
+
+.timeline-details ul,
+.timeline-details ol {
+  margin: 0 0 8px;
+  padding-left: 20px;
+}
+
+.timeline-details li {
+  margin-bottom: 4px;
+}
+
+.timeline-details p {
+  margin: 0 0 8px;
 }
 
 
