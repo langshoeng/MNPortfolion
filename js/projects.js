@@ -98,6 +98,7 @@ function pauseAllPreviews() {
   pausePeekPlayback();
   stopHoverPreview();
   stopHoverGallery();
+  if (typeof stopHeroReelPlayback === "function") stopHeroReelPlayback();
 }
 
 function peekModalIsOpen() {
