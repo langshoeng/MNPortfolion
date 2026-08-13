@@ -389,6 +389,7 @@ function toggleShieldPlayback(shieldEl, player) {
     player.playVideo();
   }
   flashPlayPauseIcon(shieldEl, !isPlaying);
+  return !isPlaying; // the state we just switched TO, for callers that need to track it
 }
 
 // Best-effort request for the highest available resolution. YouTube's
