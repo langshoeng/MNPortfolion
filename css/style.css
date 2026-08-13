@@ -2152,3 +2152,216 @@ section {
   opacity: 1;
   transition: opacity 0s;
 }
+
+/* ==========================================
+   HERO — two-column split layout
+========================================== */
+.hero-content.hero-content-split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  text-align: left;
+  max-width: 1300px;
+}
+
+.hero-text {
+  flex: 1 1 480px;
+  max-width: 560px;
+}
+
+.hero-description {
+  color: #ccc;
+  font-size: 17px;
+  line-height: 1.7;
+  margin-top: 20px;
+  max-width: 480px;
+}
+
+.hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+/* Scoped override, not a change to the base .view-portfolio-btn rule —
+   25px/36px padding was tuned for a single centered CTA, too large now
+   that it sits next to a second button */
+.hero-cta-row .view-portfolio-btn {
+  font-size: 17px;
+  padding: 14px 32px;
+  margin-top: 0;
+}
+
+#hero .hero-btn-outline {
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  text-decoration: none;
+  margin-top: 0; /* overrides .hero-content .btn's margin-top:40px */
+}
+
+.hero-meta {
+  margin-top: 26px;
+  color: #aaa;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hero-meta .bi-geo-alt-fill {
+  color: #2196f3;
+}
+
+.hero-meta-dot {
+  color: #555;
+}
+
+.hero-social {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.12);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hero-social-label {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.hero-social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.08);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.25s ease;
+}
+
+.hero-social-icon:hover {
+  background: rgba(255,255,255,.18);
+}
+
+@media (max-width: 991px) {
+  .hero-content.hero-content-split {
+    flex-direction: column;
+    text-align: center;
+  }
+  .hero-text {
+    max-width: 100%;
+  }
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-cta-row,
+  .hero-meta {
+    justify-content: center;
+  }
+  .hero-reel {
+    margin: 30px auto 0;
+  }
+}
+
+/* ==========================================
+   HERO SHOWREEL — depth coverflow widget
+========================================== */
+.hero-reel {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+}
+
+.hero-reel-stack {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+
+.hero-reel-card {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1b1b1b;
+  border: 1px solid rgba(255,255,255,.08);
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.hero-reel-card.back-1 {
+  transform: translateX(18px) translateY(10px) scale(0.92);
+  opacity: 0.55;
+  z-index: 1;
+}
+
+.hero-reel-card.back-2 {
+  transform: translateX(34px) translateY(20px) scale(0.85);
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.hero-reel-card.front {
+  z-index: 2;
+}
+
+.hero-reel-card-label {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  color: #ccc;
+  font-size: 12px;
+}
+
+.hero-reel-idle {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #141414;
+}
+
+.hero-reel-play {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.3);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-reel-play:hover {
+  background: rgba(255,255,255,.22);
+}
+
+.hero-reel-next {
+  margin-top: 14px;
+  background: none;
+  border: none;
+  color: #4cafef;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-reel-next:hover {
+  color: #6dc4ff;
+}
