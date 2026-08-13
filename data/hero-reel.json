@@ -1,27 +1,27 @@
 [
   {
     "id": "hero-reel-1",
-    "title": "REPLACE — project 1 title",
+    "title": "Meet Doctor App Opening Event",
     "video": {
-      "url": "https://www.youtube.com/watch?v=VIDEO_ID_1",
+      "url": "https://www.youtube.com/watch?v=roMJOq36_pA",
       "start": 0,
       "end": 15
     }
   },
   {
     "id": "hero-reel-2",
-    "title": "REPLACE — project 2 title",
+    "title": "Big Prize Promotion Win",
     "video": {
-      "url": "https://www.youtube.com/watch?v=VIDEO_ID_2",
+      "url": "https://www.youtube.com/watch?v=G9PGycB6NvE",
       "start": 0,
       "end": 15
     }
   },
   {
     "id": "hero-reel-3",
-    "title": "REPLACE — project 3 title",
+    "title": "Juice Product 3D Animation",
     "video": {
-      "url": "https://www.youtube.com/watch?v=VIDEO_ID_3",
+      "url": "https://www.youtube.com/watch?v=m5r5tSrQ1D4",
       "start": 0,
       "end": 15
     }
