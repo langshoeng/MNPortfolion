@@ -1,18 +1,18 @@
 [
   {
-    "id": "hero-reel-1",
-    "title": "Meet Doctor App Opening Event",
-    "video": {
-      "url": "https://www.youtube.com/watch?v=roMJOq36_pA",
-      "start": 0,
-      "end": 15
-    }
-  },
-  {
     "id": "hero-reel-2",
     "title": "Big Prize Promotion Win",
     "video": {
       "url": "https://www.youtube.com/watch?v=G9PGycB6NvE",
+      "start": 0,
+      "end": 15
+    }
+  },
+    {
+    "id": "hero-reel-1",
+    "title": "Meet Doctor App Opening Event",
+    "video": {
+      "url": "https://www.youtube.com/watch?v=roMJOq36_pA",
       "start": 0,
       "end": 15
     }
@@ -23,34 +23,34 @@
     "video": {
       "url": "https://www.youtube.com/watch?v=m5r5tSrQ1D4",
       "start": 0,
-      "end": 15
+      "end": 40
     }
   },
   {
     "id": "hero-reel-4",
-    "title": "REPLACE — project 4 title",
+    "title": "3D Champion",
     "video": {
-      "url": "https://www.youtube.com/watch?v=VIDEO_ID_4",
+      "url": "https://www.youtube.com/watch?v=9myeYn8aFys",
       "start": 0,
-      "end": 15
+      "end": 20
     }
   },
   {
     "id": "hero-reel-5",
-    "title": "REPLACE — project 5 title",
+    "title": "TOEFL Top Scorer",
     "video": {
-      "url": "https://www.youtube.com/watch?v=VIDEO_ID_5",
+      "url": "https://www.youtube.com/watch?v=j3QpCp3UNdc",
       "start": 0,
-      "end": 15
+      "end": 30
     }
   },
   {
     "id": "hero-reel-6",
-    "title": "REPLACE — project 6 title",
+    "title": "CamboCar Outro",
     "video": {
-      "url": "https://www.youtube.com/watch?v=VIDEO_ID_6",
+      "url": "https://www.youtube.com/watch?v=z5ubZRESQo4",
       "start": 0,
-      "end": 15
+      "end": 4
     }
   }
 ]
