@@ -101,6 +101,14 @@ function mountHeroReelPlayer() {
           if (endTime !== undefined) {
             heroReelEnforceCutoff(heroReelPlayer, startTime, endTime, heroReelIntervals);
           }
+        } else if (e.data === YT.PlayerState.ENDED) {
+          // The video's real length was at or near our trimmed `end` —
+          // YouTube finished it before the polling loop in
+          // heroReelEnforceCutoff ever caught up, so that loop's
+          // PLAYING-only check silently no-ops forever from here.
+          // Advance directly instead of relying on the poll.
+          clearIntervals(heroReelIntervals);
+          advanceHeroReel();
         }
       }
     }
