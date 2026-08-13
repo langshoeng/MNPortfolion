@@ -59,6 +59,8 @@ function mountHeroReelPlayer() {
     <div class="yt-click-shield" style="top:0; left:0; right:0; bottom:0;"></div>
   `;
 
+  const shieldEl = front.querySelector(".yt-click-shield");
+
   heroReelPlayer = new YT.Player(playerId, {
     videoId: videoId,
     playerVars: {
@@ -78,6 +80,16 @@ function mountHeroReelPlayer() {
       'onReady': () => {
         heroReelPlayer.seekTo(startTime);
         forceHighQuality(heroReelPlayer);
+        // Click-to-pause/resume — wired here (not right after shield
+        // creation) so the player reference passed to toggleShieldPlayback
+        // is guaranteed ready
+        if (shieldEl) {
+          shieldEl.onclick = (ev) => {
+            ev.stopPropagation();
+            const willPlay = toggleShieldPlayback(shieldEl, heroReelPlayer);
+            heroReelCurrentlyPlaying = willPlay;
+          };
+        }
       },
       'onApiChange': () => {
         disableCaptions(heroReelPlayer);
@@ -185,7 +197,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (!heroReelData.length) return;
 
-  renderHeroReelFront(0, false);
+  renderHeroReelFront(0, true); // autoplay on load — muted, so browser autoplay policies allow it
   updateHeroReelStackPreview();
 
   const nextBtn = document.getElementById("heroReelNext");
