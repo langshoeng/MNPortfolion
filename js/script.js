@@ -354,3 +354,56 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+// ===============================
+// Scroll Indicator — top/bottom-aware next/previous section nav
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  const upBtn = document.getElementById("scrollUpBtn");
+  const downBtn = document.getElementById("scrollDownBtn");
+  if (!upBtn || !downBtn) return;
+
+  function getSections() {
+    return Array.from(document.querySelectorAll("section"));
+  }
+
+  function updateScrollIndicator() {
+    const scrollY = window.scrollY;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const atTop = scrollY <= 10;
+    const atBottom = scrollY >= maxScroll - 10;
+
+    upBtn.style.display = atTop ? "none" : "flex";
+    downBtn.style.display = atBottom ? "none" : "flex";
+  }
+
+  function scrollToNextSection() {
+    const sections = getSections();
+    const currentY = window.scrollY + 10;
+    const next = sections.find(s => s.offsetTop > currentY + 50);
+    if (next) {
+      next.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+    }
+  }
+
+  function scrollToPrevSection() {
+    const sections = getSections();
+    const currentY = window.scrollY - 10;
+    const prevCandidates = sections.filter(s => s.offsetTop < currentY - 50);
+    const prev = prevCandidates[prevCandidates.length - 1];
+    if (prev) {
+      prev.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  downBtn.addEventListener("click", scrollToNextSection);
+  upBtn.addEventListener("click", scrollToPrevSection);
+
+  window.addEventListener("scroll", updateScrollIndicator, { passive: true });
+  window.addEventListener("resize", updateScrollIndicator);
+  updateScrollIndicator(); // set correct initial state before first scroll event
+});
