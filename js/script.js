@@ -367,14 +367,15 @@ document.addEventListener("DOMContentLoaded", () => {
     return Array.from(document.querySelectorAll("section"));
   }
 
-  function updateScrollIndicator() {
-    const scrollY = window.scrollY;
+  function isAtBottom() {
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const atTop = scrollY <= 10;
-    const atBottom = scrollY >= maxScroll - 10;
+    return window.scrollY >= maxScroll - 10;
+  }
 
+  function updateScrollIndicator() {
+    const atTop = window.scrollY <= 10;
     upBtn.style.display = atTop ? "none" : "flex";
-    downBtn.style.display = atBottom ? "none" : "flex";
+    downBtn.style.display = isAtBottom() ? "none" : "flex";
   }
 
   // Matches `section { scroll-margin-top: 80px }` in the CSS — scrollIntoView
@@ -412,4 +413,48 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", updateScrollIndicator, { passive: true });
   window.addEventListener("resize", updateScrollIndicator);
   updateScrollIndicator(); // set correct initial state before first scroll event
+
+  // ===============================
+  // Scroll Nudge — idle-triggered reminder, separate from the persistent
+  // corner arrows above. Appears mid-right after a period of no activity,
+  // auto-hides, and repeats as long as the visitor stays idle and hasn't
+  // reached the bottom of the page.
+  // ===============================
+  const nudge = document.getElementById("scrollNudge");
+  if (nudge) {
+    const IDLE_DELAY = 5000;   // ms of inactivity before showing
+    const SHOW_DURATION = 3000; // ms visible before auto-hiding
+    let idleTimer = null;
+    let hideTimer = null;
+
+    function scheduleIdleTimer() {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(showNudge, IDLE_DELAY);
+    }
+
+    function showNudge() {
+      if (isAtBottom()) {
+        scheduleIdleTimer(); // don't show here, but keep checking — user may scroll up later
+        return;
+      }
+      nudge.classList.add("show");
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        nudge.classList.remove("show");
+        scheduleIdleTimer(); // still idle after hiding — this is the "periodically" part
+      }, SHOW_DURATION);
+    }
+
+    function resetIdleTimer() {
+      nudge.classList.remove("show");
+      clearTimeout(hideTimer);
+      scheduleIdleTimer();
+    }
+
+    ["scroll", "mousemove", "touchstart", "touchmove", "keydown", "wheel", "click"].forEach(evt => {
+      window.addEventListener(evt, resetIdleTimer, { passive: true });
+    });
+
+    scheduleIdleTimer();
+  }
 });
