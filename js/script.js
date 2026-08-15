@@ -377,10 +377,16 @@ document.addEventListener("DOMContentLoaded", () => {
     downBtn.style.display = atBottom ? "none" : "flex";
   }
 
+  // Matches `section { scroll-margin-top: 80px }` in the CSS — scrollIntoView
+  // lands 80px ABOVE a section's raw offsetTop, not exactly at it. The
+  // buffer here must safely exceed that gap, or the section just landed on
+  // still satisfies "next" on the following click and re-selects itself.
+  const SCROLL_MARGIN = 80;
+
   function scrollToNextSection() {
     const sections = getSections();
     const currentY = window.scrollY + 10;
-    const next = sections.find(s => s.offsetTop > currentY + 50);
+    const next = sections.find(s => s.offsetTop > currentY + SCROLL_MARGIN + 20);
     if (next) {
       next.scrollIntoView({ behavior: "smooth", block: "start" });
     } else {
