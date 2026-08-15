@@ -2253,23 +2253,48 @@ section {
 }
 
 @media (max-width: 991px) {
+  #hero {
+    height: auto;           /* was 100vh — the fixed height + overflow:hidden is what clipped both ends */
+    min-height: 100vh;      /* still fills the screen on tall content, but can grow past it */
+    padding: 140px 0 60px;  /* clears the fixed navbar at top, breathing room at bottom */
+  }
+
   .hero-content.hero-content-split {
     flex-direction: column;
+    justify-content: flex-start; /* was silently still "space-between" — that's what caused the wide gap */
     text-align: center;
+    gap: 30px;
   }
+
   .hero-text {
     max-width: 100%;
   }
+
   .hero-description {
+    margin-top: 16px;
     margin-left: auto;
     margin-right: auto;
   }
-  .hero-cta-row,
-  .hero-meta {
+
+  .hero-cta-row {
+    margin-top: 22px;
     justify-content: center;
   }
+
+  .hero-meta {
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  .hero-social {
+    margin-top: 20px;
+    padding-top: 16px;
+    justify-content: center;
+  }
+
   .hero-reel {
-    margin: 30px auto 0;
+    margin: 0 auto;
+    max-width: 380px; /* a bit more compact than desktop's 480px cap */
   }
 }
 
