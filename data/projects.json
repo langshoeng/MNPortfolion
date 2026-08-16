@@ -1,135 +1,4 @@
 [
-  {
-    "id": "youtube-course-2026-pov",
-    "title": "YouTube Course 2026",
-    "featured": true,
-    "categories": [
-      "Motion Graphics",
-      "Video Editing",
-      "Camera Shooting"
-    ],
-    "client": "Rean with Pech",
-    "year": "Jun 2026",
-    "role": [
-      "Cameraman",
-      "Motion Graphics",
-      "Designing",
-      "Video Editing"
-    ],
-    "software": [
-      "After Effects",
-      "Premiere Pro",
-      "Photoshop",
-      "Camera"
-    ],
-    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
-    "thumbnail": "images/projects/coverpov026.jpg",
-    "video": {
-      "type": "youtube",
-      "url": "https://www.youtube.com/watch?v=bcqSKxTRwSY",
-      "duration": "00:01:19",
-      "start": 0,
-      "end": 81
-    },
-    "gallery": []
-  },
-  {
-    "id": "distro-kid-course-2026",
-    "title": "DistroKid Course 2026",
-    "featured": true,
-    "categories": [
-      "Video Editing"
-    ],
-    "client": "V-Mission Media",
-    "year": "May 2026",
-    "role": [
-      "Cameraman",
-      "Motion Graphics",
-      "Designing",
-      "Video Editing"
-    ],
-    "software": [
-      "After Effects",
-      "Premiere Pro",
-      "Photoshop",
-      "Camera"
-    ],
-    "description": "Highlight video showcasing the opening ceremony with dynamic editing and event coverage.",
-    "thumbnail": "images/projects/distrokid-cover.jpg",
-    "video": {
-      "type": "youtube",
-      "url": "https://www.youtube.com/watch?v=QixxBRXrXvg",
-      "duration": "00:01:39",
-      "start": 0,
-      "end": 101
-    },
-    "gallery": []
-  },
-  {
-    "id": "youtube-course-v.mission",
-    "title": "V-Mission's Youtube Course",
-    "featured": true,
-    "categories": [
-      "Video Editing"
-    ],
-    "client": "V-Mission Media",
-    "year": "May 2026",
-    "role": [
-      "Cameraman",
-      "Motion Graphics",
-      "Designing",
-      "Video Editing"
-    ],
-    "software": [
-      "After Effects",
-      "Premiere Pro",
-      "Photoshop",
-      "Camera"
-    ],
-    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
-    "thumbnail": "images/projects/v-mission-youtube-cover.jpg",
-    "video": {
-      "type": "youtube",
-      "url": "https://www.youtube.com/watch?v=hpf46EnEIX8",
-      "duration": "00:01:28",
-      "start": 0,
-      "end": 90
-    },
-    "gallery": []
-  },
-  {
-    "id": "ai-3d-cartoon-course",
-    "title": "AI 3D Animation Course",
-    "featured": true,
-    "categories": [
-      "Video Editing"
-    ],
-    "client": "V-Mission Media",
-    "year": "Apr 2026",
-    "role": [
-      "Cameraman",
-      "Motion Graphics",
-      "Designing",
-      "Video Editing"
-    ],
-    "software": [
-      "After Effects",
-      "Premiere Pro",
-      "Photoshop",
-      "Camera"
-    ],
-    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation, and commercial editing.",
-    "thumbnail": "images/projects/3d-ai-cartoon_cover.jpg",
-    "video": {
-      "type": "youtube",
-      "url": "https://www.youtube.com/watch?v=P-dTlq7NREw",
-      "duration": "00:01:04",
-      "start": 0,
-      "end": 66
-    },
-    "gallery": []
-  },
-
     {
     "id": "toefl-top-scorer",
     "title": "TOEFL Top Scorer",
@@ -544,6 +413,173 @@
     },
     "gallery": []
   },
+
+   {
+    "id": "meet-doctor-app-opening",
+    "title": "Meet Doctor App Opening Event",
+    "featured": true,
+    "categories": [
+      "Motion Graphics",
+      "Video Editing",
+      "3D & Animation"    
+    ],
+    "client": "Meet Doctor",
+    "year": "2026",
+    "role": [
+      "Cameraman",
+      "Motion Graphics",
+      "Video Editing",
+      "3D & Animation"  
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Photoshop",
+      "Illustrator"
+    ],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
+    "thumbnail": "images/projects/meet-doctor-app_cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=roMJOq36_pA",
+      "duration": "00:00:59",
+      "start": 0,
+      "end": 59
+    },
+    "gallery": []
+  }, 
+
+  {
+    "id": "youtube-course-2026-pov",
+    "title": "YouTube Course 2026",
+    "featured": true,
+    "categories": [
+      "Motion Graphics",
+      "Video Editing",
+      "Camera Shooting"
+    ],
+    "client": "Rean with Pech",
+    "year": "Jun 2026",
+    "role": [
+      "Cameraman",
+      "Motion Graphics",
+      "Designing",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Photoshop",
+      "Camera"
+    ],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
+    "thumbnail": "images/projects/coverpov026.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=bcqSKxTRwSY",
+      "duration": "00:01:19",
+      "start": 0,
+      "end": 81
+    },
+    "gallery": []
+  },
+  {
+    "id": "distro-kid-course-2026",
+    "title": "DistroKid Course 2026",
+    "featured": true,
+    "categories": [
+      "Video Editing"
+    ],
+    "client": "V-Mission Media",
+    "year": "May 2026",
+    "role": [
+      "Cameraman",
+      "Motion Graphics",
+      "Designing",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Photoshop",
+      "Camera"
+    ],
+    "description": "Highlight video showcasing the opening ceremony with dynamic editing and event coverage.",
+    "thumbnail": "images/projects/distrokid-cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=QixxBRXrXvg",
+      "duration": "00:01:39",
+      "start": 0,
+      "end": 101
+    },
+    "gallery": []
+  },
+  {
+    "id": "youtube-course-v.mission",
+    "title": "V-Mission's Youtube Course",
+    "featured": true,
+    "categories": [
+      "Video Editing"
+    ],
+    "client": "V-Mission Media",
+    "year": "May 2026",
+    "role": [
+      "Cameraman",
+      "Motion Graphics",
+      "Designing",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Photoshop",
+      "Camera"
+    ],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
+    "thumbnail": "images/projects/v-mission-youtube-cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=hpf46EnEIX8",
+      "duration": "00:01:28",
+      "start": 0,
+      "end": 90
+    },
+    "gallery": []
+  },
+  {
+    "id": "ai-3d-cartoon-course",
+    "title": "AI 3D Animation Course",
+    "featured": true,
+    "categories": [
+      "Video Editing"
+    ],
+    "client": "V-Mission Media",
+    "year": "Apr 2026",
+    "role": [
+      "Cameraman",
+      "Motion Graphics",
+      "Designing",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Photoshop",
+      "Camera"
+    ],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation, and commercial editing.",
+    "thumbnail": "images/projects/3d-ai-cartoon_cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=P-dTlq7NREw",
+      "duration": "00:01:04",
+      "start": 0,
+      "end": 66
+    },
+    "gallery": []
+  },
+
   
   {
     "id": "memoire-hospital",
