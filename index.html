@@ -550,10 +550,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Certificate</h5>
+        <span class="certificate-counter" id="certificateCounter"></span>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body certificate-modal-body">
+        <button type="button" class="certificate-nav certificate-nav-prev" id="certificatePrev" aria-label="Previous certificate">&#10094;</button>
         <iframe id="certificateFrame" src="" width="100%" height="600" style="border:0;" allowfullscreen></iframe>
+        <button type="button" class="certificate-nav certificate-nav-next" id="certificateNext" aria-label="Next certificate">&#10095;</button>
       </div>
     </div>
   </div>
