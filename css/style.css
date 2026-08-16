@@ -2636,6 +2636,13 @@ section {
   padding: 28px 24px;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.achievement-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.35);
 }
 
 .achievement-top {
@@ -2654,6 +2661,7 @@ section {
   justify-content: center;
   font-size: 24px;
   flex-shrink: 0;
+  transition: box-shadow 0.3s ease;
 }
 
 .achievement-year {
@@ -2699,34 +2707,49 @@ section {
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.25s ease;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
-/* Color themes — matches the text-primary/success/warning/info classes
-   your original list used, just applied to the new card parts instead */
+.achievement-btn i {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.achievement-card:hover .achievement-btn i {
+  transform: translateX(3px);
+}
+
+.achievement-card:hover .achievement-icon {
+  box-shadow: 0 0 18px currentColor;
+}
+
 .achievement-blue .achievement-icon { background: rgba(33,150,243,.15); color: #2196f3; }
 .achievement-blue .achievement-year { border-color: rgba(33,150,243,.4); color: #2196f3; }
 .achievement-blue .achievement-underline { background: #2196f3; }
 .achievement-blue .achievement-btn { border-color: #2196f3; color: #2196f3; }
-.achievement-blue .achievement-btn:hover { background: rgba(33,150,243,.12); }
+.achievement-blue:hover { border-color: rgba(33,150,243,.6); }
+.achievement-blue:hover .achievement-btn { background: #2196f3; color: #fff; }
 
 .achievement-green .achievement-icon { background: rgba(76,175,80,.15); color: #4caf50; }
 .achievement-green .achievement-year { border-color: rgba(76,175,80,.4); color: #4caf50; }
 .achievement-green .achievement-underline { background: #4caf50; }
 .achievement-green .achievement-btn { border-color: #4caf50; color: #4caf50; }
-.achievement-green .achievement-btn:hover { background: rgba(76,175,80,.12); }
+.achievement-green:hover { border-color: rgba(76,175,80,.6); }
+.achievement-green:hover .achievement-btn { background: #4caf50; color: #fff; }
 
 .achievement-gold .achievement-icon { background: rgba(255,193,7,.15); color: #ffc107; }
 .achievement-gold .achievement-year { border-color: rgba(255,193,7,.4); color: #ffc107; }
 .achievement-gold .achievement-underline { background: #ffc107; }
 .achievement-gold .achievement-btn { border-color: #ffc107; color: #ffc107; }
-.achievement-gold .achievement-btn:hover { background: rgba(255,193,7,.12); }
+.achievement-gold:hover { border-color: rgba(255,193,7,.6); }
+.achievement-gold:hover .achievement-btn { background: #ffc107; color: #111; }
 
 .achievement-cyan .achievement-icon { background: rgba(23,162,184,.15); color: #17a2b8; }
 .achievement-cyan .achievement-year { border-color: rgba(23,162,184,.4); color: #17a2b8; }
 .achievement-cyan .achievement-underline { background: #17a2b8; }
 .achievement-cyan .achievement-btn { border-color: #17a2b8; color: #17a2b8; }
-.achievement-cyan .achievement-btn:hover { background: rgba(23,162,184,.12); }
+.achievement-cyan:hover { border-color: rgba(23,162,184,.6); }
+.achievement-cyan:hover .achievement-btn { background: #17a2b8; color: #fff; }
 
 .achievements-footer {
   text-align: center;
@@ -2752,5 +2775,56 @@ section {
 @media (max-width: 576px) {
   .achievements-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================
+   Certificate Modal — prev/next navigation
+   Same floating circular arrow pattern as .viewerArrow / .peek-nav
+========================================== */
+.certificate-modal-body {
+  position: relative;
+}
+
+.certificate-counter {
+  color: #9a9a9a;
+  font-size: 14px;
+  margin-left: auto;
+  margin-right: 16px;
+}
+
+.certificate-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,.55);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 5;
+  transition: background 0.25s ease;
+}
+
+.certificate-nav:hover {
+  background: rgba(255,255,255,.15);
+}
+
+.certificate-nav-prev {
+  left: 12px;
+}
+
+.certificate-nav-next {
+  right: 12px;
+}
+
+@media (max-width: 576px) {
+  .certificate-nav {
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
   }
 }
