@@ -98,7 +98,7 @@ body.viewer-open {
     object-fit:cover;
     object-position:center center;
 
-    filter: blur(6px);        /* NEW — softens the footage */
+    filter: blur(8px);        /* NEW — softens the footage */
     transform: scale(1.08);   /* NEW — see note below */
 
     z-index:0;
@@ -107,7 +107,7 @@ body.viewer-open {
 .overlay{
     position:absolute;
     inset:0;
-    background:rgba(0,0,0,.80);
+    background:rgba(0,0,0,.95);
     z-index:1;
 }
 
