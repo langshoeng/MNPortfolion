@@ -3,11 +3,25 @@
     "id": "youtube-course-2026-pov",
     "title": "YouTube Course 2026",
     "featured": true,
-    "categories": ["Motion Graphics","Video Editing","Camera Shooting"],
+    "categories": [
+      "Motion Graphics",
+      "Video Editing",
+      "Camera Shooting"
+    ],
     "client": "Rean with Pech",
     "year": "Jun 2026",
-    "role": ["Cameraman","Motion Graphics","Designing","Video Editing"],
-    "software": ["After Effects","Premiere Pro","Photoshop","Camera"],
+    "role": [
+      "Cameraman",
+      "Motion Graphics",
+      "Designing",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Photoshop",
+      "Camera"
+    ],
     "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
     "thumbnail": "images/projects/coverpov026.jpg",
     "video": {
@@ -23,11 +37,23 @@
     "id": "distro-kid-course-2026",
     "title": "DistroKid Course 2026",
     "featured": true,
-    "categories": ["Video Editing"],
+    "categories": [
+      "Video Editing"
+    ],
     "client": "V-Mission Media",
     "year": "May 2026",
-    "role": ["Cameraman","Motion Graphics","Designing","Video Editing"],
-    "software": ["After Effects","Premiere Pro","Photoshop","Camera"],
+    "role": [
+      "Cameraman",
+      "Motion Graphics",
+      "Designing",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Photoshop",
+      "Camera"
+    ],
     "description": "Highlight video showcasing the opening ceremony with dynamic editing and event coverage.",
     "thumbnail": "images/projects/distrokid-cover.jpg",
     "video": {
@@ -43,11 +69,23 @@
     "id": "youtube-course-v.mission",
     "title": "V-Mission's Youtube Course",
     "featured": true,
-    "categories": ["Video Editing"],
+    "categories": [
+      "Video Editing"
+    ],
     "client": "V-Mission Media",
     "year": "May 2026",
-    "role": ["Cameraman","Motion Graphics","Designing","Video Editing"],
-    "software": ["After Effects","Premiere Pro","Photoshop","Camera"],
+    "role": [
+      "Cameraman",
+      "Motion Graphics",
+      "Designing",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Photoshop",
+      "Camera"
+    ],
     "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation and commercial editing.",
     "thumbnail": "images/projects/v-mission-youtube-cover.jpg",
     "video": {
@@ -63,11 +101,24 @@
     "id": "ai-3d-cartoon-course",
     "title": "AI 3D Animation Course",
     "featured": true,
-    "categories": ["Video Editing"],
+    "categories": [
+      "Video Editing",
+      "3D & Animation"
+    ],
     "client": "V-Mission Media",
     "year": "Apr 2026",
-    "role": ["Cameraman","Motion Graphics","Designing","Video Editing"],
-    "software": ["After Effects","Premiere Pro","Photoshop","Camera"],
+    "role": [
+      "Cameraman",
+      "Motion Graphics",
+      "Designing",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Photoshop",
+      "Camera"
+    ],
     "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, course presentation, and commercial editing.",
     "thumbnail": "images/projects/3d-ai-cartoon_cover.jpg",
     "video": {
@@ -83,11 +134,23 @@
     "id": "2026-new-year",
     "title": "2026's New Year's Count Down",
     "featured": true,
-    "categories": ["Video Editing","Motion Graphic","Shorts"],
+    "categories": [
+      "Video Editing",
+      "Motion Graphic",
+      "Shorts",
+      "3D & Animation"
+    ],
     "client": "Cambo Car & Sea Sambatha",
     "year": "Dec 2025",
-    "role": ["Motion Graphics","Video Editing"],
-    "software": ["After Effects","Element 3D","Photoshop"],
+    "role": [
+      "Motion Graphics",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Element 3D",
+      "Photoshop"
+    ],
     "description": "New Year's Celebration video featuring cinematic motion graphics, typography animation, 3d compositing.",
     "thumbnail": "images/projects/new-year-countdown-clock_026_cover.jpg",
     "video": {
@@ -103,11 +166,23 @@
     "id": "recieve-big-gift",
     "title": "ទទួលបានកាដូធំ (Big Gift)",
     "featured": true,
-    "categories": ["Video Editing","Motion Graphics","Shorts"],
+    "categories": [
+      "Video Editing",
+      "Motion Graphics",
+      "Shorts",
+      "3D & Animation"
+    ],
     "client": "Sea Sambath",
     "year": "Dec 2024",
-    "role": ["Motion Graphics","Video Editing"],
-    "software": ["After Effects","Element 3D","Photoshop"],
+    "role": [
+      "Motion Graphics",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Element 3D",
+      "Photoshop"
+    ],
     "description": "New Year's Promotional Video Campaign featuring cinematic motion graphics, typography animation, 3d compositing, and commercial editing.",
     "thumbnail": "images/projects/seasambath-big-gift-cover.jpg",
     "video": {
@@ -123,11 +198,23 @@
     "id": "2025-new-year-countdown",
     "title": "2025's Count Down New Year",
     "featured": true,
-    "categories": ["Video Editing","Motion Graphics","Shorts"],
+    "categories": [
+      "Video Editing",
+      "Motion Graphics",
+      "Shorts",
+      "3D & Animation"
+    ],
     "client": "Sea Sambath & Cambo Car",
     "year": "Dec 2024",
-    "role": ["Motion Graphics","Video Editing"],
-    "software": ["After Effects","Element 3D","Photoshop"],
+    "role": [
+      "Motion Graphics",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Element 3D",
+      "Photoshop"
+    ],
     "description": "New Year's Celebration video featuring cinematic motion graphics, typography animation, 3d compositing and commercial editing.",
     "thumbnail": "images/projects/new-year-countdown_025_cover.jpg",
     "video": {
@@ -143,11 +230,23 @@
     "id": "giftbox-be-ready",
     "title": "(GiftBOX) ត្រៀមៗ Be Ready!",
     "featured": true,
-    "categories": ["Video Editing","Motion Graphics","Shorts"],
+    "categories": [
+      "Video Editing",
+      "Motion Graphics",
+      "Shorts",
+      "3D & Animation"
+    ],
     "client": "BTB បង់រំលោះ",
     "year": "Nov 2024",
-    "role": ["Motion Graphics","Video Editing"],
-    "software": ["After Effects","Element 3D","Photoshop"],
+    "role": [
+      "Motion Graphics",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Element 3D",
+      "Photoshop"
+    ],
     "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, 3D compositing, and commercial editing.",
     "thumbnail": "images/projects/giftbox-be-ready_cover.jpg",
     "video": {
@@ -159,16 +258,27 @@
     },
     "gallery": []
   },
-
   {
     "id": "new-promotion-from-partner",
     "title": "ប្រម៉ូសិនថ្មីពីដៃគូសហការ",
     "featured": true,
-    "categories": ["Video Editing","Motion Graphics","Shorts"],
+    "categories": [
+      "Video Editing",
+      "Motion Graphics",
+      "Shorts",
+      "3D & Animation"
+    ],
     "client": "Sea Sambath",
     "year": "May 2024",
-    "role": ["Motion Graphics","Video Editing"],
-    "software": ["After Effects","Element 3D","Photoshop"],
+    "role": [
+      "Motion Graphics",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Element 3D",
+      "Photoshop"
+    ],
     "description": "Motor Shop's Promotional launch campaign featuring cinematic motion graphics, typography animation, and commercial editing.",
     "thumbnail": "images/projects/partner's-promotion_cover.jpg",
     "video": {
@@ -180,16 +290,29 @@
     },
     "gallery": []
   },
-
   {
     "id": "matey-shampoo",
     "title": "Matey Shampoo",
     "featured": true,
-    "categories": ["Video Editing","Motion Graphics","3D"],
+    "categories": [
+      "Video Editing",
+      "Motion Graphics",
+      "3D",
+      "3D & Animation"
+    ],
     "client": "Matey",
     "year": "Dec 2023",
-    "role": ["Motion Graphics","Video Editing", "3D Modeling"],
-    "software": ["After Effects", "Premiere Pro", "Cinema 4D","Photoshop"],
+    "role": [
+      "Motion Graphics",
+      "Video Editing",
+      "3D Modeling"
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Cinema 4D",
+      "Photoshop"
+    ],
     "description": "Hair Shampoo's Promotional launch campaign featuring cinematic motion graphics, typography animation, 3d products, and commercial editing.",
     "thumbnail": "images/projects/matey-shampoo_cover.jpg",
     "video": {
@@ -201,16 +324,24 @@
     },
     "gallery": []
   },
-
   {
     "id": "cambocar-outro",
     "title": "CamboCar Outro",
     "featured": true,
-    "categories": ["Video Editing","Motion Graphics"],
+    "categories": [
+      "Video Editing",
+      "Motion Graphics"
+    ],
     "client": "CamboCar",
     "year": "2023",
-    "role": ["Motion Graphics","Video Editing"],
-    "software": ["After Effects","Photoshop"],
+    "role": [
+      "Motion Graphics",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Photoshop"
+    ],
     "description": "Outro Reveal Animation featuring motion graphics, typography animation,",
     "thumbnail": "images/projects/cambocar-outro_cover.jpg",
     "video": {
@@ -222,16 +353,22 @@
     },
     "gallery": []
   },
-  
   {
     "id": "memoire-hospital",
     "title": "Designs for Mémoire Polyclinic and Maternity",
     "featured": true,
-    "categories": ["Graphic Design"],
+    "categories": [
+      "Graphic Design"
+    ],
     "client": "Mémoire Polyclinic and Maternity",
     "year": "2024",
-    "role": ["Graphic Design"],
-    "software": ["Illustrator","Photoshop"],
+    "role": [
+      "Graphic Design"
+    ],
+    "software": [
+      "Illustrator",
+      "Photoshop"
+    ],
     "description": "Collection of some design works with Mémoire Polyclinic and Maternity",
     "thumbnail": "images/projects/memoire-hospital/memoire-hospital_cover.png",
     "video": {
@@ -250,16 +387,22 @@
       "images/projects/memoire-hospital/Kangaroo Care.jpg"
     ]
   },
-
   {
     "id": "ACES",
     "title": "ACES's Design Works",
     "featured": true,
-    "categories": ["Graphic Design"],
+    "categories": [
+      "Graphic Design"
+    ],
     "client": "ACES",
     "year": "2026",
-    "role": ["Graphic Design"],
-    "software": ["Illustrator","Photoshop"],
+    "role": [
+      "Graphic Design"
+    ],
+    "software": [
+      "Illustrator",
+      "Photoshop"
+    ],
     "description": "Collection of  design works include Photo Hand Props, Brochure and some video scene's design",
     "thumbnail": "images/projects/ACES's/ACES_Cover.jpg",
     "video": {
@@ -280,16 +423,22 @@
       "images/projects/ACES's/Congratulations ACES Certificate Ceremony.png"
     ]
   },
-
   {
     "id": "PteasLokMjas",
     "title": "ផ្ទះលោកម្ចាស់-Pteas Lok Mjas Design Works",
     "featured": true,
-    "categories": ["Graphic Design"],
+    "categories": [
+      "Graphic Design"
+    ],
     "client": "ផ្ទះលោកម្ចាស់-Pteas Lok Mjas",
     "year": "2025",
-    "role": ["Graphic Design"],
-    "software": ["Illustrator","Photoshop"],
+    "role": [
+      "Graphic Design"
+    ],
+    "software": [
+      "Illustrator",
+      "Photoshop"
+    ],
     "description": "Banner, and Ticket Design for ផ្ទះលោកម្ចាស់-Pteas Lok Mjas",
     "thumbnail": "images/projects/PteasLokMjas/PteasLokMjas_Cover.jpg",
     "video": {
@@ -300,16 +449,22 @@
       "images/projects/PteasLokMjas/Front Side 1.png"
     ]
   },
-
   {
     "id": "VideoThumbnailDesign",
     "title": "Video Thumbnail Design",
     "featured": true,
-    "categories": ["Graphic Design"],
+    "categories": [
+      "Graphic Design"
+    ],
     "client": "ACES",
     "year": "2026",
-    "role": ["Graphic Design"],
-    "software": ["Illustrator","Photoshop"],
+    "role": [
+      "Graphic Design"
+    ],
+    "software": [
+      "Illustrator",
+      "Photoshop"
+    ],
     "description": "Collection of  design works include Photo Hand Props, Brochure and some video scene's design",
     "thumbnail": "images/projects/ThumbnailDesign/V-mission-Thumbnail_Cover.jpg",
     "video": {
@@ -324,16 +479,23 @@
       "images/projects/ThumbnailDesign/3D-AI-Animation-Thumbnail.jpg"
     ]
   },
-  
   {
     "id": "wedding-photography",
     "title": "Wedding Photography",
     "featured": false,
-    "categories": ["Photography"],
+    "categories": [
+      "Photography"
+    ],
     "client": "Private Client",
     "year": "2024",
-    "role": ["Photography","Photo Retouching"],
-    "software": ["Lightroom","Photoshop"],
+    "role": [
+      "Photography",
+      "Photo Retouching"
+    ],
+    "software": [
+      "Lightroom",
+      "Photoshop"
+    ],
     "description": "Outdoor wedding photography with natural lighting and cinematic color grading.",
     "thumbnail": "images/projects/wedding/cover.jpg",
     "video": {
