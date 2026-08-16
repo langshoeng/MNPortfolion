@@ -294,17 +294,64 @@ document.addEventListener("DOMContentLoaded", () => {
   // Certificate Modal Behavior
   const certificateModal = document.getElementById('certificateModal');
   if (certificateModal) {
+    // The trigger elements themselves are the source of truth for order —
+    // no separate data array to keep in sync, just whatever's in the DOM
+    const certificateTriggers = Array.from(document.querySelectorAll('[data-bs-target="#certificateModal"]'));
+    const certificateFrame = certificateModal.querySelector('#certificateFrame');
+    const certificateTitleEl = certificateModal.querySelector('.modal-title');
+    const certificateCounterEl = document.getElementById('certificateCounter');
+    const certificatePrevBtn = document.getElementById('certificatePrev');
+    const certificateNextBtn = document.getElementById('certificateNext');
+    let currentCertificateIndex = 0;
+
+    function showCertificateAt(index) {
+      if (!certificateTriggers.length) return;
+      currentCertificateIndex = (index + certificateTriggers.length) % certificateTriggers.length;
+      const trigger = certificateTriggers[currentCertificateIndex];
+      certificateTitleEl.textContent = trigger.getAttribute('data-title');
+      certificateFrame.src = trigger.getAttribute('data-link');
+      if (certificateCounterEl) {
+        certificateCounterEl.textContent = `${currentCertificateIndex + 1} of ${certificateTriggers.length}`;
+      }
+    }
+
     certificateModal.addEventListener('show.bs.modal', function (event) {
       const button = event.relatedTarget;
-      const title = button.getAttribute('data-title');
-      const link = button.getAttribute('data-link');
-      certificateModal.querySelector('.modal-title').textContent = title;
-      certificateModal.querySelector('#certificateFrame').src = link;
+      const index = certificateTriggers.indexOf(button);
+      showCertificateAt(index >= 0 ? index : 0);
     });
+
     certificateModal.addEventListener('hidden.bs.modal', function () {
-      certificateModal.querySelector('#certificateFrame').src = "";
+      certificateFrame.src = "";
+    });
+
+    if (certificatePrevBtn) {
+      certificatePrevBtn.addEventListener('click', () => showCertificateAt(currentCertificateIndex - 1));
+    }
+    if (certificateNextBtn) {
+      certificateNextBtn.addEventListener('click', () => showCertificateAt(currentCertificateIndex + 1));
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (!certificateModal.classList.contains('show')) return;
+      if (e.key === 'ArrowLeft') showCertificateAt(currentCertificateIndex - 1);
+      else if (e.key === 'ArrowRight') showCertificateAt(currentCertificateIndex + 1);
     });
   }
+
+  // Achievement cards — click anywhere on the card to open its certificate,
+  // while the actual <a> stays the real, keyboard-focusable trigger (Tab +
+  // Enter still work natively on it, unchanged). This just forwards a click
+  // from elsewhere on the card to that same element, so mouse users get a
+  // bigger target without adding a second, redundant tab-stop.
+  document.querySelectorAll('.achievement-card').forEach(card => {
+    const trigger = card.querySelector('.achievement-btn');
+    if (!trigger) return;
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.achievement-btn')) return; // already handled natively
+      trigger.click();
+    });
+  });
 
   // Peek Preview Behavior
   const peekModal = document.getElementById("peekModal");
