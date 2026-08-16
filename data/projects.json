@@ -255,166 +255,6 @@
   },
 
   {
-    "id": "3d-champion",
-    "title": "3D Champion Animation",
-    "featured": true,
-    "categories": [
-      "3D & Animation"
-    ],
-    "client": "...",
-    "year": "2026",
-    "role": [
-      "3D Modeling",
-      "Compositing",
-      "Animation"
-    ],
-    "software": [
-      "Cinema 4D",
-      "After Effects",
-      "Illustrator",
-      "Photoshop"
-    ],
-    "description": "Cinematic 3D intro animation created in Cinema 4D, featuring custom modeling, dynamic lighting, realistic materials, camera animation, and polished motion graphics.",
-    "thumbnail": "images/projects/Champion_cover.jpg",
-    "video": {
-      "type": "youtube",
-      "url": "https://www.youtube.com/watch?v=9myeYn8aFys",
-      "duration": "00:00:20",
-      "start": 0,
-      "end": 20
-    },
-    "gallery": []
-  },
-
-  {
-    "id": "juice-product-3d-animation",
-    "title": "Juice Product - 3D Animation",
-    "featured": true,
-    "categories": [
-      "3D & Animation"
-    ],
-    "client": "...",
-    "year": "2026",
-    "role": [
-      "3D Modeling",
-      "Compositing",
-      "Animation"
-    ],
-    "software": [
-      "Cinema 4D",
-      "After Effects",
-      "Illustrator",
-      "Photoshop"
-    ],
-    "description": "Cinematic 3D intro animation created in Cinema 4D, featuring custom modeling, dynamic lighting, realistic materials, camera animation, and polished motion graphics.",
-    "thumbnail": "images/projects/3d Juice_cover.jpg",
-    "video": {
-      "type": "youtube",
-      "url": "https://www.youtube.com/watch?v=m5r5tSrQ1D4",
-      "duration": "00:00:45",
-      "start": 0,
-      "end": 45
-    },
-    "gallery": []
-  },
-
-    {
-    "id": "3d-big-prize",
-    "title": "Big Prize Promotion",
-    "featured": true,
-    "categories": [
-      "3D & Animation"
-    ],
-    "client": "Master-IT Center",
-    "year": "2021",
-    "role": [
-      "3D Modeling",
-      "Compositing",
-      "Animation"
-    ],
-    "software": [
-      "Cinema 4D",
-      "After Effects",
-      "Illustrator",
-      "Photoshop"
-    ],
-    "description": "Course demonstration project created for my Cinema 4D classes, featuring professional 3D modeling, motion graphics, animation, lighting, materials, camera work, and final rendering.",
-    "thumbnail": "images/projects/3d-big-prize_cover.jpg",
-    "video": {
-      "type": "youtube",
-      "url": "https://www.youtube.com/watch?v=7n49fDPDOww",
-      "duration": "00:00:08",
-      "start": 0,
-      "end": 8
-    },
-    "gallery": []
-  },
-
-  {
-    "id": "3d-big-prize-promotion",
-    "title": "Big Prize Promotion",
-    "featured": true,
-    "categories": [
-      "3D & Animation"
-    ],
-    "client": "Master-IT Center",
-    "year": "2021",
-    "role": [
-      "3D Modeling",
-      "Compositing",
-      "Animation"
-    ],
-    "software": [
-      "Cinema 4D",
-      "After Effects",
-      "Illustrator",
-      "Photoshop"
-    ],
-    "description": "Course demonstration project created for my Cinema 4D classes, featuring professional 3D modeling, motion graphics, animation, lighting, materials, camera work, and final rendering.",
-    "thumbnail": "images/projects/3d-big-prize-winner.jpg",
-    "video": {
-      "type": "youtube",
-      "url": "https://www.youtube.com/watch?v=G9PGycB6NvE",
-      "duration": "00:00:06",
-      "start": 0,
-      "end": 6
-    },
-    "gallery": []
-  },
-  
-  {
-    "id": "3d-news-intro",
-    "title": "News Intro",
-    "featured": true,
-    "categories": [
-      "3D & Animation"
-    ],
-    "client": "Master-IT Center",
-    "year": "2021",
-    "role": [
-      "3D Modeling",
-      "Compositing",
-      "Animation"
-    ],
-    "software": [
-      "Cinema 4D",
-      "After Effects",
-      "Illustrator",
-      "Photoshop"
-    ],
-    "description": "Course demonstration project created for my Cinema 4D classes, featuring professional 3D modeling, motion graphics, animation, lighting, materials, camera work, and final rendering.",
-    "thumbnail": "images/projects/news-intro_cover.jpg",
-    "video": {
-      "type": "youtube",
-      "url": "https://www.youtube.com/watch?v=lcRBlD3huiM",
-      "duration": "00:00:10",
-      "start": 0,
-      "end": 10
-    },
-    "gallery": []
-  },
-
-   {
     "id": "meet-doctor-app-opening",
     "title": "Meet Doctor App Opening Event",
     "featured": true,
@@ -580,7 +420,166 @@
     "gallery": []
   },
 
+  {
+    "id": "3d-champion",
+    "title": "3D Champion Animation",
+    "featured": true,
+    "categories": [
+      "3D & Animation"
+    ],
+    "client": "...",
+    "year": "2026",
+    "role": [
+      "3D Modeling",
+      "Compositing",
+      "Animation"
+    ],
+    "software": [
+      "Cinema 4D",
+      "After Effects",
+      "Illustrator",
+      "Photoshop"
+    ],
+    "description": "Cinematic 3D intro animation created in Cinema 4D, featuring custom modeling, dynamic lighting, realistic materials, camera animation, and polished motion graphics.",
+    "thumbnail": "images/projects/Champion_cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=9myeYn8aFys",
+      "duration": "00:00:20",
+      "start": 0,
+      "end": 20
+    },
+    "gallery": []
+  },
+
+  {
+    "id": "juice-product-3d-animation",
+    "title": "Juice Product - 3D Animation",
+    "featured": true,
+    "categories": [
+      "3D & Animation"
+    ],
+    "client": "...",
+    "year": "2026",
+    "role": [
+      "3D Modeling",
+      "Compositing",
+      "Animation"
+    ],
+    "software": [
+      "Cinema 4D",
+      "After Effects",
+      "Illustrator",
+      "Photoshop"
+    ],
+    "description": "Cinematic 3D intro animation created in Cinema 4D, featuring custom modeling, dynamic lighting, realistic materials, camera animation, and polished motion graphics.",
+    "thumbnail": "images/projects/3d Juice_cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=m5r5tSrQ1D4",
+      "duration": "00:00:45",
+      "start": 0,
+      "end": 45
+    },
+    "gallery": []
+  },
+
+    {
+    "id": "3d-big-prize",
+    "title": "Big Prize Promotion",
+    "featured": true,
+    "categories": [
+      "3D & Animation"
+    ],
+    "client": "Master-IT Center",
+    "year": "2021",
+    "role": [
+      "3D Modeling",
+      "Compositing",
+      "Animation"
+    ],
+    "software": [
+      "Cinema 4D",
+      "After Effects",
+      "Illustrator",
+      "Photoshop"
+    ],
+    "description": "Course demonstration project created for my Cinema 4D classes, featuring professional 3D modeling, motion graphics, animation, lighting, materials, camera work, and final rendering.",
+    "thumbnail": "images/projects/3d-big-prize_cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=7n49fDPDOww",
+      "duration": "00:00:08",
+      "start": 0,
+      "end": 8
+    },
+    "gallery": []
+  },
+
+  {
+    "id": "3d-big-prize-promotion",
+    "title": "Big Prize Promotion",
+    "featured": true,
+    "categories": [
+      "3D & Animation"
+    ],
+    "client": "Master-IT Center",
+    "year": "2021",
+    "role": [
+      "3D Modeling",
+      "Compositing",
+      "Animation"
+    ],
+    "software": [
+      "Cinema 4D",
+      "After Effects",
+      "Illustrator",
+      "Photoshop"
+    ],
+    "description": "Course demonstration project created for my Cinema 4D classes, featuring professional 3D modeling, motion graphics, animation, lighting, materials, camera work, and final rendering.",
+    "thumbnail": "images/projects/3d-big-prize-winner.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=G9PGycB6NvE",
+      "duration": "00:00:06",
+      "start": 0,
+      "end": 6
+    },
+    "gallery": []
+  },
   
+  {
+    "id": "3d-news-intro",
+    "title": "News Intro",
+    "featured": true,
+    "categories": [
+      "3D & Animation"
+    ],
+    "client": "Master-IT Center",
+    "year": "2021",
+    "role": [
+      "3D Modeling",
+      "Compositing",
+      "Animation"
+    ],
+    "software": [
+      "Cinema 4D",
+      "After Effects",
+      "Illustrator",
+      "Photoshop"
+    ],
+    "description": "Course demonstration project created for my Cinema 4D classes, featuring professional 3D modeling, motion graphics, animation, lighting, materials, camera work, and final rendering.",
+    "thumbnail": "images/projects/news-intro_cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=lcRBlD3huiM",
+      "duration": "00:00:10",
+      "start": 0,
+      "end": 10
+    },
+    "gallery": []
+  },
+    
   {
     "id": "memoire-hospital",
     "title": "Designs for Mémoire Polyclinic and Maternity",
