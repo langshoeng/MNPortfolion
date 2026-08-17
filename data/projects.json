@@ -255,6 +255,162 @@
   },
 
   {
+    "id": "master-it-media",
+    "title": "Master-IT Media",
+    "featured": true,
+    "categories": [
+      "Video Editing",
+      "Motion Graphic"
+    ],
+    "client": "Master-IT Cambodia",
+    "year": "2023",
+    "role": [
+      "Motion Graphics",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Photoshop"
+    ],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, and commercial editing.",
+    "thumbnail": "images/projects/masterit-media_cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=CgwYW4HDPX4",
+      "duration": "00:01:45",
+      "start": 0,
+      "end": 107
+    },
+    "gallery": []
+  },
+
+  {
+    "id": "master-it-membeship",
+    "title": "Master-IT Membership",
+    "featured": true,
+    "categories": [
+      "Video Editing",
+      "Motion Graphic"
+    ],
+    "client": "Master-IT Cambodia",
+    "year": "2023",
+    "role": [
+      "Motion Graphics",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Photoshop"
+    ],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, and commercial editing.",
+    "thumbnail": "images/projects/master-it-membeship_cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=a1vtBLFlrV8",
+      "duration": "00:00:33",
+      "start": 0,
+      "end": 35
+    },
+    "gallery": []
+  },
+
+  {
+    "id": "master-it-pjumben",
+    "title": "Master-IT ប្រូម៉ូសិនភ្ជុំបិណ្ឌ",
+    "featured": true,
+    "categories": [
+      "Video Editing",
+      "Motion Graphic"
+    ],
+    "client": "Master-IT Cambodia",
+    "year": "2023",
+    "role": [
+      "Motion Graphics",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Premiere Pro",
+      "Photoshop"
+    ],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, and commercial editing.",
+    "thumbnail": "images/projects/mit-pjumben-cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=3Nq3Tl7_0nk",
+      "duration": "00:00:13",
+      "start": 0,
+      "end": 15
+    },
+    "gallery": []
+  }, 
+
+  {
+    "id": "adobe-illustrator-course",
+    "title": "Adobe Illustrator Course Promo",
+    "featured": true,
+    "categories": [
+      "Video Editing",
+      "Motion Graphic"
+    ],
+    "client": "Master-IT Cambodia",
+    "year": "2021",
+    "role": [
+      "Motion Graphics",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Cinema 4D",
+      "Premiere Pro",
+      "Photoshop"
+    ],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, and commercial editing.",
+    "thumbnail": "images/projects/adobe-illustrator-course_cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=bo8Qh938gtE",
+      "duration": "00:01:15",
+      "start": 0,
+      "end": 77
+    },
+    "gallery": []
+  }, 
+    
+  {
+    "id": "excel-vba-course",
+    "title": "Excel VBA Course Promo",
+    "featured": true,
+    "categories": [
+      "Video Editing",
+      "Motion Graphic"
+    ],
+    "client": "Master-IT Cambodia",
+    "year": "2023",
+    "role": [
+      "Motion Graphics",
+      "Video Editing"
+    ],
+    "software": [
+      "After Effects",
+      "Cinema 4D",
+      "Premiere Pro",
+      "Photoshop"
+    ],
+    "description": "Promotional launch campaign featuring cinematic motion graphics, typography animation, and commercial editing.",
+    "thumbnail": "images/projects/excel-vba-course_cover.jpg",
+    "video": {
+      "type": "youtube",
+      "url": "https://www.youtube.com/watch?v=gvuohDSormw",
+      "duration": "00:01:33",
+      "start": 0,
+      "end": 95
+    },
+    "gallery": []
+  }, 
+  {
     "id": "meet-doctor-app-opening",
     "title": "Meet Doctor App Opening Event",
     "featured": true,
