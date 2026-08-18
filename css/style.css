@@ -981,28 +981,6 @@ footer{
 
 }
 
-/* ==========================================
-   Close Button
-========================================== */
-
-#viewerClose{
-    position:absolute;
-    top:10px;      /* was 18px */
-    right:14px;    /* was 18px */
-    width:36px;    /* was 48px */
-    height:36px;   /* was 48px */
-    border:none;
-    border-radius:50%;
-    background:rgba(0,0,0,.45);
-    color:white;
-    font-size:26px; /* was 34px — scaled down to match the smaller circle */
-    cursor:pointer;
-    transition:.25s;
-    z-index:100;
-}
-#viewerClose:hover{
-    background:#ffffff22;
-}
 
 /* ==========================================
    Media Wrapper
@@ -1447,20 +1425,23 @@ footer{
 
 
 /* ==========================================
-   Title bar styling — CHANGED to flex, to make
-   room for the project prev/next buttons flanking
-   the title. text-align:center replaced by the
-   h2 itself being centered as a flex item instead.
+   Title bar styling — title is left-aligned
+   (not centered) so the close button's extra
+   right-padding clearance never looks asymmetric.
+   No margin-top needed — header sits flush at
+   the top, and the close button (which stays a
+   separate, always-visible element — see note
+   at #viewerClose below) is positioned to align
+   with this row instead of overlapping it.
 ========================================== */
 #viewerHeader {
-  padding: 12px 16px;
+  padding: 12px 60px 12px 16px; /* right padding clears the close button's footprint */
   background: #111;
   border-bottom: 1px solid #272727;
   margin-bottom: 8px;
-  margin-top: 44px;   /* ← this line is missing — add it */
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 14px;
 }
 
@@ -1469,7 +1450,7 @@ footer{
   font-size: 18px;
   font-weight: 600;
   color: #fff;
-  text-align: center;
+  text-align: left;
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -1483,10 +1464,15 @@ footer{
 }
 
 /* ==========================================
-   Project prev/next — flanks the title, a
-   deliberately different UI region from the
-   image-gallery arrows on the media edges below
+   Project prev/next — grouped together as a
+   pair on the right side of the header
 ========================================== */
+.viewer-header-nav {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 .viewer-project-nav {
   flex-shrink: 0;
   width: 32px;
@@ -1511,7 +1497,7 @@ footer{
 
 @media (max-width: 768px) {
   #viewerHeader {
-    margin-top: 38px; /* smaller than the 44px base — mobile's close button sits a bit closer already */
+    padding: 12px 50px 12px 16px; /* smaller than desktop's 60px — mobile's close button footprint is a bit smaller too */
   }
   .viewer-project-nav {
     width: 28px;
@@ -1522,6 +1508,35 @@ footer{
     font-size: 15px;
   }
 }
+
+/* ==========================================
+   Close Button — stays a separate, always-
+   positioned element (not nested inside
+   #viewerHeader) so it remains visible and
+   clickable during fullscreen mode, where the
+   header itself is hidden. These coordinates
+   just happen to align it next to the nav
+   buttons above — no structural relationship.
+========================================== */
+#viewerClose{
+    position:absolute;
+    top:10px;
+    right:14px;
+    width:36px;
+    height:36px;
+    border:none;
+    border-radius:50%;
+    background:rgba(0,0,0,.45);
+    color:white;
+    font-size:26px;
+    cursor:pointer;
+    transition:.25s;
+    z-index:100;
+}
+#viewerClose:hover{
+    background:#ffffff22;
+}
+
 /* Zoomable image */
 .zoomable {
     cursor:grab;
