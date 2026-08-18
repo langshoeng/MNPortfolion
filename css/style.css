@@ -986,36 +986,22 @@ footer{
 ========================================== */
 
 #viewerClose{
-
     position:absolute;
-
-    top:18px;
-    right:18px;
-
-    width:48px;
-    height:48px;
-
+    top:10px;      /* was 18px */
+    right:14px;    /* was 18px */
+    width:36px;    /* was 48px */
+    height:36px;   /* was 48px */
     border:none;
     border-radius:50%;
-
     background:rgba(0,0,0,.45);
-
     color:white;
-
-    font-size:34px;
-
+    font-size:26px; /* was 34px — scaled down to match the smaller circle */
     cursor:pointer;
-
     transition:.25s;
-
     z-index:100;
-
 }
-
 #viewerClose:hover{
-
     background:#ffffff22;
-
 }
 
 /* ==========================================
@@ -1523,6 +1509,9 @@ footer{
 }
 
 @media (max-width: 768px) {
+  #viewerHeader {
+    margin-top: 38px; /* smaller than the 44px base — mobile's close button sits a bit closer already */
+  }
   .viewer-project-nav {
     width: 28px;
     height: 28px;
@@ -1532,7 +1521,6 @@ footer{
     font-size: 15px;
   }
 }
-
 /* Zoomable image */
 .zoomable {
     cursor:grab;
