@@ -1457,6 +1457,7 @@ footer{
   background: #111;
   border-bottom: 1px solid #272727;
   margin-bottom: 8px;
+  margin-top: 44px;   /* ← this line is missing — add it */
   display: flex;
   align-items: center;
   justify-content: center;
