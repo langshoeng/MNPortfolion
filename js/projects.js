@@ -479,6 +479,12 @@ async function loadProjects() {
 // =======================================
 // Render Projects
 // =======================================
+// Tracks whatever's currently visible in the grid (after filtering), so the
+// metadata modal's project prev/next (viewer.js) can navigate within the
+// same set the user is actually browsing — not silently jump across an
+// unrelated category if a filter is active.
+let currentFilteredProjects = [];
+
 function renderProjects(filter = "All") {
   const grid = document.getElementById("projectsGrid");
   grid.innerHTML = "";
@@ -489,6 +495,8 @@ function renderProjects(filter = "All") {
       project.categories.includes(filter)
     );
   }
+
+  currentFilteredProjects = projects;
 
   projects.forEach(project => {
     const software = project.software ? project.software.join(" • ") : "";
