@@ -545,6 +545,42 @@ function openProject(project){
 }
 
 // ===========================================
+// PROJECT PREV/NEXT — navigate between projects without leaving the
+// metadata modal. Operates on whatever's currently visible in the grid
+// (currentFilteredProjects, from projects.js), so it respects an active
+// filter instead of jumping across unrelated categories. Wraps around at
+// both ends, same convention as Peek/gallery/certificate-modal navigation
+// elsewhere on the site. Simply calls openProject() again — every existing
+// behavior (pausing other previews, video/gallery setup) just works.
+// ===========================================
+function goToAdjacentProject(direction) {
+    if (typeof currentFilteredProjects === "undefined" || !currentFilteredProjects.length) return;
+    if (!currentProject) return;
+
+    const currentIndex = currentFilteredProjects.findIndex(p => p.id === currentProject.id);
+    if (currentIndex === -1) return; // current project isn't in the visible set (filter changed underneath) — nothing sane to do
+
+    const nextIndex = (currentIndex + direction + currentFilteredProjects.length) % currentFilteredProjects.length;
+    openProject(currentFilteredProjects[nextIndex]);
+}
+
+const viewerPrevProjectBtn = document.getElementById("viewerPrevProject");
+const viewerNextProjectBtn = document.getElementById("viewerNextProject");
+
+if (viewerPrevProjectBtn) {
+    viewerPrevProjectBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        goToAdjacentProject(-1);
+    });
+}
+if (viewerNextProjectBtn) {
+    viewerNextProjectBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        goToAdjacentProject(1);
+    });
+}
+
+// ===========================================
 // BUILD GALLERY
 // ===========================================
 
@@ -739,12 +775,20 @@ document.addEventListener("keydown", (e) => {
         case "ArrowLeft":
             if (currentGallery.length) {
                 previousViewerImage();
+            } else {
+                // No gallery to navigate (video-mode) — repurpose the same
+                // key for project navigation instead. Never both: a project
+                // is exclusively video or gallery, so there's no ambiguity
+                // about which behavior a press means in the moment.
+                goToAdjacentProject(-1);
             }
             break;
 
         case "ArrowRight":
             if (currentGallery.length) {
                 nextViewerImage();
+            } else {
+                goToAdjacentProject(1);
             }
             break;
     }
