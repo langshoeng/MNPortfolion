@@ -1460,13 +1460,21 @@ footer{
 }
 
 
-/* Title bar styling */
+/* ==========================================
+   Title bar styling — CHANGED to flex, to make
+   room for the project prev/next buttons flanking
+   the title. text-align:center replaced by the
+   h2 itself being centered as a flex item instead.
+========================================== */
 #viewerHeader {
   padding: 12px 16px;
   background: #111;
   border-bottom: 1px solid #272727;
-  text-align: center;       /* center align */
-  margin-bottom: 8px;       /* space between title and media */
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
 }
 
 #viewerHeader h2 {
@@ -1474,11 +1482,55 @@ footer{
   font-size: 18px;
   font-weight: 600;
   color: #fff;
+  text-align: center;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Hide title bar in fullscreen */
+/* Hide title bar in fullscreen — unchanged from before */
 .viewer-window.fullscreen-mode #viewerHeader {
   display: none;
+}
+
+/* ==========================================
+   Project prev/next — flanks the title, a
+   deliberately different UI region from the
+   image-gallery arrows on the media edges below
+========================================== */
+.viewer-project-nav {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.06);
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.viewer-project-nav:hover {
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  border-color: rgba(255,255,255,.3);
+}
+
+@media (max-width: 768px) {
+  .viewer-project-nav {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  #viewerHeader h2 {
+    font-size: 15px;
+  }
 }
 
 /* Zoomable image */
