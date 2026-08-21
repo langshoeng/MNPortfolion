@@ -1,56 +1,58 @@
 [
   {
     "id": "hero-reel-1",
-    "title": "Big Prize Promotion Win",
+    "title": "Opening Event Countdown",
     "video": {
-      "url": "https://www.youtube.com/watch?v=G9PGycB6NvE",
-      "start": 0,
-      "end": 15
+      "url": "videos/hero-reel/1-Opening Event_CountDown.mp4",
+      "start": 0
     }
   },
-    {
+  {
     "id": "hero-reel-2",
-    "title": "Meet Doctor App Opening Event",
+    "title": "Opening Event",
     "video": {
-      "url": "https://www.youtube.com/watch?v=roMJOq36_pA",
-      "start": 0,
-      "end": 15
+      "url": "videos/hero-reel/2-Opening Event.mp4",
+      "start": 0
     }
   },
   {
     "id": "hero-reel-3",
-    "title": "Juice Product 3D Animation",
+    "title": "Juice Product",
     "video": {
-      "url": "https://www.youtube.com/watch?v=m5r5tSrQ1D4",
-      "start": 0,
-      "end": 40
+      "url": "videos/hero-reel/3-Juice Product.mp4",
+      "start": 0
     }
   },
   {
     "id": "hero-reel-4",
-    "title": "3D Champion",
+    "title": "CamboCar Intro",
     "video": {
-      "url": "https://www.youtube.com/watch?v=9myeYn8aFys",
-      "start": 0,
-      "end": 20
+      "url": "videos/hero-reel/4-CamboCar Intro.mp4",
+      "start": 0
     }
   },
   {
     "id": "hero-reel-5",
-    "title": "TOEFL Top Scorer",
+    "title": "Champion",
     "video": {
-      "url": "https://www.youtube.com/watch?v=j3QpCp3UNdc",
-      "start": 0,
-      "end": 30
+      "url": "videos/hero-reel/5-Champion.mp4",
+      "start": 0
     }
   },
   {
     "id": "hero-reel-6",
-    "title": "CamboCar Outro",
+    "title": "Big Winning",
     "video": {
-      "url": "https://www.youtube.com/watch?v=z5ubZRESQo4",
-      "start": 0,
-      "end": 4
+      "url": "videos/hero-reel/6-Big Winning.mp4",
+      "start": 0
+    }
+  },
+  {
+    "id": "hero-reel-7",
+    "title": "Top Scorer",
+    "video": {
+      "url": "videos/hero-reel/7-Top Scorer.mp4",
+      "start": 0
     }
   }
 ]
