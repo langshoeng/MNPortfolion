@@ -1,122 +1,78 @@
 // ===========================================
-// HERO SHOWREEL — depth coverflow
-// A 5th playback surface alongside Quick Preview, Peek, the metadata modal,
-// and hover preview. No custom controls, no audio — a plain muted clip with
-// a single play button, auto-advancing on end or on manual "Next showreel".
-// Relies on shared helpers already defined globally in projects.js:
-// clearIntervals, forceHighQuality, disableCaptions, pauseAllPreviews.
+// HERO SHOWREEL — depth coverflow, self-hosted <video>
+// Rewritten from the YouTube IFrame API version: these clips are now local
+// MP4 files, so there's no iframe, no YouTube branding to block, and none
+// of the YouTube-specific workarounds (click-shield, forceHighQuality,
+// disableCaptions) apply anymore — this file is simpler as a result, not
+// just cleaner-looking.
 // ===========================================
 
 let heroReelData = [];
 let heroReelIndex = 0;
-let heroReelPlayer = null;
-let heroReelIntervals = [];
+let heroReelVideoEl = null;
 let heroReelCurrentlyPlaying = false; // true once the front card's video has been started
 
-function heroReelExtractVideoId(url) {
-  if (url.includes("embed/")) return url.split("embed/")[1].split("?")[0];
-  if (url.includes("v=")) return url.split("v=")[1].split("&")[0];
-  return "";
-}
-
-// Same idea as enforceCutoff in projects.js, but instead of just stopping at
-// the trim point, it auto-advances the reel — that's the "auto-switch when
-// each reel finishes" behavior.
-function heroReelEnforceCutoff(player, startTime, endTime, store) {
-  const interval = setInterval(() => {
-    if (!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
-    const current = player.getCurrentTime();
-    if (current < startTime) {
-      player.seekTo(startTime, true);
-      return;
-    }
-    if (current >= endTime || current > endTime - 0.3) {
-      clearInterval(interval);
-      advanceHeroReel();
-    }
-  }, 400);
-  if (store) store.push(interval);
-  return interval;
-}
-
-// Called when the mouse/tap targets a card's own idle play button.
+// Called when the user clicks a card's own idle play button.
 function playHeroReelFront() {
   heroReelCurrentlyPlaying = true;
-  mountHeroReelPlayer();
+  mountHeroReelVideo();
 }
 
-function mountHeroReelPlayer() {
+function mountHeroReelVideo() {
   const front = document.getElementById("heroReelFront");
   if (!front) return;
   const entry = heroReelData[heroReelIndex];
-  const videoId = heroReelExtractVideoId(entry.video.url);
   const startTime = entry.video.start || 0;
-  const endTime = entry.video.end;
-  const playerId = `heroReelPlayer-${heroReelIndex}-${Date.now()}`;
+  const endTime = entry.video.end; // optional — omit to just play the whole file
 
-  front.innerHTML = `
-    <div id="${playerId}" style="width:100%; height:100%;"></div>
-    <div class="yt-click-shield" style="top:0; left:0; right:0; bottom:0;"></div>
-  `;
+  front.innerHTML = `<video class="hero-reel-video" muted playsinline preload="auto"></video>`;
+  const video = front.querySelector(".hero-reel-video");
+  heroReelVideoEl = video;
 
-  const shieldEl = front.querySelector(".yt-click-shield");
+  // encodeURI so filenames with spaces (e.g. "3-Juice Product.mp4") load
+  // correctly without needing to rename the actual files in the repo
+  video.src = encodeURI(entry.video.url);
 
-  heroReelPlayer = new YT.Player(playerId, {
-    videoId: videoId,
-    playerVars: {
-      autoplay: 1,
-      mute: 1,
-      controls: 0,
-      rel: 0,
-      modestbranding: 1,
-      iv_load_policy: 3,
-      cc_load_policy: 0,
-      disablekb: 1,
-      playsinline: 1,
-      fs: 0,
-      start: startTime
-    },
-    events: {
-      'onReady': () => {
-        heroReelPlayer.seekTo(startTime);
-        forceHighQuality(heroReelPlayer);
-        // Click-to-pause/resume — wired here (not right after shield
-        // creation) so the player reference passed to toggleShieldPlayback
-        // is guaranteed ready
-        if (shieldEl) {
-          shieldEl.onclick = (ev) => {
-            ev.stopPropagation();
-            const willPlay = toggleShieldPlayback(shieldEl, heroReelPlayer);
-            heroReelCurrentlyPlaying = willPlay;
-          };
-        }
-      },
-      'onApiChange': () => {
-        disableCaptions(heroReelPlayer);
-      },
-      'onStateChange': (e) => {
-        if (e.data === YT.PlayerState.PLAYING) {
-          forceHighQuality(heroReelPlayer);
-          clearIntervals(heroReelIntervals);
-          if (endTime !== undefined) {
-            heroReelEnforceCutoff(heroReelPlayer, startTime, endTime, heroReelIntervals);
-          }
-        } else if (e.data === YT.PlayerState.ENDED) {
-          // The video's real length was at or near our trimmed `end` —
-          // YouTube finished it before the polling loop in
-          // heroReelEnforceCutoff ever caught up, so that loop's
-          // PLAYING-only check silently no-ops forever from here.
-          // Advance directly instead of relying on the poll.
-          clearIntervals(heroReelIntervals);
-          advanceHeroReel();
-        }
-      }
+  // Guards against advancing twice if both the trim check (timeupdate) and
+  // the video's own natural end (ended) fire close together
+  let hasAdvanced = false;
+  function advanceOnce() {
+    if (hasAdvanced) return;
+    hasAdvanced = true;
+    advanceHeroReel();
+  }
+
+  video.addEventListener("loadedmetadata", () => {
+    if (startTime) video.currentTime = startTime;
+  });
+
+  video.addEventListener("timeupdate", () => {
+    if (endTime !== undefined && endTime !== null && video.currentTime >= endTime) {
+      advanceOnce();
     }
   });
+
+  video.addEventListener("ended", advanceOnce);
+
+  video.addEventListener("click", () => {
+    toggleHeroReelPlayback();
+  });
+
+  video.play().catch(() => {}); // autoplay can occasionally be blocked — fail silently rather than throw
 }
 
-// Builds the idle state for the front card: just a play button, no thumbnail
-// required (these are placeholder entries with no real image yet).
+function toggleHeroReelPlayback() {
+  if (!heroReelVideoEl) return;
+  if (heroReelVideoEl.paused) {
+    heroReelVideoEl.play();
+    heroReelCurrentlyPlaying = true;
+  } else {
+    heroReelVideoEl.pause();
+    heroReelCurrentlyPlaying = false;
+  }
+}
+
+// Builds the idle state for the front card: just a play button.
 function buildIdleFrontCard(entry) {
   const front = document.getElementById("heroReelFront");
   if (!front) return;
@@ -167,15 +123,14 @@ function updateHeroReelStackPreview() {
 
 // Advances to the next reel — used for both auto-advance (video finished)
 // and the manual "Next showreel" button. The next card inherits whatever
-// play state the current card was in at the moment of advancing: still
-// playing (auto-advance always calls this while playing) or idle (manual
-// skip before ever hitting play).
+// play state the current card was in at the moment of advancing.
 function advanceHeroReel() {
   const wasPlaying = heroReelCurrentlyPlaying;
-  clearIntervals(heroReelIntervals);
-  if (heroReelPlayer) {
-    try { heroReelPlayer.destroy(); } catch (e) {}
-    heroReelPlayer = null;
+  if (heroReelVideoEl) {
+    heroReelVideoEl.pause();
+    heroReelVideoEl.removeAttribute("src");
+    heroReelVideoEl.load(); // releases the old file from memory/network
+    heroReelVideoEl = null;
   }
   const nextIndex = (heroReelIndex + 1) % heroReelData.length;
   renderHeroReelFront(nextIndex, wasPlaying);
@@ -183,11 +138,12 @@ function advanceHeroReel() {
 }
 
 // Hooked into pauseAllPreviews() (projects.js) via a typeof guard there —
-// pauses (doesn't destroy) so the reel's DOM/idle-vs-playing state survives
-// if the user scrolls to a project card and triggers a different preview.
+// pauses so the reel's DOM/idle-vs-playing state survives if the user
+// triggers a different preview elsewhere on the page.
 function stopHeroReelPlayback() {
-  if (!heroReelPlayer) return;
-  try { heroReelPlayer.pauseVideo(); } catch (e) {}
+  if (!heroReelVideoEl) return;
+  heroReelVideoEl.pause();
+  heroReelCurrentlyPlaying = false;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
