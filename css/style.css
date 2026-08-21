@@ -2398,6 +2398,15 @@ section {
   z-index: 2;
 }
 
+/* NEW — the self-hosted video itself */
+.hero-reel-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+}
+
 .hero-reel-card-label {
   position: absolute;
   bottom: 10px;
