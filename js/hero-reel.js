@@ -25,7 +25,12 @@ function mountHeroReelVideo() {
   const startTime = entry.video.start || 0;
   const endTime = entry.video.end; // optional — omit to just play the whole file
 
-  front.innerHTML = `<video class="hero-reel-video" muted playsinline preload="auto"></video>`;
+  front.innerHTML = `
+    <video class="hero-reel-video" muted playsinline preload="auto"></video>
+    <div class="hero-reel-pause-indicator" aria-hidden="true">
+      <span class="hero-reel-play-icon">▶</span>
+    </div>
+  `;
   const video = front.querySelector(".hero-reel-video");
   heroReelVideoEl = video;
 
@@ -59,6 +64,18 @@ function mountHeroReelVideo() {
   });
 
   video.play().catch(() => {}); // autoplay can occasionally be blocked — fail silently rather than throw
+  updateHeroReelPauseIndicator();
+}
+
+// Shows/hides the pause indicator based on INTENT (heroReelCurrentlyPlaying),
+// not the video's raw .paused state. Those two differ on purpose: a video
+// paused by scrolling out of view still has "intent" to be playing (it
+// should silently resume when back in view, no indicator needed), while a
+// video the user actually clicked to pause should show it clearly.
+function updateHeroReelPauseIndicator() {
+  const front = document.getElementById("heroReelFront");
+  if (!front) return;
+  front.classList.toggle("is-paused", !heroReelCurrentlyPlaying);
 }
 
 function toggleHeroReelPlayback() {
@@ -70,6 +87,7 @@ function toggleHeroReelPlayback() {
     heroReelVideoEl.pause();
     heroReelCurrentlyPlaying = false;
   }
+  updateHeroReelPauseIndicator();
 }
 
 // Builds the idle state for the front card: just a play button.
@@ -144,6 +162,35 @@ function stopHeroReelPlayback() {
   if (!heroReelVideoEl) return;
   heroReelVideoEl.pause();
   heroReelCurrentlyPlaying = false;
+  updateHeroReelPauseIndicator();
+}
+
+// Resumes/pauses playback based on scroll visibility, independent of
+// heroReelCurrentlyPlaying (the user's actual intent). Scrolling out pauses
+// the video without touching intent; scrolling back in resumes it ONLY if
+// intent was still "playing" — so a video the user explicitly clicked to
+// pause correctly stays paused when scrolled back into view, while one
+// that was merely paused by leaving the viewport picks back up on its own.
+function setupHeroReelVisibilityObserver() {
+  const heroReelEl = document.getElementById("heroReel");
+  if (!heroReelEl || !("IntersectionObserver" in window)) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!heroReelVideoEl) return;
+      if (entry.isIntersecting) {
+        if (heroReelCurrentlyPlaying && heroReelVideoEl.paused) {
+          heroReelVideoEl.play().catch(() => {});
+        }
+      } else {
+        if (!heroReelVideoEl.paused) {
+          heroReelVideoEl.pause();
+        }
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(heroReelEl);
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -163,6 +210,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   renderHeroReelFront(0, true); // autoplay on load — muted, so browser autoplay policies allow it
   updateHeroReelStackPreview();
+  setupHeroReelVisibilityObserver();
 
   const nextBtn = document.getElementById("heroReelNext");
   if (nextBtn) {
