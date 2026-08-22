@@ -2896,3 +2896,32 @@ section {
     font-size: 15px;
   }
 }
+
+.hero-reel-pause-indicator {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none; /* clicks pass through to the video underneath */
+  transition: opacity 0.2s ease;
+}
+
+.hero-reel-card.front.is-paused .hero-reel-pause-indicator {
+  opacity: 1;
+}
+
+.hero-reel-pause-indicator .hero-reel-play-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
