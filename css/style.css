@@ -2022,28 +2022,29 @@ section {
   line-height: 1;
 }
 
-.project-actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 8px 0;
-}
-
-.quick-preview-btn,
-.metadata-btn {
-  background: #2B2B2B;        /* solid black background */
-  color: #f0f0f0;             /* white text */
+.quick-preview-icon-btn {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   border: none;
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 14px;
+  background: rgba(0,0,0,.55);
+  color: #fff;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: background 0.3s ease;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
 }
 
-.quick-preview-btn:hover,
-.metadata-btn:hover {
-  background: #182E3E;        /* slightly lighter on hover */
+.quick-preview-icon-btn:hover {
+  opacity: 1;
+  background: rgba(0,0,0,.75);
+  transform: scale(1.08);
 }
 
 /* Remove padding-top trick */
