@@ -533,14 +533,9 @@ function renderProjects(filter = "All") {
             <img src="${project.thumbnail}" alt="${project.title}">
             ${mediaBadge}
             <span class="peek-hint">Hold to Peek</span>
-          </div>
-          <div class="project-actions">
             ${project.video && project.video.type !== "none" ? `
-              <button class="quick-preview-btn" title="Plays video directly here, small view, no detail info">
-                ▶ Quick Preview
-              </button>
-              <button class="metadata-btn" title="Open full project view with details, gallery, fullscreen">
-                ▶ View Details
+              <button class="quick-preview-icon-btn" aria-label="Quick preview" title="Quick preview">
+                <i class="bi bi-play-fill" aria-hidden="true"></i>
               </button>
             ` : ""}
           </div>
@@ -709,7 +704,7 @@ function renderProjects(filter = "All") {
 
   // Handle Quick Preview
   grid.addEventListener("click", (e) => {
-    const btn = e.target.closest(".quick-preview-btn");
+    const btn = e.target.closest(".quick-preview-icon-btn");
     if (!btn) return;
   
     e.stopPropagation();
@@ -802,21 +797,6 @@ function renderProjects(filter = "All") {
       const newTime = (project.video.start || 0) + percent * duration;
       inlinePlayer.seekTo(newTime, true);
     });
-  });
-  
-  // Handle Metadata Mode button
-  grid.addEventListener("click", (e) => {
-    const btn = e.target.closest(".metadata-btn");
-    if (!btn) return;
-  
-    e.stopPropagation();
-    const card = btn.closest(".project-card");
-    const projectId = card.dataset.project;
-    const project = allProjects.find(p => p.id === projectId);
-    if (!project) return;
-  
-    pauseAllPreviews(); // stop any playing preview before opening full detail view
-    openProject(project); // your existing metadata modal function
   });
 
   // Bind events for cards
