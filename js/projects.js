@@ -59,10 +59,16 @@ function buildThumbMarkup(project) {
       </span>
     `;
   }
+  const quickPreviewIcon = project.video && project.video.type !== "none" ? `
+    <button class="quick-preview-icon-btn" aria-label="Quick preview" title="Quick preview">
+      <i class="bi bi-play-fill" aria-hidden="true"></i>
+    </button>
+  ` : "";
   return `
     <img src="${project.thumbnail}" alt="${project.title}">
     ${mediaBadge}
     <span class="peek-hint">Hold to Peek</span>
+    ${quickPreviewIcon}
   `;
 }
 
